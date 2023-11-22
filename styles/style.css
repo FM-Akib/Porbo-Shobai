@@ -1,0 +1,126 @@
+/* Fonts Collections  */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@500&display=swap');
+
+/* Fonts Collections  */
+
+/* Main Style Section  */
+body{
+    margin:70px auto;
+    max-width: 1296px;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(221, 236, 250);
+    font-size: 12px;
+}
+main{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  
+}
+
+/* Topper Styles Section  */
+.toper-container{
+    margin-top: 50px;
+}
+.container{
+    background-color:#ffff;
+    padding:30px;
+    width:600px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
+}
+.topperall{
+    width: 100%;
+}
+.toper-heading {
+    font-family: 'Playpen Sans', cursive;
+    font-size: 20px;
+    color: rgb(55, 55, 245);
+    margin-top: 0;
+}
+.topers{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-row-gap:30px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+.toper{
+    display: flex;
+    align-items: center;
+}
+.toper img{
+    height:55px;
+    width: 55px;
+}
+
+.toper h3{
+   margin-left:15px;
+}
+
+
+/* horizontal Line  */
+hr{
+    border: 1px solid #a2a0a0;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+
+/* Blog Style Section  */
+
+.blog-heading{
+    font-family: 'Playpen Sans', cursive;
+    font-size: 20px;
+    color: rgb(55, 55, 245);
+    margin-top: 0;
+}
+.blogs{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.blog{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.blog img{
+    width: 150px;
+    height: 100px;
+    object-fit: contain;
+}
+.blog-description h2{
+    font-size:12px;
+}
+.author{
+    text-decoration: none;
+}
+.topStudentsEithButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-leaderboard{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    align-items: center;
+    height: 40px;
+    width: 100px;
+    font-family: 'Playpen Sans', cursive;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(158, 0, 110);
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.btn-leaderboard:hover{
+    background-color:rgb(202, 6, 205);
+    
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);  
+}

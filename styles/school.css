@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+/* Fonts Collections  */
+
+/* Main Style Section  */
+body{
+    margin:70px auto;
+    max-width: 1296px;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-color:#D9F3F4;
+    font-size: 12px;
+}
+.main{
+    width:100%;
+    margin: 0 auto;
+    /* display: flex;
+    justify-content: center;
+    flex-direction: column; */
+    /* align-items: center; */
+    /* background-color: blue; */
+    display: grid;
+    place-items: center;
+    grid-gap: 20px;
+
+}
+.head {
+    width: 100%;
+}
+.head img{
+    /* width: 100%;
+    height: 200px; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+    
+}
+.school{
+    /* display: flex;
+    flex-direction: row; */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap:50px 50px;
+    width: 80%;
+    max-width: 1170px;
+    /* align-items: center; */
+}
+.school .school-img{
+    overflow: hidden;
+}
+.school .school-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+.school .school-title{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* .school-title,.school-img {
+width: 50%;
+}
+.school-img img{
+    width: 500px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    
+} */
+.school-title h2{
+    font-size:28px;
+    color: #333;
+  
+
+}
+.visit-btn{
+    height: 35px;
+    width: 100px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    font-size:18px;
+    background-color: #08A64C;
+    font-family: 'Josefin Sans', sans-serif;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.school-info{
+    font-size:18px;
+    color:  #333;
+}
+.school-title p{
+    margin:0;
+    margin-top: 5px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+.school-infos{
+    margin-top: 30px;
+}
+
+
+
+
+
+
+
+/* Responsive school Page here */
+ @media(max-width:1138px){
+    .school{
+        
+       
+        grid-template-columns: 1fr;
+
+        width: 90%;
+       
+    }
+ }
+
+
+/* @media(max-width:1016px){
+    .main{
+      align-items: flex-start;
+      margin-left: 40px; 
+      transition: all 0.50s ease;
+    }
+}
+
+@media(max-width:920px){
+    .main{
+        align-items: center;
+        margin-left: 0; 
+      }
+    .school{
+        transition: all 0.50s ease;
+        flex-direction: column-reverse;
+        width: 100%;
+        align-items: center;
+    }
+    .school-title,.school-img {
+        width: 70%;
+        } 
+} */
