@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Moon, Sun, Menu } from 'lucide-react';
-
+import logo from "../../assets/psLogo.png";
+import logoWhite from "../../assets/pswhiteLogo.png";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
@@ -46,7 +47,7 @@ const Navbar=() =>{
         {/* Logo */}
         <NavLink to="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
-            Logo
+            <img src={theme === "dark" ? logoWhite : logo} alt="porbo shobai" className="h-10" />
           </span>
         </NavLink>
 
