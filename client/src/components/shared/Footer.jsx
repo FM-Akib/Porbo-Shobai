@@ -3,7 +3,7 @@
 const Footer = () => {
     return (
         <div>
-            hello this is footerrrrrr.........
+            from rafid
         </div>
     );
 };
