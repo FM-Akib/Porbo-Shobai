@@ -17,7 +17,7 @@ const connectDB = async () => {
   try {
     await client.connect();
     console.log("Connected to MongoDB");
-    return client.db("sample_mflix");
+    return client.db("porboshobaiDB");
   } catch (err) {
     console.error("MongoDB connection error", err);
     process.exit(1); 

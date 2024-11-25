@@ -37,13 +37,13 @@ const Navbar=() =>{
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 max-w-7xl mx-auto ${
+      className={`sticky top-0 z-50 w-full transition-all duration-300  ${
         isScrolled
           ? "bg-background/80 backdrop-blur-md shadow-sm"
           : "bg-background"
       }`}
     >
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container  flex h-16 items-center justify-between px-4 max-w-7xl mx-auto">
         {/* Logo */}
         <NavLink to="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
