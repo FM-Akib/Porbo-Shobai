@@ -24,7 +24,7 @@ connectDB().then((db) => {
 
   // Base route
   app.get("/", (req, res) => {
-    res.send("Server is running!!");
+    res.send("PS Server is running!!");
   });
 
 
