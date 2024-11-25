@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Moon, Sun, Menu } from 'lucide-react';
 import logo from "../../assets/psLogo.png";
 import logoWhite from "../../assets/pswhiteLogo.png";
@@ -88,7 +88,7 @@ const Navbar=() =>{
           <Button variant="ghost" className="hidden sm:inline-flex hover:bg-accent hover:text-accent-foreground">
             Log In
           </Button>
-          <Button className="hidden sm:inline-flex">Sign Up</Button>
+          <Link to="/register"><Button className="hidden sm:inline-flex">Sign Up</Button></Link>
 
           {/* Mobile Menu */}
           <Sheet>
