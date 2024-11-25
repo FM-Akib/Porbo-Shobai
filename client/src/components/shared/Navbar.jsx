@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 const routes = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Services", path: "/services" },
+  { name: "Competitions", path: "/competitions" },
   { name: "Contact", path: "/contact" },
 ];
 
