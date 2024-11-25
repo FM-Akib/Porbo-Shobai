@@ -3,7 +3,7 @@ let usersCollection;
 
 // Initialize the usersCollection from the database
 const init = (db) => {
-  usersCollection = db.collection("doctors");
+  usersCollection = db.collection("users");
 };
 
 const getUsers = async (req, res, next) => {
