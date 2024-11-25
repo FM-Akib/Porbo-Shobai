@@ -1,11 +1,52 @@
-{
-    "name": "Muntasir Akib",
-    "photo": "https://avatars.githubusercontent.com/u/77449506?v=4",
-    "email": "B8a6a@example.com",
-    "phone": "+880 123 456 789",
-    "password": "123456",
-    "role": "admin",
-    "status": "active",
-    "created_at": "2021-07-01T00:00:00.000Z",
-    "mentorID": ""
-}
+[
+    {
+        "name": "Muntasir Akib",
+        "photo": "https://avatars.githubusercontent.com/u/77449506?v=4",
+        "email": "B8a6a@example.com",
+        "phone": "+880 123 456 789",
+        "password": "123456",
+        "role": "admin",
+        "status": "active",
+        "created_at": "2021-07-01T00:00:00.000Z",
+        "mentorID": ""
+    },
+    {
+      "competitionName": "Codeforces Round #731 (Div. 3)",
+      "banner": "https://codeforces.com/predownloaded/7d/7d",
+      "location": "",
+      "modeOfEvent": "online",
+      "createdAt": "2021-07-01T00:00:00.000Z",
+      "subtitle": "Rated for Div. 3",
+      "categories": ["programming", "contest"],
+      "registrationfee": 0,
+      "competitionStartDateTime": "2021-07-01T00:00:00.000Z",
+      "registrationStartDateTime": "2021-05-01T00:00:00.000Z",
+      "registrationEndDateTime": "2021-07-01T00:00:00.000Z",
+      "eligibility": "Everyone can apply",
+      "aboutCompetition": "This is a programming contest for Div. 3 participants.",
+      "visibility": "public",
+      "competitionType": "programming contest", 
+      "hostName": "Codeforces",
+      "hostSite": "https://codeforces.com/",
+      "festival": "winter",
+      "paticipatonType": "individual",
+      "teamSize": {
+          "min": 2,
+          "max": 5
+      },
+      "hideHost": false, 
+      "contacts": [
+           {
+               "name": "Muntasir Akib",
+               "email": "B8a6a@example.com",
+               "phone": "+880 123 456 789"
+           }],
+      "certificate": "yes",
+      "prizes": [{
+            "position": 1,
+            "prize": "100$"
+        }],
+      "numOfParticipantsAllowed": 0,
+      "participants": []
+    }
+]
