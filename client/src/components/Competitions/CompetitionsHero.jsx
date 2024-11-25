@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 const CompetitionsHero = () => {
     return (
 
-        <section>
+        <section className="bg-[#fef2f2] dark:bg-[#020817]">
                 <div className="relative max-w-7xl mx-auto px-6 py-4 lg:py-20 ">
                     <div className="lg:flex lg:items-center lg:gap-12">
                         <div className="relative z-10 text-center max-w-2xl mx-auto lg:ml-0 lg:text-left lg:w-1/2">
@@ -18,8 +18,8 @@ const CompetitionsHero = () => {
                                 </ul>
                             </div>
                             <div className="flex gap-4 mt-8 flex-wrap justify-center lg:justify-start items-center">
-                                <Button className="bg-green-500 py-6 shadow-md  rounded-3xl dark:text-white text-lg">Find Competitions</Button>
-                                <Button variant="secondary" className=" py-6 shadow-md rounded-3xl text-lg">Host Competitions</Button>
+                                <Button className="bg-green-500 px-6 py-6 shadow-md  rounded-3xl dark:text-white text-lg">Find Competitions</Button>
+                                <Button variant="secondary" className="px-6 py-6 shadow-md rounded-3xl text-lg">Host Competitions</Button>
                             </div>
                         </div>
                         <div className="relative lg:absolute inset-x-0 right-6 mt-12 lg:mt-0 lg:inset-y-16 h-fit mx-auto lg:mr-0 ml-auto max-w-md [--ui-shadow-border:var(--ui-border-color)]">      
