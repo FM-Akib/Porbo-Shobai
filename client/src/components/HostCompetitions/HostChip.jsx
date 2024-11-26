@@ -7,6 +7,7 @@ import { ArrowRight, Info, Trophy,Code,
 import { Card, CardContent, CardDescription, CardHeader } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 
 const HostChip = () => {
@@ -14,7 +15,7 @@ const HostChip = () => {
         {
             title: "General & Case Competitions",
             description: "Organize and manage your competitions",
-            link: "#create-competition",
+            link: "/create-competition",
             icon: Trophy,
             info: "Business Competitions, Case Competitions, General Competitions",
         },
@@ -98,10 +99,10 @@ const HostChip = () => {
                     className="group h-auto p-0 text-primary "
                     asChild
                 >
-                    <a href="#create-competition" className="flex items-center  gap-2">
+                    <Link to={chip.link} className="flex items-center  gap-2">
                     Create Competitions
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </a>
+                    </Link>
                 </Button>
                 </CardContent>
                 </Card>)
