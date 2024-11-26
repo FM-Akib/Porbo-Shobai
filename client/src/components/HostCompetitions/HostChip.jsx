@@ -7,6 +7,7 @@ import { ArrowRight, Info, Trophy,Code,
 import { Card, CardContent, CardDescription, CardHeader } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 
 const HostChip = () => {
@@ -14,7 +15,7 @@ const HostChip = () => {
         {
             title: "General & Case Competitions",
             description: "Organize and manage your competitions",
-            link: "#create-competition",
+            link: "/create-competition",
             icon: Trophy,
             info: "Business Competitions, Case Competitions, General Competitions",
         },
@@ -55,7 +56,9 @@ const HostChip = () => {
         },
     ];
     return (
-        <section className="grid grid-cols-1 gap-10 md:grid-cols-2 max-w-4xl  mx-auto py-10 px-3 md:px-0">
+        <>
+        <h1 className="mt-6 md:mt-10 text-title font-bold text-balance text-2xl md:text-3xl text-center">What are you planning to host?</h1>
+        <section className="grid grid-cols-1 gap-5 md:gap-10 md:grid-cols-2 max-w-4xl  mx-auto py-10 px-3 md:px-0">
             {
                 competitionChips?.map((chip,index) => <Card key={index} className="w-full max-w-md transition-all hover:shadow-md dark:bg-gray-800">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -96,15 +99,16 @@ const HostChip = () => {
                     className="group h-auto p-0 text-primary "
                     asChild
                 >
-                    <a href="#create-competition" className="flex items-center  gap-2">
+                    <Link to={chip.link} className="flex items-center  gap-2">
                     Create Competitions
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </a>
+                    </Link>
                 </Button>
                 </CardContent>
                 </Card>)
             }
         </section>
+        </>
     );
 };
 
