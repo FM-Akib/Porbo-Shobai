@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 
@@ -19,7 +20,7 @@ const CompetitionsHero = () => {
                             </div>
                             <div className="flex gap-4 mt-8 flex-wrap justify-center lg:justify-start items-center">
                                 <Button className="bg-green-500 px-6 py-6 shadow-md  rounded-3xl dark:text-white text-lg">Find Competitions</Button>
-                                <Button variant="secondary" className="px-6 py-6 shadow-md rounded-3xl text-lg">Host Competitions</Button>
+                               <Link to ="/host-competitions"> <Button variant="secondary" className="px-6 py-6 shadow-md rounded-3xl text-lg">Host Competitions</Button></Link>
                             </div>
                         </div>
                         <div className="relative lg:absolute inset-x-0 right-6 mt-12 lg:mt-0 lg:inset-y-16 h-fit mx-auto lg:mr-0 ml-auto max-w-md [--ui-shadow-border:var(--ui-border-color)]">      
