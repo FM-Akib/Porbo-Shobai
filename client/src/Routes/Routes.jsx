@@ -2,6 +2,7 @@
 import MainLayout from "@/Layouts/MainLayout";
 import Competitions from "@/Pages/Competitions";
 import ErrorPage from "@/Pages/Error404";
+import HostComForm from "@/Pages/HostComForm";
 import HostCompetitions from "@/Pages/HostCompetitions";
 import Landing from "@/Pages/Landing";
 import Register from "@/Pages/Register/Register";
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
         {
           path: "/host-competitions",
           element: <HostCompetitions/>
+        },
+        {
+          path: "/create-competition",
+          element: <HostComForm/>
         }
       ]
     },
