@@ -6,6 +6,7 @@ import HostComForm from "@/Pages/HostComForm";
 import HostCompetitions from "@/Pages/HostCompetitions";
 import Landing from "@/Pages/Landing";
 import Register from "@/Pages/Register/Register";
+import Login from "@/Pages/Login/Login";
 import {createBrowserRouter} from "react-router-dom";
 
 
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
         {
           path: "/register",
           element: <Register/>,
+        },
+        {
+          path: "/login",
+          element: <Login/>
         },
         {
           path: "/competitions",
