@@ -85,9 +85,10 @@ const Navbar=() =>{
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <Button variant="ghost" className="hidden sm:inline-flex hover:bg-accent hover:text-accent-foreground">
+          <Link to="/login"><Button variant="ghost" className="hidden sm:inline-flex hover:bg-accent hover:text-accent-foreground">
             Log In
-          </Button>
+          </Button></Link>
+          
           <Link to="/register"><Button className="hidden sm:inline-flex">Sign Up</Button></Link>
 
           {/* Mobile Menu */}
@@ -120,8 +121,9 @@ const Navbar=() =>{
                     {route.name}
                   </NavLink>
                 ))}
-                <Button className="w-full mt-4">Log In</Button>
-                <Button className="w-full">Sign Up</Button>
+                <Link to="/login"><Button className="w-full mt-4">Log In</Button></Link>
+                <Link to="/register"><Button className="w-full">Sign Up</Button></Link>
+                
               </nav>
             </SheetContent>
           </Sheet>
