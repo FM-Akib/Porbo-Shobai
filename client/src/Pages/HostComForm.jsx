@@ -134,6 +134,47 @@ const HostComForm = () => {
                                     </div>
                                 )}
 
+                                
+                                {/* Opportunity Title */}
+                                <FormField
+                                    control={form.control}
+                                    name="title"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Opportunity Title</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Enter opportunity title" {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Maximum 190 characters
+                                            </FormDescription>
+                                            <FormMessage className="text-red-500"  />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                
+                                
+                                {/* Opportunity subtitle */}
+                                <FormField
+                                    control={form.control}
+                                    name="subtitle"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Opportunity Subtitle</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Enter opportunity subtitle" {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Maximum 190 characters
+                                            </FormDescription>
+                                            <FormMessage className="text-red-500"  />
+                                        </FormItem>
+                                    )}
+                                />
+
+
+
                                 {/* Opportunity Type */}
                                 <FormField
                                     control={form.control}
@@ -174,6 +215,8 @@ const HostComForm = () => {
                                         </FormItem>
                                     )}
                                     />
+                                
+                                
 
                                 {/* Visibility */}
                                 <FormField
@@ -221,23 +264,6 @@ const HostComForm = () => {
                                     )}
                                 />
 
-                                {/* Title */}
-                                <FormField
-                                    control={form.control}
-                                    name="title"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Opportunity Title</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter opportunity title" {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Maximum 190 characters
-                                            </FormDescription>
-                                            <FormMessage className="text-red-500"  />
-                                        </FormItem>
-                                    )}
-                                />
 
                                 {/* Organization */}
                                 <FormField
@@ -245,7 +271,7 @@ const HostComForm = () => {
                                     name="organization"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Organization Name</FormLabel>
+                                            <FormLabel>Host Organization Name</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="Enter your organization name" {...field} />
                                             </FormControl>
