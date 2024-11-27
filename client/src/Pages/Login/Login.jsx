@@ -27,9 +27,7 @@ const login = () => {
           <div className="md:w-3/6">
             <h3 className="text-sm font-semibold ">Hi Achiever</h3>
             <h1 className="text-xl font-bold mt-2">Welcome back to Porbo Shobai</h1>
-
-
-
+            
             <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
 
               <div className="space-y-1 text-sm">
