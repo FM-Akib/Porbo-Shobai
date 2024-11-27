@@ -5,16 +5,23 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, Cloud, Globe, Lock } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ArrowLeft, Globe, ImageUp, Lock } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import {  Controller, useForm } from "react-hook-form";
 import JoditEditor from 'jodit-react';
 import { Link } from "react-router-dom";
+import { formSchema } from "@/utils/FormError";
+import { zodResolver } from "@hookform/resolvers/zod"
 
 const HostComForm = () => {
-    const [about, setAbout] = useState('');
+    const [content, setContent] = useState('');
     const [bannerPreview, setBannerPreview] = useState(null);
+    const [banner, setBanner] = useState(null);
+    const [mode, setMode] = useState(false);
+    const editor = useRef(null);
+
     const form = useForm({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             visibility: "public",
             mode: "online",
@@ -23,18 +30,41 @@ const HostComForm = () => {
             organization: "",
             websiteUrl: "",
         },
-        mode: "onBlur", // Validation will trigger on blur
+        mode: "onBlur", 
     });
 
-    const config = {
-        readonly: false,
-        height: 300,
-        placeholder: `This field helps you to mention the details of the opportunity you are listing. \n\n It is better to include Rules, Eligibility, Process, Format, etc., in order to get the opportunity approved. The more details, the better!`,
-    };
+    const config = useMemo(
+        () => ({
+            readonly: false, // allow editing
+            height: 300,
+            placeholder: content || 'This field helps you to mention the details of the opportunity you are listing. \n\n It is better to include Rules, Eligibility, Process, Format, etc., in order to get the opportunity approved. The more details, the better!', // Placeholder text
+            toolbar: [
+                'bold',        
+                'italic',      
+                'underline',   
+                'align',       
+                'orderedlist', 
+                'unorderedlist', 
+                
+            ],
+            buttons: [
+                'bold', 'italic', 'underline', 'align', 'orderedlist', 'unorderedlist',
+            ],
+            image: false,  // Disable image tool
+            video: false,  // Disable video tool
+            showCharsCounter: false,  // Optional: Disable character counter
+            showWordsCounter: false,  // Optional: Disable word counter
+            disableSpeech: true, 
+        }),
+        [content]
+    );
+
+
 
     // Handle banner upload
     const handleBannerChange = (e) => {
         const file = e.target.files[0];
+        setBanner(file);
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => setBannerPreview(reader.result);
@@ -43,7 +73,9 @@ const HostComForm = () => {
     };
 
     const onSubmit = (values) => {
-        console.log({ ...values, about });
+        console.log({ ...values, content });
+        console.log(banner);
+
     };
 
     return (
@@ -83,7 +115,7 @@ const HostComForm = () => {
                                 <div className="flex justify-center">
                                     <div className="relative">
                                         <div className="flex h-32 w-72 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
-                                            <Cloud className="mb-2 h-10 w-10 text-gray-400" />
+                                            <ImageUp className="mb-2 h-10 w-10 text-gray-400" />
                                             <div className="text-center text-sm text-gray-600">
                                                 Click here to banner upload
                                             </div>
@@ -108,23 +140,40 @@ const HostComForm = () => {
                                     name="opportunityType"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Opportunity Type</FormLabel>
-                                            <Select {...field} defaultValue={field.value}>
+                                        <FormLabel>Opportunity Type</FormLabel>
+
+                                        {/* Using Controller to link react-hook-form with Select component */}
+                                        <Controller
+                                            name="opportunityType"
+                                            control={form.control}
+                                            defaultValue={field.value} // Set the default value from form state
+                                            render={({ field: controllerField }) => (
+                                            <Select
+                                                {...controllerField} // Spread the field props (including value and onChange)
+                                                value={controllerField.value} // Ensure value is controlled by react-hook-form
+                                                onValueChange={controllerField.onChange} // Ensure onChange is correctly handled
+                                            >
                                                 <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select opportunity type" />
-                                                    </SelectTrigger>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select opportunity type" />
+                                                </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="general">General & Case Competitions</SelectItem>
-                                                    <SelectItem value="hackathon">Hackathon</SelectItem>
-                                                    <SelectItem value="workshop">Workshop</SelectItem>
+                                                <SelectItem value="general case competition">General & Case Competitions</SelectItem>
+                                                <SelectItem value="hackathon">Hackathon</SelectItem>
+                                                <SelectItem value="workshop & webinar">Webinar & Workshop</SelectItem>
+                                                <SelectItem value="Quiz">Quiz Competition</SelectItem>
+                                                <SelectItem value="Innovation">Innovation Challenge</SelectItem>
+                                                <SelectItem value="Scholarships">Scholarships</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <FormMessage />
+                                            )}
+                                        />
+
+                                        <FormMessage />
                                         </FormItem>
                                     )}
-                                />
+                                    />
 
                                 {/* Visibility */}
                                 <FormField
@@ -185,7 +234,7 @@ const HostComForm = () => {
                                             <FormDescription>
                                                 Maximum 190 characters
                                             </FormDescription>
-                                            <FormMessage />
+                                            <FormMessage className="text-red-500"  />
                                         </FormItem>
                                     )}
                                 />
@@ -240,6 +289,7 @@ const HostComForm = () => {
                                                         "flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors",
                                                         field.value === "online" && "border-primary bg-primary/5"
                                                     )}>
+                                                        {field.value==='online' && setMode(false)}
                                                         <RadioGroupItem value="online" id="online" />
                                                         <div className="flex flex-1 items-center gap-2">
                                                             <Globe className="h-4 w-4" />
@@ -253,6 +303,7 @@ const HostComForm = () => {
                                                         "flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors",
                                                         field.value === "offline" && "border-primary bg-primary/5"
                                                     )}>
+                                                        {field.value==='offline' && setMode(true)}
                                                         <RadioGroupItem value="offline" id="offline" />
                                                         <div className="flex flex-1 items-center gap-2">
                                                             <Globe className="h-4 w-4" />
@@ -269,6 +320,36 @@ const HostComForm = () => {
                                     )}
                                 />
 
+                                {/* Location */}
+                                <div className={`${mode ? "block " : "hidden"}`}>
+                                <FormField
+                                    control={form.control}
+                                    name="city"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>City</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Enter which city held the event" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="location"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Location</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Write specific location" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                </div>
+
                                 {/* Event Description */}
                                 <FormField
                                     control={form.control}
@@ -277,9 +358,12 @@ const HostComForm = () => {
                                         <FormItem>
                                             <FormLabel>Event Description</FormLabel>
                                             <JoditEditor
-                                                value={about}
+                                                ref={editor}
+                                                value={content}
                                                 config={config}
-                                                onChange={setAbout}
+                                                tabIndex={1} // tabIndex of textarea
+                                                onBlur={(newContent) => setContent(newContent)} // Update content on blur for performance reasons
+                                                
                                             />
                                             <FormMessage />
                                         </FormItem>
@@ -288,7 +372,7 @@ const HostComForm = () => {
 
                                 <div className="flex justify-end gap-4">
                                     <Button variant="ghost" className="mt-2" onClick={() => form.reset()}>Clear</Button>
-                                    <Button type="submit" className="mt-2">Save</Button>
+                                    <Button type="submit" className="mt-2">Next</Button>
                                 </div>
                             </form>
                         </Form>
