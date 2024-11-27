@@ -25,16 +25,16 @@ const Register = () => {
     setRole(e.target.value);
   };
   return (
-    <div className="flex justify-center items-center h-screen mt-14">
-      <div className="border border-black shadow-md bg-white w-full max-w-2xl p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800">
-        <div className="space-y-6 flex flex-col md:flex-row">
+    <div className="mx-4 flex justify-center items-center my-16">
+      <div className=" border border-black dark:border-white shadow-md bg-white w-full max-w-4xl p-8 space-y-3 rounded-tl-xl rounded-br-xl dark:bg-black dark:text-white">
+        <div className="space-y-6 flex flex-col md:flex-row  gap-4">
           {/* image div */}
-          <div className="md:w-1/3"></div>
+          <div  className="md:w-3/6 bg-[url('https://i.ibb.co.com/w016jcN/undraw-Emails-re-cqen.png')] bg-cover bg-no-repeat bg-center"></div>
           {/* form div */}
-          <div className="md:w-2/3">
+          <div className="md:w-3/6">
             <h3 className="text-sm font-semibold ">Ready to be a Achiever</h3>
             <h1 className="text-xl font-bold mt-2">Create An Account</h1>
-            <p className="text-sm dark:text-gray-600 font-semibold my-4">
+            <p className="text-sm dark:text-white font-semibold my-4">
               Create as a{" "}
             </p>
             <div className="flex gap-5">
@@ -42,8 +42,8 @@ const Register = () => {
                 onClick={() => {
                   handleRole({ target: { value: "student" } });
                 }}
-                className={`flex border border-black text-black font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
-                  role === "student" ? "bg-black text-white" : ""
+                className={`flex border border-black dark:border-white text-black dark:text-white font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                  role === "student" ? "bg-black dark:bg-white text-white dark:text-black" : ""
                 } `}
               >
                 Student
@@ -52,8 +52,8 @@ const Register = () => {
                 onClick={() => {
                   handleRole({ target: { value: "company" } });
                 }}
-                className={`flex border border-black text-black font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
-                  role === "company" ? "bg-black text-white" : ""
+                className={`flex border border-black dark:border-white text-black dark:text-white font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                  role === "company" ? "bg-black dark:bg-white text-white dark:text-black" : ""
                 } `}
               >
                 Company
@@ -62,11 +62,11 @@ const Register = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
               {/* name field */}
-              <div className="flex gap-4">
+              <div className="flex gap-4 justify-between">
                 <div className="space-y-1 text-sm">
                   <label
                     htmlFor="username"
-                    className="block dark:text-gray-600"
+                    className="block dark:text-white"
                   >
                     First Name <span className="text-red-500">*</span>
                   </label>
@@ -85,7 +85,7 @@ const Register = () => {
                 <div className="space-y-1 text-sm">
                   <label
                     htmlFor="username"
-                    className="block dark:text-gray-600"
+                    className="block dark:text-white"
                   >
                     Last Name <span className="text-red-500">*</span>
                   </label>
@@ -94,7 +94,7 @@ const Register = () => {
                     name="lastName"
                     id="lastName"
                     placeholder="Last Name"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border-b border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
                     {...register("lastName", { required: true })}
                   />
                   {errors.name && (
@@ -104,7 +104,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-1 text-sm">
-                <label htmlFor="email" className="block dark:text-gray-600">
+                <label htmlFor="email" className="block dark:text-white">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -121,7 +121,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-1 text-sm">
-                <label htmlFor="number" className="block dark:text-gray-600">
+                <label htmlFor="number" className="block dark:text-white">
                   Mobile Number <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -139,12 +139,12 @@ const Register = () => {
                 )}
               </div>
 
-              <div className="flex gap-4 ">
+              <div className="flex gap-4 justify-between">
                 {/* password field 1 */}
                 <div className="space-y-1 text-sm relative">
                   <label
                     htmlFor="password"
-                    className="block dark:text-gray-600"
+                    className="block dark:text-white"
                   >
                     Password <span className="text-red-500">*</span>
                   </label>
@@ -186,7 +186,7 @@ const Register = () => {
                   >
                     {eye ? <FaRegEye /> : <FaRegEyeSlash />}
                   </Link>
-                  {/* <div className="flex justify-end text-xs dark:text-gray-600">
+                  {/* <div className="flex justify-end text-xs dark:text-white">
               <a rel="noopener noreferrer" href="#">
                 Forgot Password?
               </a>
@@ -196,7 +196,7 @@ const Register = () => {
                 <div className="space-y-1 text-sm relative">
                   <label
                     htmlFor="password"
-                    className="block dark:text-gray-600"
+                    className="block dark:text-white"
                   >
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
@@ -239,33 +239,32 @@ const Register = () => {
                   >
                     {eyeTwo ? <FaRegEye /> : <FaRegEyeSlash />}
                   </Link>
-                  {/* <div className="flex justify-end text-xs dark:text-gray-600">
-              <a rel="noopener noreferrer" href="#">
-                Forgot Password?
-              </a>
-            </div> */}
+                  
                 </div>
               </div>
+              <div className="flex items-center ">
               <input
                 type="checkbox"
                 name="remember"
                 id="remember"
                 aria-label="Remember me"
-                className="mr-1 rounded-sm focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
+                className="mr-1 rounded-sm  focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
               />
+              <p>I agree to the terms and conditions.</p>
+              </div>
 
               <div className="flex justify-center">
-                <button className="flex border border-black text-black hover:bg-black hover:text-white font-bold w-2/3 h-16 justify-center items-center align-center rounded-2xl">
+                <button className="flex border border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black font-bold w-2/3 h-16 justify-center items-center align-center rounded-2xl">
                   Register
                 </button>
               </div>
             </form>
             <div className="flex items-center pt-4 space-x-1">
-              <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
-              <p className="px-3 text-sm text-center dark:text-gray-600">
-                Register with Google
+              <div className="flex-1 h-px sm:w-16 bg-black dark:bg-white"></div>
+              <p className="px-3 text-sm text-center dark:text-white">
+                Or Register with Google
               </p>
-              <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
+              <div className="flex-1 h-px sm:w-16 bg-black dark:bg-white"></div>
             </div>
             <div className="flex justify-center space-x-4">
               <button
@@ -281,15 +280,15 @@ const Register = () => {
                 </svg>
               </button>
             </div>
-            <p className="text-xs text-center sm:px-6 dark:text-gray-600">
-              Don not have an account?
-              <a
+            <p className="text-xs text-center sm:px-6 dark:text-white">
+              {"Already have an account? "}
+              <Link
                 rel="noopener noreferrer"
-                href="#"
-                className="underline dark:text-gray-800"
+                to={"/Login"}
+                className="underline dark:text-white font-bold" 
               >
-                Sign up
-              </a>
+                Login
+              </Link>
             </p>
           </div>
         </div>
