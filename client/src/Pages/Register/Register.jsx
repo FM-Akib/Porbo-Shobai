@@ -25,13 +25,13 @@ const Register = () => {
     setRole(e.target.value);
   };
   return (
-    <div className="flex justify-center items-center h-screen mt-14">
-      <div className="border border-black shadow-md bg-white w-full max-w-2xl p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800">
-        <div className="space-y-6 flex flex-col md:flex-row">
+    <div className="flex justify-center items-center h-screen my-20">
+      <div className="border border-black shadow-md bg-white w-full max-w-4xl p-8 space-y-3 rounded-tl-xl rounded-br-xl dark:bg-gray-50 dark:text-gray-800">
+        <div className="space-y-6 flex flex-col md:flex-row  gap-4">
           {/* image div */}
-          <div className="md:w-1/3"></div>
+          <div  className="md:w-3/6 bg-[url('https://i.ibb.co.com/w016jcN/undraw-Emails-re-cqen.png')] bg-cover bg-no-repeat bg-center"></div>
           {/* form div */}
-          <div className="md:w-2/3">
+          <div className="md:w-3/6">
             <h3 className="text-sm font-semibold ">Ready to be a Achiever</h3>
             <h1 className="text-xl font-bold mt-2">Create An Account</h1>
             <p className="text-sm dark:text-gray-600 font-semibold my-4">
@@ -246,13 +246,16 @@ const Register = () => {
             </div> */}
                 </div>
               </div>
+              <div className="flex items-center ">
               <input
                 type="checkbox"
                 name="remember"
                 id="remember"
                 aria-label="Remember me"
-                className="mr-1 rounded-sm focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
+                className="mr-1 rounded-sm  focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
               />
+              <p>I agree to the terms and conditions.</p>
+              </div>
 
               <div className="flex justify-center">
                 <button className="flex border border-black text-black hover:bg-black hover:text-white font-bold w-2/3 h-16 justify-center items-center align-center rounded-2xl">
