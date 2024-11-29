@@ -6,12 +6,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, Globe, ImageUp, Lock } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import {  Controller, useForm } from "react-hook-form";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import JoditEditor from 'jodit-react';
 import { Link } from "react-router-dom";
 import { formSchema } from "@/utils/FormError";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const HostComForm = () => {
     const [content, setContent] = useState('');
@@ -25,10 +25,13 @@ const HostComForm = () => {
         defaultValues: {
             visibility: "public",
             mode: "online",
-            opportunityType: "",
-            title: "",
-            organization: "",
-            websiteUrl: "",
+            opportunityType: "hackathon",
+            title: "Example Title",
+            organization: "your organization name",
+            websiteUrl: "https://",
+            city: "City",
+            location: "Location",
+            subtitle: "Example Subtitle",
         },
         mode: "onBlur", 
     });
@@ -59,7 +62,12 @@ const HostComForm = () => {
         [content]
     );
 
-
+    useEffect(() => {
+        const subscription = form.watch((value) => {
+            setMode(value.mode === 'offline');
+        });
+        return () => subscription.unsubscribe();
+    }, [form.watch]);
 
     // Handle banner upload
     const handleBannerChange = (e) => {
@@ -72,10 +80,13 @@ const HostComForm = () => {
         }
     };
 
-    const onSubmit = (values) => {
-        console.log({ ...values, content });
+    const onSubmit = (data) => {
+        console.log({ ...data, content });
         console.log(banner);
+    };
 
+    const onError = (errors) => {
+        console.error("Validation Errors:", errors);
     };
 
     return (
@@ -109,8 +120,7 @@ const HostComForm = () => {
                     <CardContent>
                         {/* Form */}
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
+                            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
                                 {/* Banner Upload */}
                                 <div className="flex justify-center">
                                     <div className="relative">
@@ -133,8 +143,7 @@ const HostComForm = () => {
                                         <img src={bannerPreview} alt="Banner Preview" className="w-72 h-32 object-cover rounded-lg" />
                                     </div>
                                 )}
-
-                                
+                               
                                 {/* Opportunity Title */}
                                 <FormField
                                     control={form.control}
@@ -152,8 +161,6 @@ const HostComForm = () => {
                                         </FormItem>
                                     )}
                                 />
-
-                                
                                 
                                 {/* Opportunity subtitle */}
                                 <FormField
@@ -173,8 +180,6 @@ const HostComForm = () => {
                                     )}
                                 />
 
-
-
                                 {/* Opportunity Type */}
                                 <FormField
                                     control={form.control}
@@ -190,9 +195,11 @@ const HostComForm = () => {
                                             defaultValue={field.value} // Set the default value from form state
                                             render={({ field: controllerField }) => (
                                             <Select
-                                                {...controllerField} // Spread the field props (including value and onChange)
-                                                value={controllerField.value} // Ensure value is controlled by react-hook-form
-                                                onValueChange={controllerField.onChange} // Ensure onChange is correctly handled
+                                            onValueChange={(value) => {
+                                                controllerField.onChange(value);
+                                                form.setValue('opportunityType', value);
+                                            }}
+                                            value={controllerField.value || ''} 
                                             >
                                                 <FormControl>
                                                 <SelectTrigger>
@@ -214,9 +221,7 @@ const HostComForm = () => {
                                         <FormMessage />
                                         </FormItem>
                                     )}
-                                    />
-                                
-                                
+                                    />                           
 
                                 {/* Visibility */}
                                 <FormField
@@ -239,7 +244,7 @@ const HostComForm = () => {
                                                         <div className="flex flex-1 items-center gap-2">
                                                             <Globe className="h-4 w-4" />
                                                             <div>
-                                                                <label htmlFor="public" className="font-medium">Open publicly on Unstop</label>
+                                                                <label htmlFor="public" className="font-medium">Open publicly </label>
                                                                 <p className="text-sm text-muted-foreground">Will be visible to all users.</p>
                                                             </div>
                                                         </div>
@@ -263,7 +268,6 @@ const HostComForm = () => {
                                         </FormItem>
                                     )}
                                 />
-
 
                                 {/* Organization */}
                                 <FormField
@@ -315,7 +319,6 @@ const HostComForm = () => {
                                                         "flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors",
                                                         field.value === "online" && "border-primary bg-primary/5"
                                                     )}>
-                                                        {field.value==='online' && setMode(false)}
                                                         <RadioGroupItem value="online" id="online" />
                                                         <div className="flex flex-1 items-center gap-2">
                                                             <Globe className="h-4 w-4" />
@@ -329,7 +332,6 @@ const HostComForm = () => {
                                                         "flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors",
                                                         field.value === "offline" && "border-primary bg-primary/5"
                                                     )}>
-                                                        {field.value==='offline' && setMode(true)}
                                                         <RadioGroupItem value="offline" id="offline" />
                                                         <div className="flex flex-1 items-center gap-2">
                                                             <Globe className="h-4 w-4" />
@@ -382,19 +384,19 @@ const HostComForm = () => {
                                     name="description"
                                     render={() => (
                                         <FormItem>
-                                            <FormLabel>Event Description</FormLabel>
+                                            <FormLabel>Opportunity Description</FormLabel>
                                             <JoditEditor
                                                 ref={editor}
                                                 value={content}
                                                 config={config}
                                                 tabIndex={1} // tabIndex of textarea
                                                 onBlur={(newContent) => setContent(newContent)} // Update content on blur for performance reasons
-                                                
                                             />
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
+                                
 
                                 <div className="flex justify-end gap-4">
                                     <Button variant="ghost" className="mt-2" onClick={() => form.reset()}>Clear</Button>
