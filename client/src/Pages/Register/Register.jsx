@@ -2,18 +2,34 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { useToast } from "@/hooks/use-toast"
+import { ToastAction } from "@/components/ui/toast"
 
 const Register = () => {
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
   const [role, setRole] = useState("student");
-
+  const { toast } = useToast()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    if(data.password !== data.confirmPassword){
+      // toast.error("Password didn't match");
+      toast({
+        variant: "destructive",
+        title: "Password didn't match",
+        description: "Password and Confirm Password has to be same",
+        action: <ToastAction altText="Try again">OK!</ToastAction>,
+      })
+      return ;
+    }
+
+  }
 
   const handelSeePass = () => {
     setEye(!eye);
@@ -42,7 +58,7 @@ const Register = () => {
                 onClick={() => {
                   handleRole({ target: { value: "student" } });
                 }}
-                className={`flex border border-black dark:border-white text-black dark:text-white font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                className={`flex border border-black dark:border-white ${role !== "student" ? "text-black dark:text-white" : ""} font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
                   role === "student" ? "bg-black dark:bg-white text-white dark:text-black" : ""
                 } `}
               >
@@ -52,7 +68,7 @@ const Register = () => {
                 onClick={() => {
                   handleRole({ target: { value: "company" } });
                 }}
-                className={`flex border border-black dark:border-white text-black dark:text-white font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                className={`flex border border-black dark:border-white ${role !== "company" ? "text-black dark:text-white" : ""} font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
                   role === "company" ? "bg-black dark:bg-white text-white dark:text-black" : ""
                 } `}
               >
@@ -245,13 +261,22 @@ const Register = () => {
               <div className="flex items-center ">
               <input
                 type="checkbox"
-                name="remember"
-                id="remember"
-                aria-label="Remember me"
+                name="acceptTerms"
+                id="acceptTerms"
+                aria-label="I agree to the terms and conditions."
                 className="mr-1 rounded-sm  focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
+                {...register("acceptTerms", { required: true })}
               />
+              
               <p>I agree to the terms and conditions.</p>
               </div>
+              {
+                errors.acceptTerms?.type === "required" && (
+                  <span className="text-red-500">
+                    You must agree to the terms and conditions
+                  </span>
+                )
+              }
 
               <div className="flex justify-center">
                 <button className="flex border border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black font-bold w-2/3 h-16 justify-center items-center align-center rounded-2xl">
