@@ -9,7 +9,7 @@ import { ArrowLeft, Globe, ImageUp, Lock } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import JoditEditor from 'jodit-react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formSchema } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,6 +19,7 @@ const HostComForm = () => {
     const [banner, setBanner] = useState(null);
     const [mode, setMode] = useState(false);
     const editor = useRef(null);
+    const navigate = useNavigate();
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -67,7 +68,7 @@ const HostComForm = () => {
             setMode(value.mode === 'offline');
         });
         return () => subscription.unsubscribe();
-    }, [form.watch]);
+    }, [form]);
 
     // Handle banner upload
     const handleBannerChange = (e) => {
@@ -80,10 +81,11 @@ const HostComForm = () => {
         }
     };
 
-    const onSubmit = (data) => {
-        console.log({ ...data, content });
-        console.log(banner);
+    const onSubmit = (value) => {      
+        console.log({ ...value, content, banner });
+        navigate('/complete-competition', { state: { formData: { ...value, content, banner } } });
     };
+  
 
     const onError = (errors) => {
         console.error("Validation Errors:", errors);
@@ -400,7 +402,7 @@ const HostComForm = () => {
 
                                 <div className="flex justify-end gap-4">
                                     <Button variant="ghost" className="mt-2" onClick={() => form.reset()}>Clear</Button>
-                                    <Button type="submit" className="mt-2">Next</Button>
+                                    <Button type="submit" className="mt-2">Next</Button> 
                                 </div>
                             </form>
                         </Form>
