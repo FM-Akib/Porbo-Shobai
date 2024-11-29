@@ -16,7 +16,7 @@
       "-location": "",
       "-modeOfEvent": "online",
       "createdAt": "2021-07-01T00:00:00.000Z",
-      "subtitle": "Rated for Div. 3",
+      "-subtitle": "Rated for Div. 3",
       "categories": ["programming", "contest"],
       "registrationfee": 0,
       "competitionStartDateTime": "2021-07-01T00:00:00.000Z",
