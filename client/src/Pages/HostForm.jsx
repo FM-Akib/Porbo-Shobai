@@ -9,7 +9,7 @@ import { ArrowLeft, Globe, ImageUp, Lock } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import JoditEditor from 'jodit-react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { formSchema } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,13 +20,15 @@ const HostComForm = () => {
     const [mode, setMode] = useState(false);
     const editor = useRef(null);
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { title } = location.state|| {};
+    console.log(title);
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             visibility: "public",
             mode: "online",
-            opportunityType: "hackathon",
+            opportunityType: title || "General & Case Competitions",
             title: "Example Title",
             organization: "your organization name",
             websiteUrl: "https://",
@@ -212,11 +214,11 @@ const HostComForm = () => {
                                                 </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                <SelectItem value="general case competition">General & Case Competitions</SelectItem>
-                                                <SelectItem value="hackathon">Hackathon</SelectItem>
-                                                <SelectItem value="workshop & webinar">Webinar & Workshop</SelectItem>
-                                                <SelectItem value="Quiz">Quiz Competition</SelectItem>
-                                                <SelectItem value="Innovation">Innovation Challenge</SelectItem>
+                                                <SelectItem value="General & Case Competitions">General & Case Competitions</SelectItem>
+                                                <SelectItem value="Hackathons">Hackathon</SelectItem>
+                                                <SelectItem value="Webinars & Workshops">Webinar & Workshop</SelectItem>
+                                                <SelectItem value="Quizzes">Quiz Competition</SelectItem>
+                                                <SelectItem value="Innovation Challenges">Innovation Challenge</SelectItem>
                                                 <SelectItem value="Scholarships">Scholarships</SelectItem>
                                                 </SelectContent>
                                             </Select>
