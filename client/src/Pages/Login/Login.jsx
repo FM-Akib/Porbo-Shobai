@@ -84,7 +84,7 @@ const Login = () => {
                   name="email"
                   id="email"
                   placeholder="Email"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("email", { required: true })}
                 />
                 
@@ -103,7 +103,7 @@ const Login = () => {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("Password", {
                       required: true,
                       minLength: 6,
