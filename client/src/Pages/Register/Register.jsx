@@ -10,7 +10,7 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 
 const Register = () => {
-  const { createUser, setUpdate, update } = useAuth();
+  const { createUser, setUpdate, update, googleLogIn } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
@@ -83,6 +83,28 @@ const Register = () => {
       
 
   }
+
+  const handleGoogleLogIn = () => {
+    googleLogIn()
+      .then(() => {
+        toast({
+          variant: "default",
+          title: "Welcome to Porbo Shobai",
+          description: "User Created Successfully",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+        navigate(location?.state ? location.state : '/');
+      })
+      .catch(()=>{
+        toast({
+          variant: "destructive",
+          title: "Registration failed",
+          description: "Something went wrong",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+
+      });
+  };
 
   const handelSeePass = () => {
     setEye(!eye);
@@ -346,6 +368,7 @@ const Register = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogleLogIn}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >
