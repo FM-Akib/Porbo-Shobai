@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { Handshake, TextSearch } from "lucide-react";
 
 
 
@@ -18,10 +19,15 @@ const CompetitionsHero = () => {
                                     <li>Quizzes</li>
                                     <li>Webinar and others competitions</li>
                                 </ul>
-                            </div>
+                    </div>
                             <div className="flex gap-4 mt-8 flex-wrap justify-center lg:justify-start items-center">
-                                <Button className="bg-green-500 dark:hover:bg-green-600 px-6 py-7 shadow-md  rounded-3xl dark:text-white text-lg">Find Competitions</Button>
-                               <Link to ="/host-competitions"> <Button variant="secondary" className="px-6 py-7 bg-white shadow-md hover:bg-gray-700 hover:text-white dark:text-gray-600 dark:hover:text-white rounded-3xl text-lg">Host Competitions</Button></Link>
+                                <Button className="bg-green-500 flex items-center dark:hover:bg-green-600 px-6 py-7 shadow-md  rounded-xl dark:text-white text-lg">
+                                    <TextSearch className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    Find Competitions</Button>
+
+                              <Link to ="/host-competitions"> <Button variant="secondary" className="flex items-center px-6 py-7 bg-white shadow-md hover:bg-gray-700 hover:text-white dark:text-gray-600 dark:hover:text-white rounded-xl text-lg">
+                                <Handshake className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                Host Competitions</Button></Link>
                             </div>
                         </div>
                         <div className="relative lg:absolute inset-x-0 right-6 mt-12 lg:mt-0 lg:inset-y-16 h-fit mx-auto lg:mr-0 ml-auto max-w-md [--ui-shadow-border:var(--ui-border-color)]">      
