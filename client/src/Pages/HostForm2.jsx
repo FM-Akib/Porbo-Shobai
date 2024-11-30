@@ -1,8 +1,8 @@
 import  { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation } from "react-router-dom";
-import { PlusCircle, User, Users, X } from 'lucide-react';
+import { Link, useLocation } from "react-router-dom";
+import { ArrowLeft, PlusCircle, User, Users, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -11,7 +11,8 @@ import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { formSchema2 } from "@/utils/FormError";
-
+import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/Hooks/use-toast";
 
 
 const HostForm2 = ({ previousFormData = {} }) => {
@@ -62,7 +63,14 @@ console.log(previousFormData);
   const onSubmit = async (data) => {
     try {
       console.log("Form data:", { ...formData, ...data });
-      alert("Form submitted successfully!");
+      // alert("Form submitted successfully!");
+      toast({
+        variant: "default",
+        title: "Congratulations! 🎉",
+        description: "Form submitted successfully!",
+        action: <ToastAction altText="Try again">OK!</ToastAction>,
+        className: "bg-green-500 text-white",
+      })
     } catch (error) {
       console.error("Submission error:", error);
       alert("An error occurred while submitting the form. Please try again.");
@@ -72,13 +80,35 @@ console.log(previousFormData);
   return (
     <div className="min-h-screen md:p-8">
       <div className="mx-auto max-w-4xl">
+      <div className="mb-6 flex items-center gap-4">
+                    <Link to="/create-competition">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                    </Link>
+                    <div className="flex flex-col md:flex-row items-center gap-2">
+                        <div className="flex h-8 items-center gap-2 rounded-full bg-secondary px-4 text-sm text-secondary-foreground">
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-gray-300 text-xs text-gray-800">1</span>
+                            Basic Details
+                        </div>
+                        <div className="flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm text-white dark:text-gray-800">
+                            <span className="flex h-5 w-5 items-center justify-center dark:text-white rounded-full bg-white text-gray-800 dark:bg-slate-700 text-xs">2</span>
+                            Registration Details
+                        </div>
+                    </div>
+                </div>
         <Card>
           <CardHeader>
             <CardTitle>Registration Details</CardTitle>
-            <CardDescription>
-              Provide additional information about your event
+            <CardDescription className="bg-gradient-to-r from-[rgb(131,58,180)] via-[rgb(253,29,29)] to-[rgb(252,176,69)] dark:bg-transparent rounded">
+              <div className="bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1732976554/PorboShobai/bivqyz9exxhzyytqq6ze.png')] 
+              bg-contain md:bg-cover h-[200px] flex items-center justify-center bg-center">
+            <h1 className="text-4xl font-bold text-white">Host <br className="block md:hidden"/> An Oppurtunity</h1>
+            </div>
             </CardDescription>
           </CardHeader>
+        
+
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
