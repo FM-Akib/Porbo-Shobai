@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+
 
 const Register = () => {
   const { createUser, setUpdate, update } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
   const [role, setRole] = useState("student");
+  const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast()
   const {
     register,
@@ -21,8 +26,8 @@ const Register = () => {
   const onSubmit = async (data) => {
     console.log(data);
 
-    if(data.password !== data.confirmPassword){
-      // toast.error("Password didn't match");
+    if(data.Password !== data.confirmPassword){
+      
       toast({
         variant: "destructive",
         title: "Password didn't match",
@@ -32,19 +37,14 @@ const Register = () => {
       return ;
     }
 
-    createUser(data.email, data.password)
+    createUser(data.email, data.Password)
       .then((result) => {
         const user = result.user;
         console.log(user);
         updateProfile(user, {
           displayName: data.firstName,
         })
-        toast({
-          variant: "default",
-          title: "User Created Successfully",
-          description: "User Created Successfully",
-          action: <ToastAction altText="Try again">OK!</ToastAction>,
-        })
+        
         .then(() => {
           setUpdate(!update);
           const userInfo = {
@@ -52,9 +52,27 @@ const Register = () => {
             lastName: data.lastName,
             email: data.email,
             mobileNo: data.mobileNumber,
-            password: data.password,
+            password: data.Password,
             role: role,
           }
+          axiosSecure.post("/users", userInfo)
+          .then(data => {
+            console.log(data.data);
+            if (data.data.insertedId) {
+              navigate(location?.state ? location.state : "/");
+              toast({
+                variant: "default",
+                title: "Welcome to Porbo Shobai",
+                description: "User Created Successfully",
+                action: <ToastAction altText="Try again">OK!</ToastAction>,
+              })
+            }
+            
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
           
         })
         
