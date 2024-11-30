@@ -6,6 +6,9 @@ import logoWhite from "../../assets/pswhiteLogo.png";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
+import useAuth from "@/hooks/useAuth";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 
 const routes = [
@@ -16,6 +19,7 @@ const routes = [
 ];
 
 const Navbar=() =>{
+  const { user, logOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [theme, setTheme] = useState("light");
 
@@ -33,6 +37,27 @@ const Navbar=() =>{
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        toast({
+          variant: "default",
+          title: "Logged Out Successfully",
+          description: "See you soon",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+      })
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Log Out Failed",
+          description: "Something went wrong",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+        
+      });
   };
 
   return (
@@ -85,11 +110,20 @@ const Navbar=() =>{
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <Link to="/login"><Button variant="ghost" className="hidden sm:inline-flex hover:bg-accent hover:text-accent-foreground">
-            Log In
-          </Button></Link>
-          
-          <Link to="/register"><Button className="hidden sm:inline-flex">Sign Up</Button></Link>
+          {
+            user ? (
+              <>
+              <p className="font-semibold hidden md:block">Hello, {user.displayName}</p>
+              <Button onClick={handleLogOut}>Logout</Button>
+              </>
+              
+            ) : (
+              <>
+                <Link to="/login"><Button className="w-full md:w-auto">Log In</Button></Link>
+                <Link to="/register"><Button className="w-full md:w-auto">Sign Up</Button></Link>
+              </>
+            )
+          }
 
           {/* Mobile Menu */}
           <Sheet>
@@ -121,8 +155,16 @@ const Navbar=() =>{
                     {route.name}
                   </NavLink>
                 ))}
-                <Link to="/login"><Button className="w-full mt-4">Log In</Button></Link>
-                <Link to="/register"><Button className="w-full">Sign Up</Button></Link>
+                {
+                  user ? (
+                    <Button onClick={handleLogOut}>Logout</Button>
+                  ) : (
+                    <>
+                      <Link to="/login"><Button className="w-full md:w-auto">Log In</Button></Link>
+                      <Link to="/register"><Button className="w-full md:w-auto">Sign Up</Button></Link>
+                    </>
+                  ) 
+                }
                 
               </nav>
             </SheetContent>
