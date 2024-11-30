@@ -34,6 +34,28 @@ const Login = () => {
       
     });
     }
+
+    const handleGoogleLogIn = () => {
+      googleLogIn()
+        .then(() => {
+          toast({
+            variant: "default",
+            title: "Welcome back to Porbo Shobai",
+            description: "Logged In Successfully",
+            action: <ToastAction altText="Try again">OK!</ToastAction>,
+          })
+          navigate(location?.state ? location.state : '/');
+        })
+        .catch(()=>{
+          toast({
+            variant: "destructive",
+            title: "Login failed",
+            description: "Something went wrong",
+            action: <ToastAction altText="Try again">OK!</ToastAction>,
+          })
+  
+        });
+    };
   
     const handelSeePass = () => {
       setEye(!eye);
@@ -137,6 +159,7 @@ const Login = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogleLogIn}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >
