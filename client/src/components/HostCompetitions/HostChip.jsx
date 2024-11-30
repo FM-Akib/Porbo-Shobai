@@ -20,37 +20,37 @@ const HostChip = () => {
             info: "Business Competitions, Case Competitions, General Competitions",
         },
         {
-            title: "Hackathons & Coding Challenges",
-            description: "Showcase your coding skills and creativity",
-            link: "#hackathons",
+            title: "Hackathons",
+            description: "Showcase your skills and creativity",
+            link: "/create-competition",
             icon: Code,
             info: "Programming Contests, Problem Solving Challenges",
         },
         {
             title: "Quizzes",
             description: "Test your knowledge on various topics",
-            link: "#quizzes",
+            link: "/create-competition",
             icon: HelpCircle,
             info: "Trivia, Subject-Based Quizzes, General Knowledge",
         },
         {
             title: "Innovation Challenges",
             description: "Bring your ideas to life and solve real-world problems",
-            link: "#innovation-challenges",
+            link: "/create-competition",
             icon: Lightbulb,
             info: "Creative Thinking, Problem Solving, Product Design",
         },
         {
             title: "Webinars & Workshops",
             description: "Learn and grow with industry experts",
-            link: "#webinars-workshops",
+            link: "/create-competition",
             icon: Video,
             info: "Skill Development, Expert Talks, Interactive Sessions",
         },
         {
             title: "Scholarships",
             description: "Explore and apply for various scholarship opportunities",
-            link: "#scholarships",
+            link: "/create-competition",
             icon: Award,
             info: "Education Funding, Merit-Based Opportunities",
         },
@@ -99,7 +99,12 @@ const HostChip = () => {
                     className="group h-auto p-0 text-primary "
                     asChild
                 >
-                    <Link to={chip.link} className="flex items-center  gap-2">
+                    
+                    <Link 
+                        to="/create-competition" 
+                        state={{ title: chip.title }}
+                        className="flex items-center gap-2"
+                    >
                     Create Competitions
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
