@@ -1,25 +1,29 @@
 import  { useState } from "react";
-import PropTypes from "prop-types";
 import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "react-router-dom";
+import { PlusCircle, User, Users, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useLocation } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { PlusCircle, User, Users, X } from "lucide-react";
+import { formSchema2 } from "@/utils/FormError";
+
+
 
 const HostForm2 = ({ previousFormData = {} }) => {
   const [newCategory, setNewCategory] = useState("");
   const location = useLocation();
-  const [participationType, setParticipationType] = useState('individual')
+  const [participationType, setParticipationType] = useState('individual');
   const { formData } = location.state || {};
-   console.log(formData);
+console.log(previousFormData);
   const form = useForm({
+    resolver: zodResolver(formSchema2),
     defaultValues: {
-      registrationFee: "",
+      registrationFee: "0",
       competitionStartDate: "",
       competitionStartTime: "",
       registrationStartDate: "",
@@ -30,13 +34,13 @@ const HostForm2 = ({ previousFormData = {} }) => {
       categories: [],
       festival: "",
       participationType: "individual",
-      teamSize: { min: 1, max: 1 },
+      teamSize: { minSize: 1, maxSize: 1 },
       hideHost: false,
-      contacts: [{ name: "", email: "", phone: "" }],
+      contacts: [{ name: "", email: "", mobile: "" }],
       certificate: false,
       numOfParticipantsAllowed: 1,
-      prices: [{ position: "", prize: "" }],
-      ...previousFormData, // Merge previousFormData with default values
+      prizes: [{ prizeName: "", prizeAmount: 0 }],
+      ...formData,
     },
   });
 
@@ -50,14 +54,19 @@ const HostForm2 = ({ previousFormData = {} }) => {
     name: "contacts",
   });
 
-  const { fields: priceFields, append: appendPrice, remove: removePrice } = useFieldArray({
+  const { fields: prizeFields, append: appendPrize, remove: removePrize } = useFieldArray({
     control: form.control,
-    name: "prices",
+    name: "prizes",
   });
 
-  const onSubmit = (data) => {
-    console.log({ ...previousFormData, ...data });
-    // Handle form submission here
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form data:", { ...formData, ...data });
+      alert("Form submitted successfully!");
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred while submitting the form. Please try again.");
+    }
   };
 
   return (
@@ -194,22 +203,21 @@ const HostForm2 = ({ previousFormData = {} }) => {
                   render={() => (
                     <FormItem>
                       <FormLabel>Categories</FormLabel>
-                      <div className="space-y-2 ">
-                        <div className="flex flex-wrap items-center justify-center gap-5">
-                        {categoryFields.map((field, index) => (
-                          <div key={field.id} className="flex items-center space-x-1">
-                            <Input
-                              {...form.register(`categories.${index}`)}
-                              placeholder="Category name"
-                              className="w-fit"
-                            />
-                            <Button type="button" variant="destructive" onClick={() => removeCategory(index)}>
-                              X
-                            </Button>
-                          </div>
-                        ))}
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-5">
+                          {categoryFields.map((field, index) => (
+                            <div key={field.id} className="flex items-center space-x-1">
+                              <Input
+                                {...form.register(`categories.${index}`)}
+                                placeholder="Category name"
+                                className="w-fit"
+                              />
+                              <Button type="button" variant="destructive" onClick={() => removeCategory(index)}>
+                                X
+                              </Button>
+                            </div>
+                          ))}
                         </div>
-
                         <div className="flex items-center space-x-2">
                           <Input
                             value={newCategory}
@@ -222,7 +230,8 @@ const HostForm2 = ({ previousFormData = {} }) => {
                               setNewCategory("");
                             }
                           }}>
-                            Add Category
+                            <PlusCircle className="w-4 h-4 mr-1" />
+                            Add
                           </Button>
                         </div>
                       </div>
@@ -246,86 +255,84 @@ const HostForm2 = ({ previousFormData = {} }) => {
                 />
 
                 <FormField
-                control={form.control}
-                name="participationType"
-                render={({ field }) => (
+                  control={form.control}
+                  name="participationType"
+                  render={({ field }) => (
                     <FormItem className="space-y-3">
-                    <FormLabel>Participation Type</FormLabel>
-                    <FormControl>
+                      <FormLabel>Participation Type</FormLabel>
+                      <FormControl>
                         <RadioGroup
-                        onValueChange={(value) => {
-                            field.onChange(value)
-                            setParticipationType(value)
-                        }}
-                        defaultValue={field.value}
-                        className="flex items-center gap-5 space-y-1"
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setParticipationType(value);
+                          }}
+                          defaultValue={field.value}
+                          className="md:flex items-center md:gap-5 space-y-1"
                         >
-                        <div className={`${participationType === 'individual' ? 'border-primary bg-primary/5' : ''} flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors`}>
+                          <div className={`${participationType === 'individual' ? 'border-primary bg-primary/5' : ''} flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors`}>
                             <RadioGroupItem value="individual" id="individual" />
                             <div className="flex flex-1 items-center gap-2">
-                            <User className="h-4 w-4" />
-                            <div className="">
-                            <Label htmlFor="individual">Individual</Label>
-                            <p className="text-sm text-muted-foreground">Participant participates individually.</p>
+                              <User className="h-4 w-4" />
+                              <div className="">
+                                <Label htmlFor="individual">Individual</Label>
+                                <p className="text-sm text-muted-foreground">Participant participates individually.</p>
+                              </div>
                             </div>
-                            </div>
-                        </div>
-
-                        <div className={`${participationType === 'team' ? 'border-primary bg-primary/5' : ''} flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors`}>
+                          </div>
+                          <div className={`${participationType === 'team' ? 'border-primary bg-primary/5' : ''} flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors`}>
                             <RadioGroupItem value="team" id="team" />
                             <div className="flex flex-1 items-center gap-2">
-                            <Users className="h-4 w-4" />
-                            <div className="">
-                            <Label htmlFor="team">Team</Label>
-                            <p className="text-sm text-muted-foreground">Participant participates in a team.</p>
+                              <Users className="h-4 w-4" />
+                              <div className="">
+                                <Label htmlFor="team">Team</Label>
+                                <p className="text-sm text-muted-foreground">Participant participates in a team.</p>
+                              </div>
                             </div>
-                            </div>
-                        </div>
+                          </div>
                         </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
-                )}
+                  )}
                 />
 
                 {participationType === 'team' && (
-                <div className="border p-4 rounded-md md:grid grid-cols-2 gap-4">
+                  <div className="border p-4 rounded-md md:grid grid-cols-2 gap-4">
                     <FormField
-                    control={form.control}
-                    name="teamSize.min"
-                    render={({ field }) => (
+                      control={form.control}
+                      name="teamSize.minSize"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Minimum Team Size</FormLabel>
-                        <FormControl>
+                          <FormLabel>Minimum Team Size</FormLabel>
+                          <FormControl>
                             <Input 
-                            type="number" 
-                            {...field} 
-                            onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : '')}
+                              type="number" 
+                              {...field} 
+                              onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : '')}
                             />
-                        </FormControl>
-                        <FormMessage />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
+                      )}
                     />
-
                     <FormField
-                    control={form.control}
-                    name="teamSize.max"
-                    render={({ field }) => (
+                      control={form.control}
+                      name="teamSize.maxSize"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Maximum Team Size</FormLabel>
-                        <FormControl>
+                          <FormLabel>Maximum Team Size</FormLabel>
+                          <FormControl>
                             <Input 
-                            type="number" 
-                            {...field} 
-                            onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : '')}
+                              type="number" 
+                              {...field} 
+                              onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : '')}
                             />
-                        </FormControl>
-                        <FormMessage />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
+                      )}
                     />
-                </div>
+                  </div>
                 )}
 
                 <FormField
@@ -349,121 +356,68 @@ const HostForm2 = ({ previousFormData = {} }) => {
                   )}
                 />
 
-                {/* <div>
-                  <FormLabel>Contacts</FormLabel>
-                  {contactFields.map((field, index) => (
-                    <div key={field.id} className="space-y-4 mb-4 p-3 border rounded-lg flex items-center flex-wrap">
-                      <FormField
-                        control={form.control}
-                        name={`contacts.${index}.name`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Name</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name={`contacts.${index}.email`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="email" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name={`contacts.${index}.phone`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="tel" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="button" variant="destructive" onClick={() => removeContact(index)}>
-                        X
-                      </Button>
-                    </div>
-                  ))}
-                  <Button type="button" onClick={() => appendContact({ name: "", email: "", phone: "" })}>
-                    Add Contact
-                  </Button>
-                </div> */}
-
                 <h2 className="text-2xl font-bold mb-4">Contacts</h2>
                 {contactFields.map((field, index) => (
-                <div key={field.id} className="mb-6 p-4 border rounded-lg shadow-sm">
+                  <div key={field.id} className="mb-6 p-4 border rounded-lg shadow-sm">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <FormField
+                      <FormField
                         control={form.control}
                         name={`contacts.${index}.name`}
                         render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Name</FormLabel>
+                          <FormItem>
+                            <FormLabel>NameName</FormLabel>
                             <FormControl>
-                            <Input {...field} className="w-full" />
+                              <Input {...field} className="w-full" />
                             </FormControl>
                             <FormMessage />
-                        </FormItem>
+                          </FormItem>
                         )}
-                    />
-                    <FormField
+                      />
+                      <FormField
                         control={form.control}
                         name={`contacts.${index}.email`}
                         render={({ field }) => (
-                        <FormItem>
+                          <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                            <Input {...field} type="email" className="w-full" />
+                              <Input {...field} type="email" className="w-full" />
                             </FormControl>
                             <FormMessage />
-                        </FormItem>
+                          </FormItem>
                         )}
-                    />
-                    <FormField
+                      />
+                      <FormField
                         control={form.control}
-                        name={`contacts.${index}.phone`}
+                        name={`contacts.${index}.mobile`}
                         render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Phone</FormLabel>
+                          <FormItem>
+                            <FormLabel>Mobile</FormLabel>
                             <FormControl>
-                            <Input {...field} type="tel" className="w-full" />
+                              <Input {...field} type="tel" className="w-full" />
                             </FormControl>
                             <FormMessage />
-                        </FormItem>
+                          </FormItem>
                         )}
-                    />
+                      />
                     </div>
                     <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={() => removeContact(index)}
-                    className="mt-4"
+                      type="button"
+                      variant="destructive"
+                      onClick={() => removeContact(index)}
+                      className="mt-4"
                     >
-                    <X className="w-4 h-4 mr-2" />
-                    Remove
+                      <X className="w-4 h-4 mr-1" />
+                      Remove
                     </Button>
-                </div>
+                  </div>
                 ))}
                 <Button
-                type="button"
-                onClick={() => appendContact({ name: "", email: "", phone: "" })}
-                className="mt-4"
+                  type="button"
+                  onClick={() => appendContact({ name: "", email: "", mobile: "" })}
+                  className="mt-4"
                 >
-                <PlusCircle className="w-4 h-4 mr-2" />
-                Add Contact
+                  <PlusCircle className="w-4 h-4 mr-1" />
+                  Add Contact
                 </Button>
 
                 <FormField
@@ -502,42 +456,49 @@ const HostForm2 = ({ previousFormData = {} }) => {
                 />
 
                 <div>
-                  <FormLabel>Prices</FormLabel>
-                  {priceFields.map((field, index) => (
-                    <div key={field.id} className="space-y-4 mb-4">
-                      <FormField
-                        control={form.control}
-                        name={`prices.${index}.position`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Position</FormLabel>
-                            <FormControl>
-                              <Input {...field} placeholder="e.g., 1st, 2nd, 3rd" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name={`prices.${index}.prize`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Prize</FormLabel>
-                            <FormControl>
-                              <Input {...field} placeholder="Enter prize details" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="button" variant="destructive" onClick={() => removePrice(index)}>
-                        Remove Price
+                  <FormLabel>Prizes</FormLabel>
+                  {prizeFields.map((field, index) => (
+                    <div key={field.id} className="space-y-4 mb-4 border px-4 py-2 rounded-lg">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name={`prizes.${index}.prizeName`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Prize Name</FormLabel>
+                              <FormControl>
+                                <Input {...field} placeholder="e.g., First Place, Runner Up" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`prizes.${index}.prizeAmount`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Prize Amount</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  {...field} 
+                                  onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : '')}
+                                  placeholder="Enter prize amount" 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <Button type="button" variant="destructive" onClick={() => removePrize(index)}>
+                        <X className="w-4 h-4 mr-1" />Remove
                       </Button>
                     </div>
                   ))}
-                  <Button type="button" onClick={() => appendPrice({ position: "", prize: "" })}>
-                    Add Price
+                  <Button type="button" onClick={() => appendPrize({ prizeName: "", prizeAmount: 0 })}>
+                    Add Prize
                   </Button>
                 </div>
 
@@ -552,10 +513,6 @@ const HostForm2 = ({ previousFormData = {} }) => {
       </div>
     </div>
   );
-};
-
-HostForm2.propTypes = {
-  previousFormData: PropTypes.object.isRequired,
 };
 
 export default HostForm2;
