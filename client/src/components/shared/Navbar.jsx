@@ -127,8 +127,8 @@ const Navbar=() =>{
               
             ) : (
               <>
-                <Link to="/login"><Button className="w-full md:w-auto">Log In</Button></Link>
-                <Link to="/register"><Button className="w-full md:w-auto">Sign Up</Button></Link>
+                <Link to="/login"><Button className="w-full hidden md:block md:w-auto">Log In</Button></Link>
+                <Link to="/register"><Button className="w-full hidden md:block md:w-auto">Sign Up</Button></Link>
               </>
             )
           }
