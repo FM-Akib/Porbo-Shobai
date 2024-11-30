@@ -1,16 +1,39 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { AuthContext } from "@/provider/AuthProvider";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
-const login = () => {
-    const [eye, setEye] = useState(false);  
+const Login = () => {
+    const [eye, setEye] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { logIn, googleLogIn } = useContext(AuthContext);  
     const {
       register,
       handleSubmit,
       formState: { errors },
     } = useForm();
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = async (data) => {
+      console.log(data);
+      logIn(data.email, data.Password)
+    .then((result) => {
+      console.log(result.user);
+      toast({
+        variant: "default",
+        title: "Welcome Back to Porbo Shobai",
+        description: "User Logged In Successfully",
+        action: <ToastAction altText="Try again">OK!</ToastAction>,
+      })
+      navigate(location?.state ? location.state : '/');
+    })
+    .catch((error) => {
+      console.log(error);
+      
+    });
+    }
   
     const handelSeePass = () => {
       setEye(!eye);
@@ -143,4 +166,4 @@ const login = () => {
     );
 };
 
-export default login;
+export default Login;
