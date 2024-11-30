@@ -166,7 +166,7 @@ const Register = () => {
                     name="firstName"
                     id="firstName"
                     placeholder="First Name"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("firstName", { required: true })}
                   />
                   {errors.name && (
@@ -185,7 +185,7 @@ const Register = () => {
                     name="lastName"
                     id="lastName"
                     placeholder="Last Name"
-                    className="border-b border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
+                    className="border border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
                     {...register("lastName", { required: true })}
                   />
                   {errors.name && (
@@ -203,7 +203,7 @@ const Register = () => {
                   name="email"
                   id="email"
                   placeholder="Email"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("email", { required: true })}
                 />
                 {errors.name && (
@@ -220,7 +220,7 @@ const Register = () => {
                   name="mobileNumber"
                   id="mobileNumber"
                   placeholder="Mobile Number"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("mobileNumber", { required: true })}
                 />
                 {errors.name && (
@@ -244,7 +244,7 @@ const Register = () => {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("Password", {
                       required: true,
                       minLength: 6,
@@ -296,7 +296,7 @@ const Register = () => {
                     name="Confirmpassword"
                     id="ConfirmPassword"
                     placeholder="Confirm Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("confirmPassword", {
                       required: true,
                       minLength: 6,
