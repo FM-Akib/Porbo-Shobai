@@ -102,11 +102,11 @@ const HostComForm = () => {
                     </Link>
                     <div className="flex flex-col md:flex-row items-center gap-2">
                         <div className="flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm text-primary-foreground">
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs text-primary">1</span>
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-gray-800 text-xs text-primary">1</span>
                             Basic Details
                         </div>
                         <div className="flex h-8 items-center gap-2 rounded-full bg-gray-100 px-4 text-sm text-gray-500">
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-xs">2</span>
+                            <span className="flex h-5 w-5 items-center justify-center dark:text-white rounded-full bg-gray-200 dark:bg-slate-400 text-xs">2</span>
                             Registration Details
                         </div>
                     </div>
@@ -114,9 +114,12 @@ const HostComForm = () => {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Basic Details</CardTitle>
-                        <CardDescription>
-                            Fill in the basic information about your opportunity
+                        <CardTitle>Fill in the basic information about your opportunity</CardTitle>
+                        <CardDescription className="dark:bg-transparent bg-gradient-to-r from-[hsla(33,100%,53%,1)] to-[#7d7b51] rounded">
+                        <div className="bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1732976554/PorboShobai/bivqyz9exxhzyytqq6ze.png')] 
+                        bg-contain md:bg-cover h-[100px] md:h-[200px] flex items-center justify-center bg-center">
+                        <h1 className="text-2xl  md:text-4xl font-bold text-white text-center">Host <br className="block md:hidden"/>An Oppurtunity</h1>
+                        </div>
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
