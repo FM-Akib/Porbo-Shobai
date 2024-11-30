@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import useAuth from "@/hooks/useAuth";
+import { updateProfile } from "firebase/auth";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+
 
 const Register = () => {
+  const { createUser, setUpdate, update, googleLogIn } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
   const [role, setRole] = useState("student");
+  const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast()
   const {
     register,
@@ -18,8 +26,8 @@ const Register = () => {
   const onSubmit = async (data) => {
     console.log(data);
 
-    if(data.password !== data.confirmPassword){
-      // toast.error("Password didn't match");
+    if(data.Password !== data.confirmPassword){
+      
       toast({
         variant: "destructive",
         title: "Password didn't match",
@@ -29,7 +37,74 @@ const Register = () => {
       return ;
     }
 
+    createUser(data.email, data.Password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        updateProfile(user, {
+          displayName: data.firstName,
+        })
+        
+        .then(() => {
+          setUpdate(!update);
+          const userInfo = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            mobileNo: data.mobileNumber,
+            password: data.Password,
+            role: role,
+          }
+          axiosSecure.post("/users", userInfo)
+          .then(data => {
+            console.log(data.data);
+            if (data.data.insertedId) {
+              navigate(location?.state ? location.state : "/");
+              toast({
+                variant: "default",
+                title: "Welcome to Porbo Shobai",
+                description: "User Created Successfully",
+                action: <ToastAction altText="Try again">OK!</ToastAction>,
+              })
+            }
+            
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
+          
+        })
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
+
   }
+
+  const handleGoogleLogIn = () => {
+    googleLogIn()
+      .then(() => {
+        toast({
+          variant: "default",
+          title: "Welcome to Porbo Shobai",
+          description: "User Created Successfully",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+        navigate(location?.state ? location.state : '/');
+      })
+      .catch(()=>{
+        toast({
+          variant: "destructive",
+          title: "Registration failed",
+          description: "Something went wrong",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+
+      });
+  };
 
   const handelSeePass = () => {
     setEye(!eye);
@@ -91,7 +166,7 @@ const Register = () => {
                     name="firstName"
                     id="firstName"
                     placeholder="First Name"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("firstName", { required: true })}
                   />
                   {errors.name && (
@@ -110,7 +185,7 @@ const Register = () => {
                     name="lastName"
                     id="lastName"
                     placeholder="Last Name"
-                    className="border-b border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
+                    className="border border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
                     {...register("lastName", { required: true })}
                   />
                   {errors.name && (
@@ -128,7 +203,7 @@ const Register = () => {
                   name="email"
                   id="email"
                   placeholder="Email"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("email", { required: true })}
                 />
                 {errors.name && (
@@ -145,7 +220,7 @@ const Register = () => {
                   name="mobileNumber"
                   id="mobileNumber"
                   placeholder="Mobile Number"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("mobileNumber", { required: true })}
                 />
                 {errors.name && (
@@ -169,7 +244,7 @@ const Register = () => {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("Password", {
                       required: true,
                       minLength: 6,
@@ -221,7 +296,7 @@ const Register = () => {
                     name="Confirmpassword"
                     id="ConfirmPassword"
                     placeholder="Confirm Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("confirmPassword", {
                       required: true,
                       minLength: 6,
@@ -293,6 +368,7 @@ const Register = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogleLogIn}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >
