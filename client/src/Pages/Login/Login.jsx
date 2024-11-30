@@ -1,16 +1,61 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { AuthContext } from "@/provider/AuthProvider";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
-const login = () => {
-    const [eye, setEye] = useState(false);  
+const Login = () => {
+    const [eye, setEye] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { logIn, googleLogIn } = useContext(AuthContext);  
     const {
       register,
       handleSubmit,
       formState: { errors },
     } = useForm();
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = async (data) => {
+      console.log(data);
+      logIn(data.email, data.Password)
+    .then((result) => {
+      console.log(result.user);
+      toast({
+        variant: "default",
+        title: "Welcome Back to Porbo Shobai",
+        description: "User Logged In Successfully",
+        action: <ToastAction altText="Try again">OK!</ToastAction>,
+      })
+      navigate(location?.state ? location.state : '/');
+    })
+    .catch((error) => {
+      console.log(error);
+      
+    });
+    }
+
+    const handleGoogleLogIn = () => {
+      googleLogIn()
+        .then(() => {
+          toast({
+            variant: "default",
+            title: "Welcome back to Porbo Shobai",
+            description: "Logged In Successfully",
+            action: <ToastAction altText="Try again">OK!</ToastAction>,
+          })
+          navigate(location?.state ? location.state : '/');
+        })
+        .catch(()=>{
+          toast({
+            variant: "destructive",
+            title: "Login failed",
+            description: "Something went wrong",
+            action: <ToastAction altText="Try again">OK!</ToastAction>,
+          })
+  
+        });
+    };
   
     const handelSeePass = () => {
       setEye(!eye);
@@ -39,7 +84,7 @@ const login = () => {
                   name="email"
                   id="email"
                   placeholder="Email"
-                  className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                  className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                   {...register("email", { required: true })}
                 />
                 
@@ -58,7 +103,7 @@ const login = () => {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    className="border-b border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                    className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                     {...register("Password", {
                       required: true,
                       minLength: 6,
@@ -114,6 +159,7 @@ const login = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogleLogIn}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >
@@ -143,4 +189,4 @@ const login = () => {
     );
 };
 
-export default login;
+export default Login;
