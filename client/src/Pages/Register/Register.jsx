@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/Hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";

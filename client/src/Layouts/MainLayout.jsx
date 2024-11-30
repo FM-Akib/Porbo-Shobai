@@ -6,10 +6,10 @@ const MainLayout = () => {
     return (
         <>
         <Navbar/>
+        <Toaster />
         <main className="">
         <Outlet/> 
         </main>
-        <Toaster />
         </>
     );
 };
