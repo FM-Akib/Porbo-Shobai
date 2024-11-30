@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import useAuth from "@/hooks/useAuth";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
+  const { createUser, setUpdate, update } = useAuth();
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
   const [role, setRole] = useState("student");
@@ -28,6 +31,38 @@ const Register = () => {
       })
       return ;
     }
+
+    createUser(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        updateProfile(user, {
+          displayName: data.firstName,
+        })
+        toast({
+          variant: "default",
+          title: "User Created Successfully",
+          description: "User Created Successfully",
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        })
+        .then(() => {
+          setUpdate(!update);
+          const userInfo = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            mobileNo: data.mobileNumber,
+            password: data.password,
+            role: role,
+          }
+          
+        })
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
 
   }
 
