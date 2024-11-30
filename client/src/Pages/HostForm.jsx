@@ -320,7 +320,7 @@ const HostComForm = () => {
                                                 <RadioGroup
                                                     onValueChange={field.onChange}
                                                     defaultValue={field.value}
-                                                    className="flex gap-4"
+                                                    className="flex gap-4 flex-col md:flex-row"
                                                 >
                                                     <div className={cn(
                                                         "flex flex-1 cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors",
