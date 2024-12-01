@@ -1,8 +1,10 @@
 import  { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, PlusCircle, User, Users, X } from 'lucide-react';
+import { ArrowLeft, PlusCircle, User, Users, X, Calendar, Clock } from 'lucide-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -10,9 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { formSchema2 } from "@/utils/FormError";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/Hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { formSchema2 } from "@/utils/FormError";
+
 
 
 const HostForm2 = ({ previousFormData = {} }) => {
@@ -20,17 +24,17 @@ const HostForm2 = ({ previousFormData = {} }) => {
   const location = useLocation();
   const [participationType, setParticipationType] = useState('individual');
   const { formData } = location.state || {};
-console.log(previousFormData);
+ console.log(previousFormData)
   const form = useForm({
     resolver: zodResolver(formSchema2),
     defaultValues: {
       registrationFee: "0",
-      competitionStartDate: "",
-      competitionStartTime: "",
-      registrationStartDate: "",
-      registrationStartTime: "",
-      registrationEndDate: "",
-      registrationEndTime: "",
+      competitionStartDate: null,
+      competitionStartTime: null,
+      registrationStartDate: null,
+      registrationStartTime: null,
+      registrationEndDate: null,
+      registrationEndTime: null,
       eligibility: "",
       categories: [],
       festival: "",
@@ -63,7 +67,6 @@ console.log(previousFormData);
   const onSubmit = async (data) => {
     try {
       console.log("Form data:", { ...formData, ...data });
-      // alert("Form submitted successfully!");
       toast({
         variant: "default",
         title: "Congratulations! 🎉",
@@ -77,38 +80,49 @@ console.log(previousFormData);
     }
   };
 
+  // const CustomDatePickerInput = React.forwardRef(({ value, onClick, icon: Icon }, ref) => (
+  //   <div className="relative">
+  //     <Input
+  //       value={value}
+  //       onClick={onClick}
+  //       readOnly
+  //       ref={ref}
+  //       className="pl-10 cursor-pointer"
+  //     />
+  //     <Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+  //   </div>
+  // ));
+
   return (
     <div className="min-h-screen md:p-8">
       <div className="mx-auto max-w-4xl">
-      <div className="mb-6 flex items-center gap-4">
-                    <Link to="/create-competition">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Button>
-                    </Link>
-                    <div className="flex flex-col md:flex-row items-center gap-2">
-                        <div className="flex h-8 items-center gap-2 rounded-full bg-secondary px-4 text-sm text-secondary-foreground">
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-gray-300 text-xs text-gray-800">1</span>
-                            Basic Details
-                        </div>
-                        <div className="flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm text-white dark:text-gray-800">
-                            <span className="flex h-5 w-5 items-center justify-center dark:text-white rounded-full bg-white text-gray-800 dark:bg-slate-700 text-xs">2</span>
-                            Registration Details
-                        </div>
-                    </div>
-                </div>
+        <div className="mb-6 flex items-center gap-4">
+          <Link to="/create-competition">
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div className="flex flex-col md:flex-row items-center gap-2">
+            <div className="flex h-8 items-center gap-2 rounded-full bg-secondary px-4 text-sm text-secondary-foreground">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-gray-300 text-xs text-gray-800">1</span>
+              Basic Details
+            </div>
+            <div className="flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm text-white dark:text-gray-800">
+              <span className="flex h-5 w-5 items-center justify-center dark:text-white rounded-full bg-white text-gray-800 dark:bg-slate-700 text-xs">2</span>
+              Registration Details
+            </div>
+          </div>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle>Registration Details</CardTitle>
             <CardDescription className="bg-gradient-to-r from-[rgb(131,58,180)] via-[rgb(253,29,29)] to-[rgb(252,176,69)] dark:bg-transparent rounded">
               <div className="bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1732976554/PorboShobai/bivqyz9exxhzyytqq6ze.png')] 
               bg-contain md:bg-cover h-[200px] flex items-center justify-center bg-center">
-            <h1 className="text-4xl font-bold text-white">Host <br className="block md:hidden"/> An Oppurtunity</h1>
-            </div>
+                <h1 className="text-4xl font-bold text-white">Host <br className="block md:hidden"/> An Opportunity</h1>
+              </div>
             </CardDescription>
           </CardHeader>
-        
-
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -134,7 +148,28 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Competition Start Date</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toDateString() : <span>Pick a date</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="competitionStartDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="MMMM d, yyyy"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -147,7 +182,32 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Competition Start Time</FormLabel>
                         <FormControl>
-                          <Input type="time" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Clock className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span>Pick a time</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="competitionStartTime"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -163,7 +223,28 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Registration Start Date</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toDateString() : <span>Pick a date</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="registrationStartDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="MMMM d, yyyy"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -176,7 +257,32 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Registration Start Time</FormLabel>
                         <FormControl>
-                          <Input type="time" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Clock className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span>Pick a time</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="registrationStartTime"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -192,7 +298,28 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Registration End Date</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toDateString() : <span>Pick a date</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="registrationEndDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="MMMM d, yyyy"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -205,7 +332,32 @@ console.log(previousFormData);
                       <FormItem>
                         <FormLabel>Registration End Time</FormLabel>
                         <FormControl>
-                          <Input type="time" {...field} />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                                <Clock className="mr-2 h-4 w-4" />
+                                {field.value ? field.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span>Pick a time</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Controller
+                                control={form.control}
+                                name="registrationEndTime"
+                                render={({ field }) => (
+                                  <DatePicker
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
+                                    inline
+                                  />
+                                )}
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -243,7 +395,7 @@ console.log(previousFormData);
                                 className="w-fit"
                               />
                               <Button type="button" variant="destructive" onClick={() => removeCategory(index)}>
-                                X
+                                <X className="h-4 w-4" />
                               </Button>
                             </div>
                           ))}
@@ -395,7 +547,7 @@ console.log(previousFormData);
                         name={`contacts.${index}.name`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>NameName</FormLabel>
+                            <FormLabel>Name</FormLabel>
                             <FormControl>
                               <Input {...field} className="w-full" />
                             </FormControl>
@@ -528,6 +680,7 @@ console.log(previousFormData);
                     </div>
                   ))}
                   <Button type="button" onClick={() => appendPrize({ prizeName: "", prizeAmount: 0 })}>
+                    <PlusCircle className="w-4 h-4 mr-1" />
                     Add Prize
                   </Button>
                 </div>
