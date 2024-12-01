@@ -13,36 +13,37 @@ export const formSchema = z.object({
     location: z.string().min(1, "Location is required"),
   })
 
-  export const formSchema2 = z.object({
-    registrationFee: z.string().min(1, { message: "Registration fee is required" }).max(100, { message: "Fee must be 100 characters or less" }),
-    competitionStartDate: z.string().min(1, "Competition start date is required"),
-    competitionStartTime: z.string().min(1, "Competition start time is required"),
-    registrationStartDate: z.string().min(1, "Registration start date is required"),
-    registrationStartTime: z.string().min(1, "Registration start time is required"),
-    registrationEndDate: z.string().min(1, "Registration end date is required"),
-    registrationEndTime: z.string().min(1, "Registration end time is required"),
-    eligibility: z.string().min(1, "Eligibility is required"),
-    prizes: z.array(
-      z.object({
-        prizeName: z.string().min(1, "Prize name is required"),
-        prizeAmount: z.number().min(1, "Prize amount must be greater than 0"),
-      })
-    ).min(1, "At least one prize is required"),
-    categories: z.array(z.string()).min(1, "At least one category is required"),
-    festival: z.string().min(1, "Festival is required"),
-    participationType: z.string().min(1, "Participation type is required"),
-    teamSize: z.object({
-      minSize: z.number().min(1, "Minimum team size is required"),
-      maxSize: z.number().min(1, "Maximum team size is required"),
-    }),
-    hideHost: z.boolean(),
-    contacts: z.array(
-      z.object({
-        name: z.string().min(1, "Name is required"),
-        email: z.string().email("Invalid email address").min(1, "Email is required"),
-        mobile: z.string().min(1, "Mobile number is required"),
-      })
-    ).min(1, "At least one contact is required"),
-    certificate: z.boolean(),
-    numOfParticipantsAllowed: z.number().min(1, "Number of participants allowed is required"),
-  });
+// Define the form schema
+export const formSchema2 = z.object({
+  registrationFee: z.string().min(1, { message: "Registration fee is required" }).max(100, { message: "Fee must be 100 characters or less" }),
+  competitionStartDate: z.date().nullable(),
+  competitionStartTime: z.date().nullable(),
+  registrationStartDate: z.date().nullable(),
+  registrationStartTime: z.date().nullable(),
+  registrationEndDate: z.date().nullable(),
+  registrationEndTime: z.date().nullable(),
+  eligibility: z.string().min(1, "Eligibility is required"),
+  prizes: z.array(
+    z.object({
+      prizeName: z.string().min(1, "Prize name is required"),
+      prizeAmount: z.number().min(1, "Prize amount must be greater than 0"),
+    })
+  ).min(1, "At least one prize is required"),
+  categories: z.array(z.string()).min(1, "At least one category is required"),
+  festival: z.string().optional(),
+  participationType: z.string().min(1, "Participation type is required"),
+  teamSize: z.object({
+    minSize: z.number().min(1, "Minimum team size is required"),
+    maxSize: z.number().min(1, "Maximum team size is required"),
+  }),
+  hideHost: z.boolean(),
+  contacts: z.array(
+    z.object({
+      name: z.string().min(1, "Name is required"),
+      email: z.string().email("Invalid email address").min(1, "Email is required"),
+      mobile: z.string().min(1, "Mobile number is required"),
+    })
+  ).min(1, "At least one contact is required"),
+  certificate: z.boolean(),
+  numOfParticipantsAllowed: z.number().min(1, "Number of participants allowed is required"),
+});
