@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../u
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
 import useAuth from "@/hooks/useAuth";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/Hooks/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 
 
@@ -21,7 +21,9 @@ const routes = [
 const Navbar=() =>{
   const { user, logOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,10 +35,16 @@ const Navbar=() =>{
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      // Update localStorage with the new theme
+      localStorage.setItem('theme', newTheme);
+      return newTheme;
+    });
   };
 
   const handleLogOut = () => {
@@ -119,8 +127,8 @@ const Navbar=() =>{
               
             ) : (
               <>
-                <Link to="/login"><Button className="w-full md:w-auto">Log In</Button></Link>
-                <Link to="/register"><Button className="w-full md:w-auto">Sign Up</Button></Link>
+                <Link to="/login"><Button className="w-full hidden md:block md:w-auto">Log In</Button></Link>
+                <Link to="/register"><Button className="w-full hidden md:block md:w-auto">Sign Up</Button></Link>
               </>
             )
           }
