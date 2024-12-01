@@ -2,7 +2,7 @@ import  { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, PlusCircle, User, Users, X, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, PlusCircle, User, Users, X, Calendar, Clock, LoaderPinwheel, SendHorizontal, Eraser } from 'lucide-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
@@ -16,15 +16,20 @@ import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/Hooks/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { formSchema2 } from "@/utils/FormError";
+import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import confetti from "canvas-confetti";
 
 
 
-const HostForm2 = ({ previousFormData = {} }) => {
+const HostForm2 = () => {
   const [newCategory, setNewCategory] = useState("");
   const location = useLocation();
   const [participationType, setParticipationType] = useState('individual');
   const { formData } = location.state || {};
- console.log(previousFormData)
+  const axioSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(false);
+
+
   const form = useForm({
     resolver: zodResolver(formSchema2),
     defaultValues: {
@@ -53,12 +58,10 @@ const HostForm2 = ({ previousFormData = {} }) => {
     control: form.control,
     name: "categories",
   });
-
   const { fields: contactFields, append: appendContact, remove: removeContact } = useFieldArray({
     control: form.control,
     name: "contacts",
   });
-
   const { fields: prizeFields, append: appendPrize, remove: removePrize } = useFieldArray({
     control: form.control,
     name: "prizes",
@@ -67,6 +70,39 @@ const HostForm2 = ({ previousFormData = {} }) => {
   const onSubmit = async (data) => {
     try {
       console.log("Form data:", { ...formData, ...data });
+      setLoading(true);
+      const file = formData.banner;
+      if(!file) return alert("Please upload a banner image");
+      const formDataToSend = new FormData();
+      formDataToSend.append("file", file);
+      formDataToSend.append("upload_preset", "porboshobai");
+      formDataToSend.append("cloud_name", "ds0io6msx");
+      const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
+        method: "POST",
+        body: formDataToSend,
+      });
+      const imageData = await response.json();
+      if(!imageData) return alert("Image upload failed");
+
+      const opportunityData = {
+        banner: imageData.url,
+        title: formData.title,
+        visibility: formData.visibility,
+        mode: formData.mode,
+        opportunityType: formData.opportunityType,
+        organization: formData.organization,
+        websiteUrl: formData.websiteUrl,
+        city: formData.city,
+        location: formData.location,
+        subtitle: formData.subtitle,
+        description: formData.content,
+        ...data,
+      }
+      console.log("Opportunity data:", opportunityData);
+      const response2 = await axioSecure.post("/opportunities", opportunityData);
+      console.log("Response:", response2.data);
+      if(response2.data.acknowledged){
+      setLoading(false);
       toast({
         variant: "default",
         title: "Congratulations! 🎉",
@@ -74,27 +110,45 @@ const HostForm2 = ({ previousFormData = {} }) => {
         action: <ToastAction altText="Try again">OK!</ToastAction>,
         className: "bg-green-500 text-white",
       })
+      const defaults = {
+        spread: 360,
+        ticks: 50,
+        gravity: 0,
+        decay: 0.94,
+        startVelocity: 30,
+        colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"],
+      };
+   
+      const shoot = () => {
+        confetti({
+          ...defaults,
+          particleCount: 40,
+          scalar: 1.2,
+          shapes: ["star"],
+        });
+   
+        confetti({
+          ...defaults,
+          particleCount: 10,
+          scalar: 0.75,
+          shapes: ["circle"],
+        });
+      };
+   
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 100);
+      setTimeout(shoot, 200);
+    }
     } catch (error) {
       console.error("Submission error:", error);
       alert("An error occurred while submitting the form. Please try again.");
     }
   };
 
-  // const CustomDatePickerInput = React.forwardRef(({ value, onClick, icon: Icon }, ref) => (
-  //   <div className="relative">
-  //     <Input
-  //       value={value}
-  //       onClick={onClick}
-  //       readOnly
-  //       ref={ref}
-  //       className="pl-10 cursor-pointer"
-  //     />
-  //     <Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-  //   </div>
-  // ));
+
 
   return (
-    <div className="min-h-screen md:p-8">
+    <div className="min-h-screen md:p-8 mb-10 md:mb-20">
       <div className="mx-auto max-w-4xl">
         <div className="mb-6 flex items-center gap-4">
           <Link to="/create-competition">
@@ -686,8 +740,11 @@ const HostForm2 = ({ previousFormData = {} }) => {
                 </div>
 
                 <div className="flex justify-end gap-4">
-                  <Button type="button" variant="outline" onClick={() => form.reset()}>Clear</Button>
-                  <Button type="submit">Submit</Button>
+                  <Button type="button" variant="outline" onClick={() => form.reset()}>Clear <Eraser className="w-4 h-4 " /></Button>
+                 {
+                  loading?<Button type="submit" className="flex items-center" disabled>Loading <LoaderPinwheel className="animate-spin" /></Button>:<Button type="submit" className="flex items-center">Submit <SendHorizontal className="w-4 h-4 " /></Button>
+                 }
+                 
                 </div>
               </form>
             </Form>

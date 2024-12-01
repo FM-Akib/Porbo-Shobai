@@ -1,12 +1,15 @@
 const { ObjectId } = require("mongodb");
-
+let opportunityCollection;
 const init = (db) => {
   opportunityCollection = db.collection("opportunities");
 };
 
-const getOpportunities = async (req, res) => {
+const getAllOpportunities = async (req, res) => {
   try {
     const opportunities = await opportunityCollection.find().toArray();
+    if (opportunities.length === 0) {
+      return res.status(404).json({ error: "No opportunities found" });
+    }
     res.json(opportunities);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch opportunities" }); 
@@ -66,4 +69,4 @@ const deleteAopportunity = async (req, res) => {
   };
 
 
-module.exports = { init,getOpportunities, getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity };
+module.exports = { init,getAllOpportunities, getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity };
