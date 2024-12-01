@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB } = require("./config/database");
-const { init } = require("./controllers/userController");
+const { init: initUserController } = require("./controllers/userController");
+const { init: initOpportunityController } = require("./controllers/opportunityController");
 const router = require("./routes/routes");
 
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(express.json());
 // MongoDB Connection
 connectDB().then((db) => {
   // Initialize with database 
-  init(db);
+  initUserController(db);
+  initOpportunityController(db);
 
   // Routes
   app.use("/", router);
