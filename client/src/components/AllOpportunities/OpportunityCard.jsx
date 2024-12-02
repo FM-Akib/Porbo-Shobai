@@ -2,6 +2,7 @@ import { CalendarIcon, Dot, ExternalLink, Handshake, MousePointerClick, User } f
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
 
 const OpportunityCard = ({ opportunity }) => {
   const bannerAnimation = "bg-gradient-to-r from-[#5b0505] via-[#72150d] to-[#ff7d02]";
@@ -78,9 +79,9 @@ const OpportunityCard = ({ opportunity }) => {
         <button className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
           Register Now <MousePointerClick className="h-4 w-4" />
         </button>
-        <button className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
+        <Link to={`/a-opportunity/${opportunity._id}`} className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
           See More <ExternalLink className="h-4 w-4"/>
-        </button>
+        </Link>
       </CardFooter>
     </Card>
   );

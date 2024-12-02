@@ -39,7 +39,7 @@ const AllOpportunities = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
+    <section className="max-w-7xl mx-auto px-4 py-8 ">
       {/* <h1 className="text-3xl font-bold mb-8">All Opportunities</h1> */}
       <WordRotate
       className="text-xl md:text-3xl mb-8 text-center font-bold text-black dark:text-white"
@@ -123,7 +123,7 @@ const AllOpportunities = () => {
       {opportunities?.length === 0 && <Loader />}
       {!opportunities && <p className="text-center text-lg">No opportunities found</p>}
       {opportunities?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {opportunities.map((opportunity) => (
             <OpportunityCard key={opportunity._id} opportunity={opportunity} />
           ))}
