@@ -21,9 +21,11 @@ const CompetitionsHero = () => {
                                 </ul>
                     </div>
                             <div className="flex gap-4 mt-8 flex-wrap justify-center lg:justify-start items-center">
+                                <Link to="/all-opportunities">
                                 <Button className="bg-green-500 flex items-center dark:hover:bg-green-600 px-6 py-7 shadow-md  rounded-xl dark:text-white text-lg">
                                     <TextSearch className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     Find Competitions</Button>
+                                </Link>
 
                               <Link to ="/host-competitions"> <Button variant="secondary" className="flex items-center px-6 py-7 bg-white shadow-md hover:bg-gray-700 hover:text-white dark:text-gray-600 dark:hover:text-white rounded-xl text-lg">
                                 <Handshake className="h-4 w-4 transition-transform group-hover:translate-x-1" />

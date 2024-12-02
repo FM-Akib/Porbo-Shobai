@@ -9,6 +9,7 @@ import Register from "@/Pages/Register/Register";
 import Login from "@/Pages/Login/Login";
 import {createBrowserRouter} from "react-router-dom";
 import HostForm2 from "@/Pages/HostForm2";
+import AllOpportunities from "@/Pages/AllOpportunities";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
         {
           path: "/complete-competition",
           element: <HostForm2/>
+        },
+        {
+          path: "/all-opportunities",
+          element: <AllOpportunities/>
         }
       ]
     },
