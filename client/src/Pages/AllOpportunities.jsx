@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import OpportunityCard from "@/components/AllOpportunities/OpportunityCard";
 import useOpportunities from "@/Hooks/useOpportunities";
+import WordRotate from "@/components/ui/word-rotate";
 
 const AllOpportunities = () => {
   const [filters, setFilters] = useState({
@@ -39,11 +40,15 @@ const AllOpportunities = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">All Opportunities</h1>
+      {/* <h1 className="text-3xl font-bold mb-8">All Opportunities</h1> */}
+      <WordRotate
+      className="text-xl md:text-3xl mb-8 text-center font-bold text-black dark:text-white"
+      words={["Dive into innovation, find competitions.","Participate, Innovate, and Achieve!", "Challenge yourself, discover opportunities.", "Where passion meets purpose!"]}
+    />
       
       {/* Filters */}
-      <div className="space-y-4 mb-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="space-y-4 mb-8  md:sticky md:top-16 bg-white/95 backdrop-blur-md dark:bg-[#020817] md:z-50 md:p-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
