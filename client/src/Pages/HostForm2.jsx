@@ -87,6 +87,7 @@ const HostForm2 = () => {
       const opportunityData = {
         banner: imageData.url,
         title: formData.title,
+        status: "Live",
         visibility: formData.visibility,
         mode: formData.mode,
         opportunityType: formData.opportunityType,
