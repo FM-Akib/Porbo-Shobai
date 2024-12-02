@@ -14,11 +14,16 @@ const OpportunityCard = ({opportunity}) => {
             
             {/* Main Image */}
             <div className="relative overflow-hidden">
-              <img 
-                src={opportunity.banner} 
-                alt="Opportunity Banner"
-                className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
-              />
+              <img
+              src={opportunity.banner}
+              alt="Fallback Image"
+              onError={(e) => {
+                e.target.onerror = null; // Prevent infinite loop if fallback also fails
+                e.target.src = "https://res.cloudinary.com/ds0io6msx/image/upload/v1733134035/wqux5fkhs6ctl0mxzabe.png";
+              }}
+              className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+
               <div className={`${opportunity.status === "Live" ? "bg-green-600" : "bg-red-500"} absolute top-2 right-2 text-white 
               font-semibold px-2 py-1 rounded-sm flex  z-10 `}>
                 <Dot className="animate-ping" />{opportunity.status}</div>

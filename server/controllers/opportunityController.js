@@ -4,15 +4,40 @@ const init = (db) => {
   opportunityCollection = db.collection("opportunities");
 };
 
+// const getAllOpportunities = async (req, res) => {
+//   try {
+//     const opportunities = await opportunityCollection.find().toArray();
+//     if (opportunities.length === 0) {
+//       return res.status(404).json({ error: "No opportunities found" });
+//     }
+//     res.json(opportunities);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to fetch opportunities" }); 
+//   }
+// };
 const getAllOpportunities = async (req, res) => {
   try {
-    const opportunities = await opportunityCollection.find().toArray();
-    if (opportunities.length === 0) {
-      return res.status(404).json({ error: "No opportunities found" });
-    }
-    res.json(opportunities);
+    const { opportunityType, category, eventType, status, eligibility, page = 1, limit = 10 } = req.query;
+
+    const query = {};
+
+    if (opportunityType) query.opportunityType = opportunityType;
+    if (category) query.categories = { $regex: category, $options: "i" };
+    if (eventType) query.mode = eventType;
+    if (status) query.status = status;
+    if (eligibility) query.eligibility = eligibility;
+
+    const skip = (page - 1) * limit;
+    const total = await opportunityCollection.countDocuments(query);
+    const opportunities = await opportunityCollection
+      .find(query)
+      .skip(skip)
+      .limit(parseInt(limit))
+      .toArray();
+
+    res.json({ opportunities, total, page: parseInt(page), totalPages: Math.ceil(total / limit) });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch opportunities" }); 
+    res.status(500).json({ error: "Failed to fetch opportunities" });
   }
 };
 
