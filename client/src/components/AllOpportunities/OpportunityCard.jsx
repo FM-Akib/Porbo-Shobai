@@ -19,8 +19,8 @@ const OpportunityCard = ({opportunity}) => {
                 alt="Opportunity Banner"
                 className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
               />
-              <div className={`${opportunity.status === "Live" ? "bg-green-500" : "bg-red-500"} absolute top-2 right-2 text-white 
-              font-semibold px-2 py-1 rounded-sm flex  z-10 ${opportunity.status === "Live" ? "bg-green-500" : "bg-red-500"}`}>
+              <div className={`${opportunity.status === "Live" ? "bg-green-600" : "bg-red-500"} absolute top-2 right-2 text-white 
+              font-semibold px-2 py-1 rounded-sm flex  z-10 `}>
                 <Dot className="animate-ping" />{opportunity.status}</div>
             </div>
     
@@ -49,9 +49,7 @@ const OpportunityCard = ({opportunity}) => {
                     
                     const timeDifference = registrationEndDate - currentDate;
                     const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                    
                     // console.log(`There are ${daysDifference} days left until the registration ends.`);
-                    
                     return <span className="text-sm text-gray-500 dark:text-gray-400">{daysDifference} days left</span>;
                   })()}
                 </div>
@@ -64,7 +62,7 @@ const OpportunityCard = ({opportunity}) => {
                     prize += p.prizeAmount;
                   });
                 })()}
-                <span className="text-xl font-bold text-orange-600 dark:text-orange-400">₹ {prize}</span>
+                <span className="text-xl font-bold text-orange-600 dark:text-orange-400"><span className="text-xl font-extrabold">৳</span> {prize}</span>
                 <div className="space-x-2">
                   <Badge variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100">
                     {opportunity?.categories[0]}
@@ -76,7 +74,7 @@ const OpportunityCard = ({opportunity}) => {
               </div>
             </CardContent>
     
-            <CardFooter className="bg-gray-50 dark:bg-gray-800/50 p-4 grid grid-cols-2 gap-2">
+            <CardFooter className="bg-gray-100 dark:bg-gray-600/50 p-4 grid grid-cols-2 gap-2">
               <button className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
                 Register Now <MousePointerClick className="h-4 w-4" />
               </button>
