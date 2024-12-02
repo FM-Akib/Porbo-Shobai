@@ -10,6 +10,7 @@ import Login from "@/Pages/Login/Login";
 import {createBrowserRouter} from "react-router-dom";
 import HostForm2 from "@/Pages/HostForm2";
 import AllOpportunities from "@/Pages/AllOpportunities";
+import Aopportunity from "@/Pages/Aopportunity";
 
 
 export const router = createBrowserRouter([
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
         {
           path: "/all-opportunities",
           element: <AllOpportunities/>
+        },
+        {
+          path: "/a-opportunity/:id",
+          element: <Aopportunity/>
         }
       ]
     },
