@@ -17,7 +17,7 @@ const AllOpportunities = () => {
     eligibility: ""
   });
   const [page, setPage] = useState(1);
-  const { opportunities, totalPages } = useOpportunities(filters, page, 10);
+  const { opportunities, totalPages } = useOpportunities(filters, page, 9);
  console.log(opportunities);
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -40,7 +40,6 @@ const AllOpportunities = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 ">
-      {/* <h1 className="text-3xl font-bold mb-8">All Opportunities</h1> */}
       <WordRotate
       className="text-xl md:text-3xl mb-8 text-center font-bold text-black dark:text-white"
       words={["Dive into innovation, find competitions.","Participate, Innovate, and Achieve!", "Challenge yourself, discover opportunities.", "Where passion meets purpose!"]}

@@ -11,6 +11,8 @@ import {createBrowserRouter} from "react-router-dom";
 import HostForm2 from "@/Pages/HostForm2";
 import AllOpportunities from "@/Pages/AllOpportunities";
 import Aopportunity from "@/Pages/Aopportunity";
+import DashboardUser from "@/Pages/DashboardUser";
+import UserDashLayout from "@/Layouts/UserDashLayout";
 
 
 export const router = createBrowserRouter([
@@ -57,4 +59,15 @@ export const router = createBrowserRouter([
         }
       ]
     },
+    {
+      path: "dashboard",
+      element: <UserDashLayout/>,
+      errorElement: <ErrorPage/>,
+      children: [
+        {
+          path: "home",
+          element: <DashboardUser/>
+        }
+      ]
+    }
   ]);
