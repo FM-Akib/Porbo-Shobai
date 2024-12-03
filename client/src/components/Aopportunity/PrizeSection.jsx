@@ -1,5 +1,6 @@
-import { Award, Badge, Trophy } from "lucide-react";
+import { Award,  Trophy } from "lucide-react";
 import { Card } from "../ui/card";
+import { Badge } from "../ui/badge";
 
 const PrizeSection = ({Aopportunity}) => {
     return (
@@ -14,9 +15,10 @@ const PrizeSection = ({Aopportunity}) => {
               <div className="flex justify-between items-center">
                 <h3 className="font-medium flex items-center gap-2">
                   <Award className="h-4 w-4" />
-                  {index === 0 ? 'Winner' : `${index + 1}nd Runner Up`}
+                  {/* {index === 0 ? 'Winner' : `${index + 1}nd Runner Up`} */}
+                  {prize.prizeName}
                 </h3>
-                <Badge variant="secondary" className="text-lg">₹{prize.prizeAmount}</Badge>
+                <Badge variant="secondary" className="text-lg">BDT {prize.prizeAmount}</Badge>
               </div>
             </div>
           ))}
