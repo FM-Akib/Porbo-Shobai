@@ -9,15 +9,31 @@ const Timeline = ({Aopportunity}) => {
             Important Dates
         </h2>
         <div className="space-y-4">
-            {Aopportunity?.map((item, index) => (
-            <div key={index} className="flex items-start gap-4">
+            
+            <div className="flex items-start gap-4">
                 <div className="min-w-2 h-2 w-2 mt-2 rounded-full bg-primary" />
                 <div>
-                <h3 className="font-medium">{item?.title}</h3>
-                <p className="text-sm text-muted-foreground">{item?.date}</p>
+                <h3 className="font-medium">Registration Starts</h3>
+                <p className="text-sm text-muted-foreground">{new Date(Aopportunity?.registrationStartDate).toDateString()} {new Date(Aopportunity?.registrationStartDate).toLocaleTimeString()}</p>
                 </div>
             </div>
-            ))}
+
+            <div className="flex items-start gap-4">
+                <div className="min-w-2 h-2 w-2 mt-2 rounded-full bg-primary" />
+                <div>
+                <h3 className="font-medium">Registration Ends</h3>
+                <p className="text-sm text-muted-foreground">{new Date(Aopportunity?.registrationEndDate).toDateString()} {new Date(Aopportunity?.registrationEndDate).toLocaleTimeString()}</p>
+                </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+                <div className="min-w-2 h-2 w-2 mt-2 rounded-full bg-primary" />
+                <div>
+                <h3 className="font-medium">Competition Starts</h3>
+                <p className="text-sm text-muted-foreground">{new Date(Aopportunity?.competitionStartDate).toDateString()} {new Date(Aopportunity?.competitionStartDate).toLocaleTimeString()}</p>
+                </div>
+            </div>
+           
         </div>
         </Card>
     );
