@@ -17,7 +17,7 @@ const AllOpportunities = () => {
     eligibility: ""
   });
   const [page, setPage] = useState(1);
-  const { opportunities, totalPages } = useOpportunities(filters, page, 10);
+  const { opportunities, totalPages } = useOpportunities(filters, page, 9);
  console.log(opportunities);
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
