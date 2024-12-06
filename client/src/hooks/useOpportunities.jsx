@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 const useOpportunities = (filters = {}, page = 1, limit = 10) => {
     const [opportunities, setOpportunities] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
-  
+    const [loader, setLoader] = useState(true);
     useEffect(() => {
       const fetchOpportunities = async () => {
+        setLoader(true);
         try {
           const queryParams = new URLSearchParams({
             ...filters,
@@ -18,6 +19,7 @@ const useOpportunities = (filters = {}, page = 1, limit = 10) => {
   
           setOpportunities(data.opportunities);
           setTotalPages(data.totalPages);
+          setLoader(false);
         } catch (error) {
           console.error("Failed to fetch opportunities:", error);
         }
@@ -26,7 +28,7 @@ const useOpportunities = (filters = {}, page = 1, limit = 10) => {
       fetchOpportunities();
     }, [filters, page, limit]);
   
-    return { opportunities, totalPages };
+    return { loader, opportunities, totalPages };
   };
   
   export default useOpportunities;
