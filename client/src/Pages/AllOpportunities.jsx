@@ -8,6 +8,7 @@ import Loader from "@/components/shared/Loader";
 import OpportunityCard from "@/components/AllOpportunities/OpportunityCard";
 import useOpportunities from "@/Hooks/useOpportunities";
 import WordRotate from "@/components/ui/word-rotate";
+import NotFoundCompetition from "@/components/shared/NotFoundCompetition";
 
 const AllOpportunities = () => {
   const [filters, setFilters] = useState({
@@ -17,7 +18,7 @@ const AllOpportunities = () => {
     eligibility: ""
   });
   const [page, setPage] = useState(1);
-  const { opportunities, totalPages } = useOpportunities(filters, page, 9);
+  const {loader, opportunities, totalPages } = useOpportunities(filters, page, 9);
  console.log(opportunities);
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -46,7 +47,7 @@ const AllOpportunities = () => {
     />
       
       {/* Filters */}
-      <div className="space-y-4 mb-8  md:sticky md:top-16 bg-white/95 backdrop-blur-md dark:bg-[#020817] md:z-50 md:p-4">
+      { opportunities.length>0 &&  <div className="space-y-4 mb-8  md:sticky md:top-16 bg-white/95 backdrop-blur-md dark:bg-[#020817] md:z-50 md:p-4">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -92,7 +93,7 @@ const AllOpportunities = () => {
             </SelectContent>
           </Select>
         </div>
-
+        
         <div className="flex flex-wrap items-center gap-2">
             {Object.entries(filters).map(
             ([key, value]) =>
@@ -117,10 +118,11 @@ const AllOpportunities = () => {
                 )}
         </div>
       </div>
-
+      }
+      
       {/* Opportunities */}
-      {opportunities?.length === 0 && <Loader />}
-      {!opportunities && <p className="text-center text-lg">No opportunities found</p>}
+      {!loader && opportunities?.length === 0 &&  <NotFoundCompetition clearFilters={clearFilters} />}
+      {loader && <Loader /> }
       {opportunities?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {opportunities.map((opportunity) => (

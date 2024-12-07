@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Loader = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex mt-28 justify-center">
     <StyledWrapper>
       <div id="wifi-loader">
         <svg className="circle-outer" viewBox="0 0 86 86">
