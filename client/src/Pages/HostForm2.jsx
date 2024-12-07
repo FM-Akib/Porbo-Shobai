@@ -98,10 +98,11 @@ const HostForm2 = () => {
         subtitle: formData.subtitle,
         description: formData.content,
         ...data,
+        participants: [],
       }
       console.log("Opportunity data:", opportunityData);
       const response2 = await axioSecure.post("/opportunities", opportunityData);
-      console.log("Response:", response2.data);
+      // console.log("Response:", response2.data);
       if(response2.data.acknowledged){
       setLoading(false);
       toast({
