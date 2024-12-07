@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { AddMemberSheet } from "./AddMemberSheet";
 import { TeamPreview } from "./TeamPreview";
 import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormError";
+import confetti from "canvas-confetti";
+import sound from '../../assets/Audio/ps1.wav';
 
 export function RegistrationForm({ Aopportunity }) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
@@ -30,6 +32,11 @@ export function RegistrationForm({ Aopportunity }) {
       teamName: "",
     },
   });
+
+  function palySound() {
+    const audio = new Audio(sound);
+    audio.play();
+  }
 
   function onSubmit(data) {
     let formData = {};
@@ -59,6 +66,37 @@ export function RegistrationForm({ Aopportunity }) {
     
     console.log("Complete form data:", formData);
     toast.success("Team registration submitted successfully!");
+
+
+
+    palySound();
+    const end = Date.now() + 4 * 1000; // 3 seconds
+    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+ 
+    const frame = () => {
+      if (Date.now() > end) return;
+ 
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 0, y: 0.5 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 1, y: 0.5 },
+        colors: colors,
+      });
+ 
+      requestAnimationFrame(frame);
+    };
+ 
+    frame();
   }
 
   function handleAddMember(memberData) {
