@@ -47,3 +47,44 @@ export const formSchema2 = z.object({
   certificate: z.boolean(),
   numOfParticipantsAllowed: z.number().min(1, "Number of participants allowed is required"),
 });
+
+export const registrationSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  mobile: z.string().min(10, "Mobile number must be at least 10 digits"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().optional(),
+  gender: z.enum(["male", "female"], {
+    required_error: "Please select your gender",
+  }),
+  organization: z.string().min(2, "Organization name is required"),
+  type: z.enum(["college", "professional", "school", "fresher"], {
+    required_error: "Please select your type",
+  }),
+  teamName: z.string().min(2, "Team name is required"),
+  trxid: z.string().min(2, "Transaction ID is required"),
+});
+
+export const registrationSchemaIndividual = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  mobile: z.string().min(10, "Mobile number must be at least 10 digits"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().optional(),
+  gender: z.enum(["male", "female"], {
+    required_error: "Please select your gender",
+  }),
+  organization: z.string().min(2, "Organization name is required"),
+  type: z.enum(["college", "professional", "school", "fresher"], {
+    required_error: "Please select your type",
+  }),
+  
+});
+
+export const teamMemberSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  mobile: z.string().min(10, "Mobile number must be at least 10 digits"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().optional(),
+  gender: z.enum(["male", "female"], {
+    required_error: "Please select your gender",
+  }),
+});

@@ -6,7 +6,7 @@ import Timeline from "@/components/Aopportunity/Timeline";
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Aopportunity = () => {
     const {id} = useParams();
@@ -31,7 +31,9 @@ const Aopportunity = () => {
                 <Bookmark />
                 </Button>
               </div>
+              <Link to={`/opportunity-registration/${Aopportunity._id}`}>
               <Button size="lg">Register Now</Button>
+              </Link>
             </div>
             <Stats Aopportunity={Aopportunity} />
             <div className="grid gap-6 p-6">
