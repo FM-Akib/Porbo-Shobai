@@ -13,6 +13,7 @@ import AllOpportunities from "@/Pages/AllOpportunities";
 import Aopportunity from "@/Pages/Aopportunity";
 import DashboardUser from "@/Pages/DashboardUser";
 import UserDashLayout from "@/Layouts/UserDashLayout";
+import OpportunityRegistration from "@/Pages/OpportunityRegistration";
 
 
 export const router = createBrowserRouter([
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
         {
           path: "/a-opportunity/:id",
           element: <Aopportunity/>
+        },
+        {
+          path: "/opportunity-registration/:id",
+          element: <OpportunityRegistration/>
         }
       ]
     },
