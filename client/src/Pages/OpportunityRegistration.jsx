@@ -18,7 +18,7 @@ function OpportunityRegistration() {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="max-w-3xl mx-auto py-5">
         <Card className="shadow-xl">
-          <CardHeader className="space-y-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
+          <CardHeader className="space-y-1 bg-gradient-to-r from-[hsla(270,_94%,_25%,_1)] to-[hsla(158,_94%,_49%,_1)] text-white rounded-t-lg">
             <CardTitle className="text-2xl font-bold text-center">Register for {Aopportunity?.title}</CardTitle>
             <p className="text-blue-100 text-center">Please fill in your details to continue</p>
           </CardHeader>
