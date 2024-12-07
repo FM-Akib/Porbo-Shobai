@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB } = require("./config/database");
-const userRoutes = require("./routes/userRoutes");
-const { init } = require("./controllers/userController");
+const { init: initUserController } = require("./controllers/userController");
+const { init: initOpportunityController } = require("./controllers/opportunityController");
+const router = require("./routes/routes");
 
 dotenv.config();
 
@@ -16,20 +17,18 @@ app.use(express.json());
 
 // MongoDB Connection
 connectDB().then((db) => {
-  // Initialize controllers with database collections
-  init(db);
+  // Initialize with database 
+  initUserController(db);
+  initOpportunityController(db);
 
   // Routes
-  app.use("/users", userRoutes);
+  app.use("/", router);
 
   // Base route
   app.get("/", (req, res) => {
-    res.send("Server is running!!");
+    res.send("PS Server is running!!");
   });
 
-
-
-  // Start server
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
   });

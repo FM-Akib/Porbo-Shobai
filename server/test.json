@@ -1,0 +1,46 @@
+[
+    {
+        "name": "Muntasir Akib",
+        "photo": "https://avatars.githubusercontent.com/u/77449506?v=4",
+        "email": "B8a6a@example.com",
+        "phone": "+880 123 456 789",
+        "password": "123456",
+        "role": "admin",
+        "status": "active",
+        "created_at": "2021-07-01T00:00:00.000Z",
+        "mentorID": ""
+    },
+    {
+    "banner": "http://res.cloudinary.com/ds0io6msx/image/upload/v1733078216/dutvowvey…",
+    "title": "Idea Innovation 5.0",
+    "visibility": "public",
+    "mode": "online",
+    "opportunityType": "Innovation Challenges",
+    "organization": "Interactive Cares ",
+    "websiteUrl": "https://innovation.interactivecares.com",
+    "city": "City",
+    "location":"Location",
+    "subtitle": "Rebuild bangladesh through innovation",
+    "description":"<p>Interactive Cares proudly presents the 5th edition of&nbsp;Idea Inn…",
+    "registrationFee": "1000",
+    "competitionStartDate":"2024-12-31T18:00:00.000Z",
+    "competitionStartTime":"2024-12-01T19:00:00.006Z",
+    "registrationStartDate":"2024-11-30T18:00:00.000Z",
+    "registrationStartTime":"2024-12-01T19:00:00.006Z",
+    "registrationEndDate":"2024-12-22T18:00:00.000Z",
+    "registrationEndTime":"2024-12-01T19:00:00.006Z",
+    "eligibility":"Everyone can apply",
+    "prizes":[{ "position": 1, "prize": 10000 },{ "position": 2, "prize": 5000 }],    
+    "categories":["Innovation","Idea Generation"],
+    "festival":"winter",
+    "participationType":"team",
+    "teamSize":{ "minSize": 1, "maxSize": 4 }, 
+    "hideHost": false,
+    "contacts":[{ "name": "Sophia Green", "email": "sophi@gmail.com", "phone": "+1 800 555 6789" }],
+    "certificate": "true",
+    "numOfParticipantsAllowed": 200,
+    "participants": [],
+    "status": "Live"
+
+    }
+]
