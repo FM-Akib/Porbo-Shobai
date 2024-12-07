@@ -76,9 +76,9 @@ const OpportunityCard = ({ opportunity }) => {
       </CardContent>
 
       <CardFooter className="bg-gray-100 dark:bg-gray-600/50 p-4 grid grid-cols-2 gap-2">
-        <button className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
+        <Link to={`/opportunity-registration/${opportunity._id}`} className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
           Register Now <MousePointerClick className="h-4 w-4" />
-        </button>
+        </Link>
         <Link to={`/a-opportunity/${opportunity._id}`} className="flex items-center gap-2 justify-center bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all duration-200 dark:bg-orange-700 dark:hover:bg-orange-600">
           See More <ExternalLink className="h-4 w-4"/>
         </Link>
