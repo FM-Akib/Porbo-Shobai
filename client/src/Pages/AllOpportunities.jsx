@@ -19,7 +19,6 @@ const AllOpportunities = () => {
   });
   const [page, setPage] = useState(1);
   const {loader, opportunities, totalPages } = useOpportunities(filters, page, 9);
- console.log(opportunities);
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
     setPage(1); // Reset to first page when filters change

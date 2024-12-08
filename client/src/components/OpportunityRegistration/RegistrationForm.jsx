@@ -14,13 +14,15 @@ import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormEr
 import confetti from "canvas-confetti";
 import sound from '../../assets/Audio/ps1.wav';
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import useUserInfo from "@/Hooks/useUserInfo";
 
 export function RegistrationForm({ Aopportunity }) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const axioSecure = useAxiosSecure();
-
+  const {user} = useUserInfo();
+  console.log(user);
 
   let zodresolver = Aopportunity?.participationType === "team" ? registrationSchema : registrationSchemaIndividual;
   const form = useForm({
@@ -68,11 +70,12 @@ export function RegistrationForm({ Aopportunity }) {
     } else {
       formData = data;
     }
+    const userResult = await axioSecure.patch(`/users/participation/${data?.email}`, { opportunityId: Aopportunity?._id });
     
     const result = await axioSecure.patch(`/opportunities/participants/${Aopportunity?._id}`, { formData });
     console.log(result);
 
-    if (result?.data?.modifiedCount) {
+    if (result?.data?.modifiedCount && userResult?.data?.modifiedCount) {
       setLoading(false);
     
     toast.success("Team registration submitted successfully!");
