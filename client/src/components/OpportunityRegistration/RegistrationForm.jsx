@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Phone, User, Building2,  UserPlus, CreditCard, Users, SendHorizontal, CircleArrowLeft } from "lucide-react";
+import { Mail, Phone, User, Building2,  UserPlus, CreditCard, Users, SendHorizontal, CircleArrowLeft, LoaderPinwheel } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -13,10 +13,17 @@ import { TeamPreview } from "./TeamPreview";
 import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormError";
 import confetti from "canvas-confetti";
 import sound from '../../assets/Audio/ps1.wav';
+import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import useUserInfo from "@/Hooks/useUserInfo";
 
 export function RegistrationForm({ Aopportunity }) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const axioSecure = useAxiosSecure();
+  const {user} = useUserInfo();
+  console.log(user);
+
   let zodresolver = Aopportunity?.participationType === "team" ? registrationSchema : registrationSchemaIndividual;
   const form = useForm({
     resolver: zodResolver(zodresolver),
@@ -38,7 +45,8 @@ export function RegistrationForm({ Aopportunity }) {
     audio.play();
   }
 
-  function onSubmit(data) {
+  async function onSubmit (data) {
+    setLoading(true);
     let formData = {};
 
     if (Aopportunity?.participationType === "team") {
@@ -62,17 +70,18 @@ export function RegistrationForm({ Aopportunity }) {
     } else {
       formData = data;
     }
-
+    const userResult = await axioSecure.patch(`/users/participation/${data?.email}`, { opportunityId: Aopportunity?._id });
     
-    console.log("Complete form data:", formData);
+    const result = await axioSecure.patch(`/opportunities/participants/${Aopportunity?._id}`, { formData });
+    console.log(result);
+
+    if (result?.data?.modifiedCount && userResult?.data?.modifiedCount) {
+      setLoading(false);
+    
     toast.success("Team registration submitted successfully!");
-
-
-
     palySound();
     const end = Date.now() + 4 * 1000; // 3 seconds
     const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
- 
     const frame = () => {
       if (Date.now() > end) return;
  
@@ -97,6 +106,7 @@ export function RegistrationForm({ Aopportunity }) {
     };
  
     frame();
+   }
   }
 
   function handleAddMember(memberData) {
@@ -241,7 +251,7 @@ export function RegistrationForm({ Aopportunity }) {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="college">College Student</SelectItem>
-                    <SelectItem value="professional">Professional</SelectItem>
+                    <SelectItem value="university">University</SelectItem>
                     <SelectItem value="school">School Student</SelectItem>
                     <SelectItem value="fresher">Fresher</SelectItem>
                   </SelectContent>
@@ -317,14 +327,17 @@ export function RegistrationForm({ Aopportunity }) {
           >
            <CircleArrowLeft/> Cancel
           </Button>
+
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700
-             hover:to-green-700 text-white py-6 flex items-center justify-center"
+            className={`${
+              loading ? "hidden" : ""
+            } w-full bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700
+             hover:to-green-700 text-white py-6 flex items-center justify-center`}
+            disabled={loading} // Disable the button when loading
           >
-           Submit <SendHorizontal/> 
+           {loading ? <>Loading <LoaderPinwheel className="animate-spin" /></> : <>Submit <SendHorizontal /></>} 
           </Button>
-
         </div>
 
 

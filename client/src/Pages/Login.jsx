@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { AuthContext } from "@/provider/AuthProvider";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/Hooks/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 
 const Login = () => {

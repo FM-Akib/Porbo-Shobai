@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Mail, Phone, User } from "lucide-react";
+import { Mail, Phone, User, UserPlus } from "lucide-react";
 import { teamMemberSchema } from "@/utils/FormError";
 
 export function AddMemberSheet({ isOpen, onClose, onAddMember }) {
@@ -27,13 +27,15 @@ export function AddMemberSheet({ isOpen, onClose, onAddMember }) {
   }
 
   return (
+   
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="bottom" className="h-[90vh]">
+      <SheetContent side="bottom" className="h-[90vh]  mx-auto">
+        <div className="max-w-2xl mx-auto md:mt-10">
         <SheetHeader>
           <SheetTitle>Add Team Member</SheetTitle>
         </SheetHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-6">
+        <Form {...form} className="max-w-xl ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-6 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -124,10 +126,14 @@ export function AddMemberSheet({ isOpen, onClose, onAddMember }) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Add Member</Button>
+            <Button type="submit" className="w-full">
+              <UserPlus/>
+              Add Member</Button>
           </form>
         </Form>
+        </div>
       </SheetContent>
     </Sheet>
+  
   );
 }

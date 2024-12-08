@@ -57,7 +57,7 @@ export const registrationSchema = z.object({
     required_error: "Please select your gender",
   }),
   organization: z.string().min(2, "Organization name is required"),
-  type: z.enum(["college", "professional", "school", "fresher"], {
+  type: z.enum(["college", "university", "school", "fresher"], {
     required_error: "Please select your type",
   }),
   teamName: z.string().min(2, "Team name is required"),
@@ -73,7 +73,7 @@ export const registrationSchemaIndividual = z.object({
     required_error: "Please select your gender",
   }),
   organization: z.string().min(2, "Organization name is required"),
-  type: z.enum(["college", "professional", "school", "fresher"], {
+  type: z.enum(["college", "university", "school", "fresher"], {
     required_error: "Please select your type",
   }),
   
