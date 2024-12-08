@@ -26,7 +26,6 @@ const Navbar=() =>{
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
   });
- console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);

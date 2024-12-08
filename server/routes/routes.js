@@ -12,6 +12,7 @@ router.get("/users", getUsers);
 router.get("/users/:email", getAuser);
 router.post("/users", postAuser);
 router.patch("/users/:id", updateAuser);
+router.patch("/users/participation/:email", updateAuser);
 router.delete("/users/:id", deleteAuser);
 
 // OPPORTUNITIES ROUTES
