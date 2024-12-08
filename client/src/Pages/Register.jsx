@@ -24,10 +24,8 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    console.log(data);
-
+    // console.log(data);
     if(data.Password !== data.confirmPassword){
-      
       toast({
         variant: "destructive",
         title: "Password didn't match",
@@ -52,6 +50,7 @@ const Register = () => {
             lastName: data.lastName,
             email: data.email,
             mobileNo: data.mobileNumber,
+            image: "",
             password: data.Password,
             role: role,
           }
@@ -72,8 +71,6 @@ const Register = () => {
           .catch(error => {
             console.log(error);
           })
-
-          
         })
         
       })
@@ -86,14 +83,39 @@ const Register = () => {
 
   const handleGoogleLogIn = () => {
     googleLogIn()
-      .then(() => {
-        toast({
-          variant: "default",
-          title: "Welcome to Porbo Shobai",
-          description: "User Created Successfully",
-          action: <ToastAction altText="Try again">OK!</ToastAction>,
+      .then((result) => {
+        const userInfo = {
+          firstName: result.user?.displayName.split(" ")[0],
+          lastName: result.user?.displayName.split(" ").slice(1).join(" "),
+          email: result.user?.email,
+          mobileNo: "",
+          image: result.user?.photoURL,
+          role: role,
+        }
+        axiosSecure.post("/users", userInfo)
+        .then(data => {
+          console.log(data.data);
+          if (data.data.insertedId) {
+            navigate(location?.state ? location.state : "/");
+            toast({
+              variant: "default",
+              title: "Welcome to Porbo Shobai",
+              description: "User Created Successfully",
+              action: <ToastAction altText="Try again">OK!</ToastAction>,
+            })
+          }
+          
         })
-        navigate(location?.state ? location.state : '/');
+        .catch(error => {
+          console.log(error);
+        })
+        // toast({
+        //   variant: "default",
+        //   title: "Welcome to Porbo Shobai",
+        //   description: "User Created Successfully",
+        //   action: <ToastAction altText="Try again">OK!</ToastAction>,
+        // })
+        // navigate(location?.state ? location.state : '/');
       })
       .catch(()=>{
         toast({
