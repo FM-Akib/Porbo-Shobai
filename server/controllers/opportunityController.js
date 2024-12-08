@@ -71,6 +71,43 @@ const updateAopportunity = async (req, res) => {
       res.status(500).json({ error: "Failed to update opportunity" });
     }
   };
+
+  const updateAopportunityWithparticipants = async (req, res) => {
+    try {
+      const opportunityId = req.params.id;
+      const formData = req.body.formData;  // Form data passed from the request
+  
+      if (!formData) {
+        return res.status(400).json({ error: "Form data is required" });
+      }
+  
+      // Find the opportunity by ID
+      const opportunity = await opportunityCollection.findOne({ _id: new ObjectId(opportunityId) });
+  
+      if (!opportunity) {
+        return res.status(404).json({ error: "Opportunity not found" });
+      }
+  
+      // Check if participants exists and push formData into it
+      if (!opportunity.participants) {
+        opportunity.participants = []; // Initialize participants if not present
+      }
+      
+      // Add the new formData to the participants array
+      opportunity.participants.push(formData);
+  
+      // Update the opportunity with the new participants array
+      const result = await opportunityCollection.updateOne(
+        { _id: new ObjectId(opportunityId) },
+        { $set: { participants: opportunity.participants } }
+      );
+  
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update opportunity with participants" });
+    }
+  };
+  
   
 const deleteAopportunity = async (req, res) => {
     try {
@@ -94,4 +131,5 @@ const deleteAopportunity = async (req, res) => {
   };
 
 
-module.exports = { init,getAllOpportunities, getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity };
+module.exports = { init,getAllOpportunities, getAopportunity, postAopportunity, updateAopportunity,
+  updateAopportunityWithparticipants, deleteAopportunity };

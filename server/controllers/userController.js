@@ -51,6 +51,43 @@ const updateAuser = async (req, res) => {
   }
 };
 
+const updateUserWithParticipation = async (req, res) => {
+  try {
+    const { email } = req.params; 
+    const opportunityId = req.body.opportunityId; 
+
+    if (!email || !opportunityId) {
+      return res.status(400).json({ error: "User email and opportunity ID are required" });
+    }
+
+    const user = await userCollection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!user.participations) {
+      user.participations = []; 
+    }
+
+    // Check if the opportunity ID is already in the participants array
+    if (!user.participations.includes(opportunityId)) {
+      user.participations.push(opportunityId); // Add opportunity ID to participants
+    }
+
+    // Update the user document with the new participants array
+    const result = await userCollection.updateOne(
+      { email },
+      { $set: { participations: user.participations } }
+    );
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user with participation" });
+  }
+};
+
+
 const deleteAuser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -73,4 +110,4 @@ const deleteAuser = async (req, res) => {
 };
 
 module.exports = { init, getUsers, postAuser, 
-  updateAuser,deleteAuser, getAuser };
+  updateAuser,deleteAuser, getAuser, updateUserWithParticipation };
