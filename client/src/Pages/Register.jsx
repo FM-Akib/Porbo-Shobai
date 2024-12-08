@@ -7,6 +7,7 @@ import { ToastAction } from "@/components/ui/toast"
 import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { confettiShape } from "@/utils/ConfettiShape";
 
 
 const Register = () => {
@@ -38,7 +39,7 @@ const Register = () => {
     createUser(data.email, data.Password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        // console.log(user);
         updateProfile(user, {
           displayName: data.firstName,
         })
@@ -56,8 +57,9 @@ const Register = () => {
           }
           axiosSecure.post("/users", userInfo)
           .then(data => {
-            console.log(data.data);
+            // console.log(data.data);
             if (data.data.insertedId) {
+              confettiShape();
               navigate(location?.state ? location.state : "/");
               toast({
                 variant: "default",
@@ -77,8 +79,6 @@ const Register = () => {
       .catch((error) => {
         console.log(error);
       });
-      
-
   }
 
   const handleGoogleLogIn = () => {
@@ -94,8 +94,9 @@ const Register = () => {
         }
         axiosSecure.post("/users", userInfo)
         .then(data => {
-          console.log(data.data);
+          // console.log(data.data);
           if (data.data.insertedId) {
+            confettiShape();
             navigate(location?.state ? location.state : "/");
             toast({
               variant: "default",
@@ -109,13 +110,7 @@ const Register = () => {
         .catch(error => {
           console.log(error);
         })
-        // toast({
-        //   variant: "default",
-        //   title: "Welcome to Porbo Shobai",
-        //   description: "User Created Successfully",
-        //   action: <ToastAction altText="Try again">OK!</ToastAction>,
-        // })
-        // navigate(location?.state ? location.state : '/');
+       
       })
       .catch(()=>{
         toast({
