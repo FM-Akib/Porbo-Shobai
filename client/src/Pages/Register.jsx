@@ -49,12 +49,30 @@ const Register = () => {
           const userInfo = {
             firstName: data.firstName,
             lastName: data.lastName,
+            username: `@${data.firstName}`,
             email: data.email,
+            about: "",
+            institution: "",
             mobileNo: data.mobileNumber,
+            location: "Chittagong",
+            points: 1250,
+            badges: [],
+            coins: 300,
             image: "",
             password: data.Password,
             role: role,
+            skills: [],
+            workExperience: [],
+            education: [],
+            certificates: [],
+            projects: [],
+            achievements: [],
+            hobbies: [],
+            extraCurricular: [],
+            participate: [],
+            streaks: [],
           }
+       
           axiosSecure.post("/users", userInfo)
           .then(data => {
             // console.log(data.data);
@@ -84,13 +102,32 @@ const Register = () => {
   const handleGoogleLogIn = () => {
     googleLogIn()
       .then((result) => {
+  
         const userInfo = {
           firstName: result.user?.displayName.split(" ")[0],
           lastName: result.user?.displayName.split(" ").slice(1).join(" "),
+          username: `@${result.user?.displayName.split(" ")[0]}`,
           email: result.user?.email,
+          about: "",
+          institution: "",
           mobileNo: "",
+          location: "Chittagong",
+          points: 1250,
+          badges: [],
+          coins: 300,
           image: result.user?.photoURL,
+          password: "",
           role: role,
+          skills: [],
+          workExperience: [],
+          education: [],
+          certificates: [],
+          projects: [],
+          achievements: [],
+          hobbies: [],
+          extraCurricular: [],
+          participate: [],
+          streaks: [],
         }
         axiosSecure.post("/users", userInfo)
         .then(data => {
