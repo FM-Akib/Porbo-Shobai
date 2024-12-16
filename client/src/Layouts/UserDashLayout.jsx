@@ -1,22 +1,20 @@
-import { SidebarNav } from "@/components/DashboardUser/SidebarNav";
-import { Outlet } from "react-router-dom";
+import Sidebar from '@/components/DashboardUser/SidebarNav';
+import { Outlet } from 'react-router-dom';
 
 const UserDashLayout = () => {
-    return (
-        <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-        <div className="hidden border-r bg-gray-100/40 lg:block">
-          <div className="flex h-full max-h-screen flex-col gap-2">
-            <div className="flex h-[60px] items-center border-b px-6">
-              <h2 className="font-semibold">Dashboard</h2>
-            </div>
-            <SidebarNav />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <Outlet />
-        </div>
+  return (
+    <div className="md:grid grid-cols-12 h-screen ">
+      <div className="col-span-2">
+      <Sidebar />
       </div>
-    );
+      <div className="mt-12 md:mt-0 col-span-10 flex flex-col overflow-hidden">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default UserDashLayout;
+
