@@ -1,79 +1,28 @@
-
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2,  Heart, Flame, Plus } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus } from 'lucide-react'
+import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
 
-// Sample data
-const initialProfile = {
-  name: "Sarah Johnson",
-  username: "@sarahj",
-  university: "International Islamic University",
-  location: "Chittagong",
-  points: 1250,
-  badges: 8,
-  coins: 300,
-  about: "Passionate developer with a keen interest in UI/UX design and web development.",
-  skills: ["React", "Node.js", "TypeScript", "UI/UX Design", "Tailwind CSS"],
-  workExperience: [
-    {
-      title: "Senior Frontend Developer",
-      company: "Tech Solutions Inc.",
-      duration: "2021 - Present",
-      description: "Leading frontend development for various projects."
-    },
-    {
-      title: "Web Developer",
-      company: "Digital Creatives",
-      duration: "2019 - 2021",
-      description: "Developed and maintained client websites."
-    }
-  ],
-  education: [
-    {
-      degree: "BSc in Computer Science",
-      institution: "International Islamic University",
-      year: "2019",
-      result: "3.8 GPA"
-    }
-  ],
-  certificates: [
-    { title: "Advanced React Development", image: "/placeholder.svg" },
-    { title: "UI/UX Design Fundamentals", image: "/placeholder.svg" },
-    { title: "Node.js Master Class", image: "/placeholder.svg" }
-  ],
-  projects: [
-    {
-      name: "E-commerce Platform",
-      skills: ["React", "Node.js", "MongoDB"],
-      link: "https://example.com/ecommerce",
-      details: "A full-stack e-commerce solution.",
-      image: "/placeholder.svg"
-    },
-    {
-      name: "Social Media Dashboard",
-      skills: ["Vue.js", "Express", "PostgreSQL"],
-      link: "https://example.com/dashboard",
-      details: "Analytics dashboard for social media managers.",
-      image: "/placeholder.svg"
-    }
-  ],
-  achievements: [
-    { title: "Best Developer Award 2023", image: "/placeholder.svg" },
-    { title: "Hackathon Winner", image: "/placeholder.svg" },
-    { title: "100 Days of Code Champion", image: "/placeholder.svg" }
-  ],
-  hobbies: ["Photography", "Blogging", "Open Source Contributing"]
-}
+function DashboardUser() {
+  const {userInfo} = useUserInfo()
+  const [profile, setProfile] = useState(userInfo)
 
-export default function DashboardUser() {
-  const [profile, setProfile] = useState(initialProfile)
-  const [streakCount, setStreakCount] = useState(5)
+  const editProfile = (data) => {
+    setProfile(prev => ({
+      ...prev,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      image: data.image,
+      institution: data.institution,
+      location: data.location
+    }))
+  }
 
   const updateProfile = (section, newData) => {
     setProfile(prev => ({
@@ -86,25 +35,64 @@ export default function DashboardUser() {
     <div className="container mx-auto p-2 md:p-6">
       <div className="grid gap-6 md:grid-cols-12">
         {/* Left Column */}
-        <div className="md:col-span-4 space-y-6 ">
+        <div className="md:col-span-4 space-y-6">
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center space-y-4">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>SJ</AvatarFallback>
+                  <AvatarImage src={profile.image || "/placeholder.svg"} />
+                  <AvatarFallback>{profile.firstName?.[0]}{profile.lastName?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold">{profile.name}</h2>
+                  <h2 className="text-2xl font-bold">{profile.firstName} {profile.lastName}</h2>
                   <p className="text-sm text-muted-foreground">{profile.username}</p>
                 </div>
-                <p className="text-sm text-center">{profile.university}</p>
-                <p className="text-sm text-muted-foreground">{profile.location}</p>
+                <p className="text-sm text-center">{profile.institution || 'Add your institution'}</p>
+                <p className="text-sm text-muted-foreground">{profile.location || 'Add your location'}</p>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit Profile
-                  </Button>
+                  <EditDialog 
+                    trigger={
+                      <Button variant="outline" size="sm">
+                        <Pencil className="mr-2 h-4 w-4" />
+                        Edit Profile
+                      </Button>
+                    }
+                    title="Edit Profile"
+                    onSave={editProfile}
+                  >
+                    {(onSave) => (
+                      <form onSubmit={(e) => {
+                        e.preventDefault()
+                        const formData = new FormData(e.target)
+                        const data = Object.fromEntries(formData)
+                        onSave(data)
+                      }}>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="firstName" className="text-right">First Name</label>
+                            <Input id="firstName" name="firstName" defaultValue={profile.firstName} className="col-span-3" />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="lastName" className="text-right">Last Name</label>
+                            <Input id="lastName" name="lastName" defaultValue={profile.lastName} className="col-span-3" />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="image" className="text-right">Image URL</label>
+                            <Input id="image" name="image" defaultValue={profile.image} className="col-span-3" />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="institution" className="text-right">Institution</label>
+                            <Input id="institution" name="institution" defaultValue={profile.institution} className="col-span-3" />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="location" className="text-right">Location</label>
+                            <Input id="location" name="location" defaultValue={profile.location} className="col-span-3" />
+                          </div>
+                        </div>
+                        <Button type="submit">Save changes</Button>
+                      </form>
+                    )}
+                  </EditDialog>
                   <Button variant="outline" size="sm">
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
@@ -121,11 +109,11 @@ export default function DashboardUser() {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm">Total Points</span>
-                <Badge variant="secondary">{profile.points}</Badge>
+                <Badge variant="secondary">{profile.points || 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm">Total Badges</span>
-                <Badge variant="secondary">{profile.badges}</Badge>
+                <Badge variant="secondary">{profile.badges?.length || 0}</Badge>
               </div>
             </CardContent>
           </Card>
@@ -137,7 +125,7 @@ export default function DashboardUser() {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm">Your coins</span>
-                <span className="font-bold">{profile.coins}</span>
+                <span className="font-bold">{profile.coins || 0}</span>
               </div>
               <Button variant="outline" size="sm" className="w-full">
                 Redeem coins
@@ -163,8 +151,9 @@ export default function DashboardUser() {
                   }}>
                     <Textarea 
                       name="about"
-                      defaultValue={profile.about}
+                      defaultValue={profile.about || ''}
                       className="mb-4"
+                      placeholder="Add a short bio about yourself"
                     />
                     <Button type="submit">Save</Button>
                   </form>
@@ -172,7 +161,7 @@ export default function DashboardUser() {
               </EditDialog>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{profile.about}</p>
+              <p className="text-sm text-muted-foreground">{profile.about || 'Add a short bio about yourself'}</p>
             </CardContent>
           </Card>
 
@@ -182,7 +171,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Skill"
-                onSave={(data) => updateProfile('skills', data.skill)}
+                onSave={(data) => updateProfile('skills', [...(profile.skills || []), data.skill])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -201,9 +190,9 @@ export default function DashboardUser() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {profile.skills.map((skill, index) => (
+                {profile.skills?.map((skill, index) => (
                   <Badge key={index} variant="secondary">{skill}</Badge>
-                ))}
+                )) || <p>No skills added yet</p>}
               </div>
             </CardContent>
           </Card>
@@ -217,7 +206,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Work Experience"
-                onSave={(data) => updateProfile('workExperience', data)}
+                onSave={(data) => updateProfile('workExperience', [...(profile.workExperience || []), data])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -239,14 +228,14 @@ export default function DashboardUser() {
               </EditDialog>
             </CardHeader>
             <CardContent className="space-y-4">
-              {profile.workExperience.map((work, index) => (
+              {profile.workExperience?.map((work, index) => (
                 <div key={index} className="space-y-1">
                   <h3 className="font-medium">{work.title}</h3>
                   <p className="text-sm text-muted-foreground">{work.company}</p>
                   <p className="text-sm text-muted-foreground">{work.duration}</p>
                   <p className="text-sm">{work.description}</p>
                 </div>
-              ))}
+              )) || <p>No work experience added yet</p>}
             </CardContent>
           </Card>
 
@@ -259,7 +248,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Education"
-                onSave={(data) => updateProfile('education', data)}
+                onSave={(data) => updateProfile('education', [...(profile.education || []), data])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -281,14 +270,14 @@ export default function DashboardUser() {
               </EditDialog>
             </CardHeader>
             <CardContent className="space-y-4">
-              {profile.education.map((edu, index) => (
+              {profile.education?.map((edu, index) => (
                 <div key={index} className="space-y-1">
                   <h3 className="font-medium">{edu.degree}</h3>
                   <p className="text-sm text-muted-foreground">{edu.institution}</p>
                   <p className="text-sm text-muted-foreground">{edu.year}</p>
                   <p className="text-sm">{edu.result}</p>
                 </div>
-              ))}
+              )) || <p>No education added yet</p>}
             </CardContent>
           </Card>
 
@@ -301,7 +290,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Certificate"
-                onSave={(data) => updateProfile('certificates', data)}
+                onSave={(data) => updateProfile('certificates', [...(profile.certificates || []), data])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -320,9 +309,9 @@ export default function DashboardUser() {
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside space-y-2">
-                {profile.certificates.map((cert, index) => (
+                {profile.certificates?.map((cert, index) => (
                   <li key={index} className="text-sm text-muted-foreground">{cert.title}</li>
-                ))}
+                )) || <p>No certificates added yet</p>}
               </ul>
             </CardContent>
           </Card>
@@ -336,7 +325,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Project"
-                onSave={(data) => updateProfile('projects', data)}
+                onSave={(data) => updateProfile('projects', [...(profile.projects || []), data])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -361,11 +350,11 @@ export default function DashboardUser() {
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside space-y-2">
-                {profile.projects.map((project, index) => (
+                {profile.projects?.map((project, index) => (
                   <li key={index} className="text-sm text-muted-foreground">
                     {project.name} - {project.skills.join(', ')}
                   </li>
-                ))}
+                )) || <p>No projects added yet</p>}
               </ul>
             </CardContent>
           </Card>
@@ -379,7 +368,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Achievement"
-                onSave={(data) => updateProfile('achievements', data)}
+                onSave={(data) => updateProfile('achievements', [...(profile.achievements || []), data])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -398,9 +387,9 @@ export default function DashboardUser() {
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside space-y-2">
-                {profile.achievements.map((achievement, index) => (
+                {profile.achievements?.map((achievement, index) => (
                   <li key={index} className="text-sm text-muted-foreground">{achievement.title}</li>
-                ))}
+                )) || <p>No achievements added yet</p>}
               </ul>
             </CardContent>
           </Card>
@@ -414,7 +403,7 @@ export default function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Hobby"
-                onSave={(data) => updateProfile('hobbies', data.hobby)}
+                onSave={(data) => updateProfile('hobbies', [...(profile.hobbies || []), data.hobby])}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -429,9 +418,9 @@ export default function DashboardUser() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {profile.hobbies.map((hobby, index) => (
+                {profile.hobbies?.map((hobby, index) => (
                   <Badge key={index} variant="secondary">{hobby}</Badge>
-                ))}
+                )) || <p>No hobbies added yet</p>}
               </div>
             </CardContent>
           </Card>
@@ -449,10 +438,10 @@ export default function DashboardUser() {
                   <div
                     key={index}
                     className={`h-8 w-8 rounded-md flex items-center justify-center ${
-                      index < streakCount ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      index < (profile.streaks?.length || 0) ? 'bg-primary text-primary-foreground' : 'bg-muted'
                     }`}
                   >
-                    {index < streakCount ? '✓' : ''}
+                    {index < (profile.streaks?.length || 0) ? '✓' : ''}
                   </div>
                 ))}
               </div>
@@ -463,4 +452,6 @@ export default function DashboardUser() {
     </div>
   )
 }
+
+export default DashboardUser
 

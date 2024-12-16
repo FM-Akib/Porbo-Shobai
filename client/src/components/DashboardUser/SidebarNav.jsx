@@ -57,7 +57,7 @@ const Sidebar = () => {
                       : 'text-gray-600 hover:bg-yellow-100 hover:text-gray-900'}
                   `}
                 >
-                  <route.icon className="mr-3 h-6 w-6" />
+                  <route.icon className="mr-3 h-5 w-5" />
                   {route.label}
                 </Link>
               ))}
