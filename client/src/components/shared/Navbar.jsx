@@ -121,12 +121,7 @@ const Navbar=() =>{
           </Button>
           {
             user ? (
-              // <>
-              // <p className="font-semibold hidden md:block">Hello, {user.displayName}</p>
-              // <Button onClick={handleLogOut}>Logout</Button>
-              // </>
-
-
+           
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost">
@@ -140,10 +135,12 @@ const Navbar=() =>{
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
+              <Link to="/dashboard">
                 <DropdownMenuItem>
-                  Profile
+                 Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   Billing
                   <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
