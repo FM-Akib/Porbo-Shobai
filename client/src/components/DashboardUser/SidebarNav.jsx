@@ -32,14 +32,14 @@ const Sidebar = () => {
 
       <aside className={`
         mt-14 md:mt-0
-        fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-60
+        fixed inset-y-0 left-0 bg-white md:bg-transparent shadow-md max-h-screen md:w-64
         transition-transform duration-300 ease-in-out z-10
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-14 border-b">
             <Link to="/dashboard" className="flex items-center gap-2">
-            <span className="text-xl font-semibold text-gray-700 flex items-center justify-center gap-2">
+            <span className="text-xl font-semibold text-gray-700 dark:text-white flex items-center justify-center gap-2">
               <LayoutDashboard />Dashboard</span>
             </Link>
           </div>
@@ -53,8 +53,8 @@ const Sidebar = () => {
                   className={`
                     flex items-center px-4 py-2 text-sm font-medium rounded-md
                     ${location.pathname === route.href
-                      ? 'bg-yellow-200 text-gray-900'
-                      : 'text-gray-600 hover:bg-yellow-100 hover:text-gray-900'}
+                      ? 'bg-yellow-200 text-gray-900 dark:bg-gray-700 dark:text-white'
+                      : 'text-gray-600 hover:bg-yellow-100 hover:text-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white'}
                   `}
                 >
                   <route.icon className="mr-3 h-5 w-5" />
