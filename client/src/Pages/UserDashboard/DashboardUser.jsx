@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,8 +10,15 @@ import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
 
 function DashboardUser() {
-  const {userInfo} = useUserInfo()
-  const [profile, setProfile] = useState(userInfo)
+  const { userInfo } = useUserInfo();
+  const [profile, setProfile] = useState(userInfo || {});
+  
+  useEffect(() => {
+    setProfile(userInfo);
+  }, [userInfo]);  // Only update profile when userInfo changes
+  
+  // console.log(profile.workExperience[0].title);
+  
 
   const editProfile = (data) => {
     setProfile(prev => ({
@@ -30,6 +37,8 @@ function DashboardUser() {
       [section]: Array.isArray(prev[section]) ? [...prev[section], newData] : newData
     }))
   }
+  console.log(profile);
+
 
   return (
     <div className="container mx-auto p-2 md:p-6">
@@ -171,7 +180,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Skill"
-                onSave={(data) => updateProfile('skills', [...(profile.skills || []), data.skill])}
+                onSave={(data) => updateProfile('skills', data.skill)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -190,7 +199,7 @@ function DashboardUser() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {profile.skills?.map((skill, index) => (
+                {profile?.skills?.map((skill, index) => (
                   <Badge key={index} variant="secondary">{skill}</Badge>
                 )) || <p>No skills added yet</p>}
               </div>
@@ -206,7 +215,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Work Experience"
-                onSave={(data) => updateProfile('workExperience', [...(profile.workExperience || []), data])}
+                onSave={(data) => updateProfile('workExperience', data)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -248,7 +257,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Education"
-                onSave={(data) => updateProfile('education', [...(profile.education || []), data])}
+                onSave={(data) => updateProfile('education',  data)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -290,7 +299,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Certificate"
-                onSave={(data) => updateProfile('certificates', [...(profile.certificates || []), data])}
+                onSave={(data) => updateProfile('certificates',  data)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -325,7 +334,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Project"
-                onSave={(data) => updateProfile('projects', [...(profile.projects || []), data])}
+                onSave={(data) => updateProfile('projects',  data)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -368,7 +377,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Achievement"
-                onSave={(data) => updateProfile('achievements', [...(profile.achievements || []), data])}
+                onSave={(data) => updateProfile('achievements',  data)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
@@ -403,7 +412,7 @@ function DashboardUser() {
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
                 title="Add Hobby"
-                onSave={(data) => updateProfile('hobbies', [...(profile.hobbies || []), data.hobby])}
+                onSave={(data) => updateProfile('hobbies',  data.hobby)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
