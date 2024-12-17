@@ -5,13 +5,19 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus } from 'lucide-react'
+import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus, Save, LoaderPinwheel } from 'lucide-react'
 import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
+import useAxiosSecure from '@/Hooks/useAxiosSecure'
+import { toast } from '@/Hooks/use-toast'
+import { ToastAction } from '@/components/ui/toast'
 
 function DashboardUser() {
   const { userInfo } = useUserInfo();
   const [profile, setProfile] = useState(userInfo || {});
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const axiosSecure =  useAxiosSecure();
   
   useEffect(() => {
     setProfile(userInfo);
@@ -32,12 +38,39 @@ function DashboardUser() {
   }
 
   const updateProfile = (section, newData) => {
+    setIsEditing(true)
     setProfile(prev => ({
       ...prev,
       [section]: Array.isArray(prev[section]) ? [...prev[section], newData] : newData
     }))
   }
   console.log(profile);
+  // console.log(isEditing, isSaving);
+
+  const saveProfile = () => {
+    setIsSaving(true)
+    // Save the profile to the server
+    const updatedProfile = {...profile}
+    setProfile(updatedProfile)
+    console.log(updatedProfile);
+    axiosSecure.patch(`/users/${profile._id}`, updatedProfile)
+      .then(response  => {
+         console.log(response);
+        if (response?.data?.modifiedCount ) {
+          toast({
+            variant: "default",
+            title: "Update Profile",
+            description: "Profile updated successfully",
+            action: <ToastAction altText="ok">OK!</ToastAction>,
+          })
+          setIsSaving(false)
+          setIsEditing(false)
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })     
+  }
 
 
   return (
@@ -106,6 +139,23 @@ function DashboardUser() {
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
                   </Button>
+                  {
+                    isEditing && (
+                      
+                      <Button onClick={saveProfile}
+                      variant="outline" size="sm" className="bg-primary text-primary-foreground">    
+                      {
+                        isSaving ? <>
+                          <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
+                          Saving...
+                          </>:<>
+                          <Save className="mr-2 h-4 w-4" />
+                          Save profile
+                          </>
+                      }
+                      </Button>
+                     )
+                  }
                 </div>
               </div>
             </CardContent>

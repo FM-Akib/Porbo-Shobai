@@ -1,8 +1,11 @@
 import Sidebar from '@/components/DashboardUser/SidebarNav';
+import { Toaster } from '@/components/ui/toaster';
 import { Outlet } from 'react-router-dom';
 
 const UserDashLayout = () => {
   return (
+    <>
+     <Toaster/>
     <div className="md:grid grid-cols-12 h-screen ">
       <div className="col-span-2">
       <Sidebar />
@@ -13,6 +16,7 @@ const UserDashLayout = () => {
         </main>
       </div>
     </div>
+    </>
   );
 };
 
