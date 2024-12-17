@@ -5,12 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus, Save, LoaderPinwheel } from 'lucide-react'
+import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus, Save, LoaderPinwheel, SquareArrowOutUpRight } from 'lucide-react'
 import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
 import useAxiosSecure from '@/Hooks/useAxiosSecure'
 import { toast } from '@/Hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Link } from 'react-router-dom'
 
 function DashboardUser() {
   const { userInfo } = useUserInfo();
@@ -18,13 +20,11 @@ function DashboardUser() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const axiosSecure =  useAxiosSecure();
+  const [selectedImage, setSelectedImage] = useState(null);
   
   useEffect(() => {
     setProfile(userInfo);
   }, [userInfo]);  // Only update profile when userInfo changes
-  
-  // console.log(profile.workExperience[0].title);
-  
 
   const editProfile = (data) => {
     setProfile(prev => ({
@@ -37,14 +37,44 @@ function DashboardUser() {
     }))
   }
 
+  const uploadImageToCloud = async (file) => {
+    if(!file) return alert("Please upload a banner image");
+    const formDataToSend = new FormData();
+    formDataToSend.append("file", file);
+    formDataToSend.append("upload_preset", "porboshobai");
+    formDataToSend.append("cloud_name", "ds0io6msx");
+    const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
+      method: "POST",
+      body: formDataToSend,
+    });
+    const imageData = await response.json();
+    if(!imageData) return alert("Image upload failed");
+    return imageData.url;
+  }
+
   const updateProfile = (section, newData) => {
     setIsEditing(true)
+    console.log(section, newData);
+    if(section === 'certificates' || section === 'achievements' || section === 'projects') {
+      const image = newData.image;
+      uploadImageToCloud(image)
+        .then(imageUrl => {
+          newData.image = imageUrl;
+          setProfile(prev => ({
+            ...prev,
+            [section]: Array.isArray(prev[section]) ? [...prev[section], newData] : newData
+          }))
+        })
+
+    }
+    else{
     setProfile(prev => ({
       ...prev,
       [section]: Array.isArray(prev[section]) ? [...prev[section], newData] : newData
     }))
   }
-  console.log(profile);
+  }
+     console.log(profile);
   // console.log(isEditing, isSaving);
 
   const saveProfile = () => {
@@ -52,7 +82,6 @@ function DashboardUser() {
     // Save the profile to the server
     const updatedProfile = {...profile}
     setProfile(updatedProfile)
-    console.log(updatedProfile);
     axiosSecure.patch(`/users/${profile._id}`, updatedProfile)
       .then(response  => {
          console.log(response);
@@ -71,7 +100,14 @@ function DashboardUser() {
         console.log(error);
       })     
   }
+  
+  const openModal = (image) => {
+    setSelectedImage(image);
+  };
 
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <div className="container mx-auto p-2 md:p-6">
@@ -340,6 +376,7 @@ function DashboardUser() {
             </CardContent>
           </Card>
 
+          {/* Certificates    */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg flex items-center">
@@ -356,7 +393,7 @@ function DashboardUser() {
                     e.preventDefault()
                     onSave({
                       title: e.target.title.value,
-                      image: e.target.image.value,
+                      image: e.target.image.files[0],
                     })
                   }}>
                     <Input name="title" placeholder="Title" className="mb-2" />
@@ -367,14 +404,52 @@ function DashboardUser() {
               </EditDialog>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc list-inside space-y-2">
-                {profile.certificates?.map((cert, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">{cert.title}</li>
-                )) || <p>No certificates added yet</p>}
-              </ul>
-            </CardContent>
+        <ul className="flex flex-wrap gap-4 items-start">
+          {profile.certificates?.length > 0 ? (
+            profile.certificates.map((cert, index) => (
+              <div key={index} className="flex flex-col gap-2 justify-center w-40">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="w-36 h-24 object-cover rounded-md border-4 cursor-pointer"
+                      onClick={() => openModal(cert.image)} // Open the modal when clicked
+                    />
+                  </DialogTrigger>
+
+                  {selectedImage === cert.image && (
+                    <DialogContent className="sm:max-w-[600px]">
+                      <DialogHeader>
+                        <DialogTitle>Certificate Image</DialogTitle>
+                        <DialogDescription>
+                          {cert.title}
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex justify-center py-4">
+                        <img
+                          src={selectedImage}
+                          alt={cert.title}
+                          className="max-w-full max-h-[80vh] object-contain"
+                        />
+                      </div>
+                      <DialogFooter>
+                        <Button onClick={closeModal}>Close</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  )}
+                </Dialog>
+                <h4 className="text-sm ">{cert.title}</h4>
+              </div>
+            ))
+          ) : (
+            <p>No certificates added yet</p>
+          )}
+        </ul>
+      </CardContent>
           </Card>
 
+          {/* Projects    */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg flex items-center">
@@ -394,7 +469,7 @@ function DashboardUser() {
                       skills: e.target.skills.value.split(',').map(skill => skill.trim()),
                       link: e.target.link.value,
                       details: e.target.details.value,
-                      image: e.target.image.value,
+                      image: e.target.image.files[0],
                     })
                   }}>
                     <Input name="name" placeholder="Project Name" className="mb-2" />
@@ -410,14 +485,21 @@ function DashboardUser() {
             <CardContent>
               <ul className="list-disc list-inside space-y-2">
                 {profile.projects?.map((project, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {project.name} - {project.skills.join(', ')}
-                  </li>
+                  <div key={index} className='flex gap-4 items-start'>
+                    <img src={project.image} alt="" className='w-40 h-24 object-cover border-4 rounded' />
+                   <div className="flex flex-col gap-1">
+                    <h4 className="text-base flex items-center gap-2">{project.name} 
+                      <Link to={project.link}><SquareArrowOutUpRight className='h-4 w-4' /></Link> </h4>
+                    <p className="text-sm text-muted-foreground">{project.skills.join(', ')}</p>
+                    <p className="text-sm text-muted-foreground">{project.details}</p>
+                    </div>
+                  </div>
                 )) || <p>No projects added yet</p>}
               </ul>
             </CardContent>
           </Card>
-
+          
+          {/* Achievements */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg flex items-center">
@@ -434,7 +516,7 @@ function DashboardUser() {
                     e.preventDefault()
                     onSave({
                       title: e.target.title.value,
-                      image: e.target.image.value,
+                      image: e.target.image.files[0],
                     })
                   }}>
                     <Input name="title" placeholder="Title" className="mb-2" />
@@ -445,14 +527,52 @@ function DashboardUser() {
               </EditDialog>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc list-inside space-y-2">
-                {profile.achievements?.map((achievement, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">{achievement.title}</li>
-                )) || <p>No achievements added yet</p>}
-              </ul>
+            <ul className="flex flex-wrap gap-4 items-start">
+            {profile.achievements?.length > 0 ? (
+              profile.achievements?.map((achievement, index) => (
+                <div key={index} className="flex flex-col gap-2 justify-center w-40">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <img
+                        src={achievement.image}
+                        alt={achievement.title}
+                        className="w-36 h-24 object-cover rounded-md border-4 cursor-pointer"
+                        onClick={() => openModal(achievement.image)} // Open the modal when clicked
+                      />
+                    </DialogTrigger>
+
+                    {selectedImage === achievement.image && (
+                      <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                          <DialogTitle>Achievement Image</DialogTitle>
+                          <DialogDescription>
+                            {achievement.title}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex justify-center py-4">
+                          <img
+                            src={selectedImage}
+                            alt={achievement.title}
+                            className="max-w-full max-h-[80vh] object-contain"
+                          />
+                        </div>
+                        <DialogFooter>
+                          <Button onClick={closeModal}>Close</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    )}
+                  </Dialog>
+                  <h4 className="text-sm ">{achievement.title}</h4>
+                </div>
+              ))
+            ) : (
+              <p>No achievements added yet</p>
+            )}
+          </ul>
             </CardContent>
           </Card>
 
+          {/* Hobbies */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg flex items-center">

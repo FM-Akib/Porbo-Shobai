@@ -65,12 +65,11 @@ const updateUserWithParticipation = async (req, res) => {
   try {
     const { email } = req.params; 
     const opportunityId = req.body.opportunityId; 
-
     if (!email || !opportunityId) {
       return res.status(400).json({ error: "User email and opportunity ID are required" });
     }
 
-    const user = await userCollection.findOne({ email });
+    const user = await usersCollection.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -86,13 +85,14 @@ const updateUserWithParticipation = async (req, res) => {
     }
 
     // Update the user document with the new participants array
-    const result = await userCollection.updateOne(
+    const result = await usersCollection.updateOne(
       { email },
       { $set: { participations: user.participations } }
     );
 
     res.json(result);
   } catch (error) {
+    console.error("Error occurred:", error);
     res.status(500).json({ error: "Failed to update user with participation" });
   }
 };

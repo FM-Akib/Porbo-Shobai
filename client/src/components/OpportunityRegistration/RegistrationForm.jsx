@@ -14,13 +14,14 @@ import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormEr
 import confetti from "canvas-confetti";
 import sound from '../../assets/Audio/ps1.wav';
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import useUserInfo from "@/Hooks/useUserInfo";
 
 export function RegistrationForm({ Aopportunity }) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const axioSecure = useAxiosSecure();
-
+  const {userInfo} = useUserInfo();
   let zodresolver = Aopportunity?.participationType === "team" ? registrationSchema : registrationSchemaIndividual;
   const form = useForm({
     resolver: zodResolver(zodresolver),
@@ -67,9 +68,11 @@ export function RegistrationForm({ Aopportunity }) {
     } else {
       formData = data;
     }
-    const userResult = await axioSecure.patch(`/users/participation/${data?.email}`, { opportunityId: Aopportunity?._id });
+    const userResult = await axioSecure.patch(`/users/participation/${userInfo?.email}`,
+       { opportunityId: Aopportunity?._id });
     
-    const result = await axioSecure.patch(`/opportunities/participants/${Aopportunity?._id}`, { formData });
+    const result = await axioSecure.patch(`/opportunities/participants/${Aopportunity?._id}`, 
+      { formData });
     console.log(result);
 
     if (result?.data?.modifiedCount && userResult?.data?.modifiedCount) {
