@@ -41,15 +41,25 @@ const updateAuser = async (req, res) => {
   try {
     const userId = req.params.id;
     const updatedUser = req.body;
+    const { _id, ...userDataToUpdate } = updatedUser;
+
+    // Try to update the user in the database
     const result = await usersCollection.updateOne(
       { _id: new ObjectId(userId) },
-      { $set: updatedUser }
+      { $set: userDataToUpdate }
     );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "User not found or no changes made" });
+    }
+
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update user" });
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Failed to update user", message: error.message });
   }
 };
+
 
 const updateUserWithParticipation = async (req, res) => {
   try {

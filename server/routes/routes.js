@@ -1,5 +1,5 @@
 const express = require("express");
-const { getUsers, postAuser, updateAuser, deleteAuser, getAuser
+const { getUsers, postAuser, updateAuser, deleteAuser, getAuser, updateUserWithParticipation
  } = require("../controllers/userController");
 const {  getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity, 
          getAllOpportunities, 
@@ -12,7 +12,7 @@ router.get("/users", getUsers);
 router.get("/users/:email", getAuser);
 router.post("/users", postAuser);
 router.patch("/users/:id", updateAuser);
-router.patch("/users/participation/:email", updateAuser);
+router.patch("/users/participation/:email", updateUserWithParticipation);
 router.delete("/users/:id", deleteAuser);
 
 // OPPORTUNITIES ROUTES
