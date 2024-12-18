@@ -71,6 +71,43 @@ const updateAopportunity = async (req, res) => {
       res.status(500).json({ error: "Failed to update opportunity" });
     }
   };
+
+  const updateAopportunityWithparticipants = async (req, res) => {
+    try {
+      const opportunityId = req.params.id;
+      const formData = req.body.formData;  // Form data passed from the request
+  
+      if (!formData) {
+        return res.status(400).json({ error: "Form data is required" });
+      }
+  
+      // Find the opportunity by ID
+      const opportunity = await opportunityCollection.findOne({ _id: new ObjectId(opportunityId) });
+  
+      if (!opportunity) {
+        return res.status(404).json({ error: "Opportunity not found" });
+      }
+  
+      // Check if participants exists and push formData into it
+      if (!opportunity.participants) {
+        opportunity.participants = []; // Initialize participants if not present
+      }
+      
+      // Add the new formData to the participants array
+      opportunity.participants.push(formData);
+  
+      // Update the opportunity with the new participants array
+      const result = await opportunityCollection.updateOne(
+        { _id: new ObjectId(opportunityId) },
+        { $set: { participants: opportunity.participants } }
+      );
+  
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update opportunity with participants" });
+    }
+  };
+  
   
 const deleteAopportunity = async (req, res) => {
     try {
@@ -93,5 +130,36 @@ const deleteAopportunity = async (req, res) => {
     }
   };
 
+const getOpportunitiesByIds = async (req, res) => {
+    try {
+        const { opportunityIds } = req.query; // Extract opportunityIds from query parameters
 
-module.exports = { init,getAllOpportunities, getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity };
+        if (!opportunityIds) {
+            return res.status(400).json({ error: "opportunityIds query parameter is required" });
+        }
+
+        // Handle both comma-separated string and array
+        const opportunityIdsArray = Array.isArray(opportunityIds) ? opportunityIds : opportunityIds.split(',');
+
+        if (opportunityIdsArray.length === 0) {
+            return res.status(400).json({ error: "opportunityIds must be a non-empty array" });
+        }
+
+        // Convert to ObjectId array
+        const objectIds = opportunityIdsArray.map((id) => new ObjectId(id));
+
+        // Query the database
+        const opportunities = await opportunityCollection
+            .find({ _id: { $in: objectIds } })
+            .toArray();
+
+        res.json(opportunities);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch opportunities by IDs", details: error.message });
+    }
+};
+
+
+
+module.exports = { init,getAllOpportunities, getAopportunity, postAopportunity, updateAopportunity,
+  updateAopportunityWithparticipants, deleteAopportunity, getOpportunitiesByIds };

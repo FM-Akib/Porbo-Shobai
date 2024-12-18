@@ -7,6 +7,7 @@ import { ToastAction } from "@/components/ui/toast"
 import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { confettiShape } from "@/utils/ConfettiShape";
 
 
 const Register = () => {
@@ -24,10 +25,8 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    console.log(data);
-
+    // console.log(data);
     if(data.Password !== data.confirmPassword){
-      
       toast({
         variant: "destructive",
         title: "Password didn't match",
@@ -40,7 +39,7 @@ const Register = () => {
     createUser(data.email, data.Password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        // console.log(user);
         updateProfile(user, {
           displayName: data.firstName,
         })
@@ -50,15 +49,35 @@ const Register = () => {
           const userInfo = {
             firstName: data.firstName,
             lastName: data.lastName,
+            username: `@${data.firstName}`,
             email: data.email,
+            about: "",
+            institution: "",
             mobileNo: data.mobileNumber,
+            location: "Chittagong",
+            points: 1250,
+            badges: [],
+            coins: 300,
+            image: "",
             password: data.Password,
             role: role,
+            skills: [],
+            workExperience: [],
+            education: [],
+            certificates: [],
+            projects: [],
+            achievements: [],
+            hobbies: [],
+            extraCurricular: [],
+            participations: [],
+            streaks: [],
           }
+       
           axiosSecure.post("/users", userInfo)
           .then(data => {
-            console.log(data.data);
+            // console.log(data.data);
             if (data.data.insertedId) {
+              confettiShape();
               navigate(location?.state ? location.state : "/");
               toast({
                 variant: "default",
@@ -72,28 +91,63 @@ const Register = () => {
           .catch(error => {
             console.log(error);
           })
-
-          
         })
         
       })
       .catch((error) => {
         console.log(error);
       });
-      
-
   }
 
   const handleGoogleLogIn = () => {
     googleLogIn()
-      .then(() => {
-        toast({
-          variant: "default",
-          title: "Welcome to Porbo Shobai",
-          description: "User Created Successfully",
-          action: <ToastAction altText="Try again">OK!</ToastAction>,
+      .then((result) => {
+  
+        const userInfo = {
+          firstName: result.user?.displayName.split(" ")[0],
+          lastName: result.user?.displayName.split(" ").slice(1).join(" "),
+          username: `@${result.user?.displayName.split(" ")[0]}`,
+          email: result.user?.email,
+          about: "",
+          institution: "",
+          mobileNo: "",
+          location: "Chittagong",
+          points: 1250,
+          badges: [],
+          coins: 300,
+          image: result.user?.photoURL,
+          password: "",
+          role: role,
+          skills: [],
+          workExperience: [],
+          education: [],
+          certificates: [],
+          projects: [],
+          achievements: [],
+          hobbies: [],
+          extraCurricular: [],
+          participations: [],
+          streaks: [],
+        }
+        axiosSecure.post("/users", userInfo)
+        .then(data => {
+          // console.log(data.data);
+          if (data.data.insertedId) {
+            confettiShape();
+            navigate(location?.state ? location.state : "/");
+            toast({
+              variant: "default",
+              title: "Welcome to Porbo Shobai",
+              description: "User Created Successfully",
+              action: <ToastAction altText="Try again">OK!</ToastAction>,
+            })
+          }
+          
         })
-        navigate(location?.state ? location.state : '/');
+        .catch(error => {
+          console.log(error);
+        })
+       
       })
       .catch(()=>{
         toast({

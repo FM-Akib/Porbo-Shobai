@@ -26,7 +26,6 @@ const Navbar=() =>{
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
   });
- console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -122,15 +121,10 @@ const Navbar=() =>{
           </Button>
           {
             user ? (
-              // <>
-              // <p className="font-semibold hidden md:block">Hello, {user.displayName}</p>
-              // <Button onClick={handleLogOut}>Logout</Button>
-              // </>
-
-
+           
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
+              <Button variant="ghost" size="icon" >
                   <Avatar>
                   <AvatarImage src={user?.photoURL} alt="profile" />
                   <AvatarFallback>  <CircleUser className="h-7 w-7" /></AvatarFallback>
@@ -141,10 +135,12 @@ const Navbar=() =>{
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
+              <Link to="/dashboard">
                 <DropdownMenuItem>
-                  Profile
+                 Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   Billing
                   <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
@@ -249,4 +245,3 @@ const Navbar=() =>{
 }
 
 export default Navbar;
-
