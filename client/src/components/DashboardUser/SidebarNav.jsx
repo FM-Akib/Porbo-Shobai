@@ -4,7 +4,7 @@ import { UserCircle, Users, Star, Clock, Home, BookOpen, Award, Gift, Settings, 
 
 const routes = [
   { label: "Profile", icon: UserCircle, href: "/dashboard/profile" },
-  { label: "Registration", icon: Users, href: "/dashboard/registration" },
+  { label: "Registration", icon: Users, href: "/dashboard/my-registration" },
   { label: "Referrals", icon: Star, href: "/dashboard/referrals" },
   { label: "My Rounds", icon: Clock, href: "/dashboard/rounds" },
   { label: "Watchlist", icon: Home, href: "/dashboard/watchlist" },
