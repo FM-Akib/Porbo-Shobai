@@ -16,6 +16,7 @@ import OpportunityRegistration from "@/Pages/OpportunityRegistration";
 import DashboardHome from "@/Pages/UserDashboard/DasdhboardHome";
 import DashboardUser from "@/Pages/UserDashboard/DashboardUser";
 import MyRegistration from "@/Pages/UserDashboard/MyRegistration";
+import CompanyDashboard from "@/Pages/CompanyDashboard/CompanyDashboard";
 
 
 export const router = createBrowserRouter([
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
         {
           path: "my-registration",
           element: <MyRegistration/>
+        },
+        {
+          path: "company-profile",
+          element: <CompanyDashboard/>
         }
       ]
     }
