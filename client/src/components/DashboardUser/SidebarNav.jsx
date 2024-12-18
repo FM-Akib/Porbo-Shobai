@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { UserCircle, Users, Star, Clock, Home, BookOpen, Award, Gift, Settings, LogOut, Menu, X, LayoutDashboard } from 'lucide-react';
+import { UserCircle, Users, Star, Clock, Home, BookOpen, Award, Gift, Settings, LogOut, Menu, X, LayoutDashboard, ScreenShare } from 'lucide-react';
+import useUserInfo from '@/Hooks/useUserInfo';
 
 const routes = [
   { label: "Profile", icon: UserCircle, href: "/dashboard/profile" },
@@ -14,10 +15,19 @@ const routes = [
   { label: "Rewards", icon: Gift, href: "/dashboard/rewards" },
   { label: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
+const routesCompany = [
+  { label: "Profile", icon: UserCircle, href: "/dashboard/company-profile" },
+  { label: "Hosts", icon: ScreenShare, href: "/dashboard/my-hosts" },
+  { label: "Courses", icon: BookOpen, href: "/dashboard/courses" },
+  { label: "Certificates", icon: Award, href: "/dashboard/certificates" },
+  { label: "Rewards", icon: Gift, href: "/dashboard/rewards" },
+  { label: "Settings", icon: Settings, href: "/dashboard/settings" },
+];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const {userInfo} = useUserInfo();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -46,7 +56,7 @@ const Sidebar = () => {
 
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="flex-1 px-2 space-y-1">
-              {routes.map((route) => (
+              {(userInfo?.role === "student" ? routes : routesCompany)?.map((route) => (
                 <Link
                   key={route.href}
                   to={route.href}
@@ -80,4 +90,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

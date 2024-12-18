@@ -1,9 +1,10 @@
-// import MyRegistrationCard from "@/components/DashboardUser/MyRegistrationCard";
+import MyRegistrationCard from "@/components/DashboardUser/MyRegistrationCard";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import useUserInfo from "@/Hooks/useUserInfo";
 import {  useEffect } from "react";
 import { useState } from "react";
 import qs from 'qs'; 
+import TitleDashboard from "@/components/DashboardUser/TitleDashboard";
 
 const MyRegistration = () => {
     const {userInfo} = useUserInfo();
@@ -31,8 +32,18 @@ const MyRegistration = () => {
     
     return (
         <section className="p-3 md:p-6">
+        
+        <TitleDashboard title="My Registrations" />
+       
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:px-10">
+        {
+            participations?.map(participation => (
+                <MyRegistrationCard key={participation.id} Aopportunity={participation}/>
+            ))
+        }
+        </div>
 
-        {/* <MyRegistrationCard/> */}
+       
 
             
         </section>
