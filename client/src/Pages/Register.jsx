@@ -8,7 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { confettiShape } from "@/utils/ConfettiShape";
-
+import sound from '../assets/Audio/ps1.wav';
 
 const Register = () => {
   const { createUser, setUpdate, update, googleLogIn } = useAuth();
@@ -24,6 +24,13 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+
+
+    function palySound() {
+      const audio = new Audio(sound);
+      audio.play();
+    }
   const onSubmit = async (data) => {
     // console.log(data);
     if(data.Password !== data.confirmPassword){
@@ -46,38 +53,63 @@ const Register = () => {
         
         .then(() => {
           setUpdate(!update);
-          const userInfo = {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            username: `@${data.firstName}`,
-            email: data.email,
-            about: "",
-            institution: "",
-            mobileNo: data.mobileNumber,
-            location: "Chittagong",
-            points: 1250,
-            badges: [],
-            coins: 300,
-            image: "",
-            password: data.Password,
-            role: role,
-            skills: [],
-            workExperience: [],
-            education: [],
-            certificates: [],
-            projects: [],
-            achievements: [],
-            hobbies: [],
-            extraCurricular: [],
-            participations: [],
-            streaks: [],
+          let userInfo = {};
+          if (role === "student") {
+            userInfo = {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              username: `@${data.firstName}`,
+              email: data.email,
+              about: "",
+              institution: "",
+              mobileNo: data.mobileNumber,
+              location: "Chittagong",
+              points: 100,
+              badges: [],
+              coins: 10,
+              image: "",
+              password: data.Password,
+              role: role,
+              skills: [],
+              workExperience: [],
+              education: [],
+              certificates: [],
+              projects: [],
+              achievements: [],
+              hobbies: [],
+              extraCurricular: [],
+              participations: [],
+              streaks: [],
+            }
           }
+          if(role === "company"){
+            userInfo = {
+              name: data.firstName,
+              lastName: data.lastName,
+              username: `@${data.firstName}`,
+              email: data.email,
+              about: "",
+              website: "",
+              banner: "",
+              mobileNo: data.mobileNumber,
+              location: "",
+              points: 100,
+              badges: [],
+              coins: 10,
+              image: "",
+              password: data.Password,
+              role: role,
+              hosts: [],
+            }
+          }
+
        
           axiosSecure.post("/users", userInfo)
           .then(data => {
             // console.log(data.data);
             if (data.data.insertedId) {
               confettiShape();
+              palySound();
               navigate(location?.state ? location.state : "/");
               toast({
                 variant: "default",
@@ -102,8 +134,9 @@ const Register = () => {
   const handleGoogleLogIn = () => {
     googleLogIn()
       .then((result) => {
-  
-        const userInfo = {
+        let userInfo = {};
+        if(role === "student"){
+        userInfo = {
           firstName: result.user?.displayName.split(" ")[0],
           lastName: result.user?.displayName.split(" ").slice(1).join(" "),
           username: `@${result.user?.displayName.split(" ")[0]}`,
@@ -129,11 +162,32 @@ const Register = () => {
           participations: [],
           streaks: [],
         }
+      }
+      if(role === "company"){
+        userInfo = {
+          firstName: result.user?.displayName.split(" ")[0],
+          lastName: result.user?.displayName.split(" ").slice(1).join(" "),
+          username: `@${result.user?.displayName.split(" ")[0]}`,
+          email: result.user?.email,
+          about: "",
+          website: "",
+          mobileNo: "",
+          location: "",
+          points: 100,
+          badges: [],
+          coins: 10,
+          image: result.user?.photoURL,
+          password: "",
+          role: role,
+          hosts: [],
+        }
+      }
         axiosSecure.post("/users", userInfo)
         .then(data => {
           // console.log(data.data);
           if (data.data.insertedId) {
             confettiShape();
+            palySound();
             navigate(location?.state ? location.state : "/");
             toast({
               variant: "default",
