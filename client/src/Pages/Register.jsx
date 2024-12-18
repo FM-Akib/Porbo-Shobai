@@ -69,7 +69,7 @@ const Register = () => {
             achievements: [],
             hobbies: [],
             extraCurricular: [],
-            participate: [],
+            participations: [],
             streaks: [],
           }
        
@@ -126,7 +126,7 @@ const Register = () => {
           achievements: [],
           hobbies: [],
           extraCurricular: [],
-          participate: [],
+          participations: [],
           streaks: [],
         }
         axiosSecure.post("/users", userInfo)
