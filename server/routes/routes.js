@@ -3,7 +3,8 @@ const { getUsers, postAuser, updateAuser, deleteAuser, getAuser, updateUserWithP
  } = require("../controllers/userController");
 const {  getAopportunity, postAopportunity, updateAopportunity, deleteAopportunity, 
          getAllOpportunities, 
-         updateAopportunityWithparticipants} = require("../controllers/opportunityController");
+         updateAopportunityWithparticipants,
+         getOpportunitiesByIds} = require("../controllers/opportunityController");
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.delete("/users/:id", deleteAuser);
 // OPPORTUNITIES ROUTES
 router.get("/opportunities", getAllOpportunities);
 router.get("/opportunities/:id", getAopportunity);
+router.get("/opportunitiesbyids", getOpportunitiesByIds);
 router.post("/opportunities", postAopportunity);
 router.patch("/opportunities/:id", updateAopportunity);
 router.patch("/opportunities/participants/:id", updateAopportunityWithparticipants);
