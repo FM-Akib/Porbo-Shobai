@@ -124,7 +124,7 @@ const Navbar=() =>{
            
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
+              <Button variant="ghost" size="icon" >
                   <Avatar>
                   <AvatarImage src={user?.photoURL} alt="profile" />
                   <AvatarFallback>  <CircleUser className="h-7 w-7" /></AvatarFallback>
@@ -245,4 +245,3 @@ const Navbar=() =>{
 }
 
 export default Navbar;
-
