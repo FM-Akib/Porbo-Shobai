@@ -4,6 +4,7 @@ import PrizeSection from "@/components/Aopportunity/PrizeSection";
 import Stats from "@/components/Aopportunity/Stats";
 import Timeline from "@/components/Aopportunity/Timeline";
 import { Button } from "@/components/ui/button";
+import useUserInfo from "@/Hooks/useUserInfo";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -11,6 +12,8 @@ import { Link, useParams } from "react-router-dom";
 const Aopportunity = () => {
     const {id} = useParams();
     const [Aopportunity, setAopportunity] = useState({});
+    const [isRegistered, setIsRegistered] = useState(false);
+    const {userInfo} = useUserInfo();
     useEffect(() =>{
         fetch(`${import.meta.env.VITE_server_url}/opportunities/${id}`)
         .then(res => res.json())
@@ -18,7 +21,12 @@ const Aopportunity = () => {
             setAopportunity(data)
         })
     },[id])
-    console.log(Aopportunity)
+
+    useEffect(() => {
+        if (userInfo && Aopportunity) {
+          setIsRegistered(userInfo?.participations?.includes(Aopportunity._id));
+        }
+      }, [userInfo, Aopportunity]);
     return (
         <div className="min-h-screen ">
         <div className="max-w-4xl mx-auto py-8 px-4">
@@ -31,9 +39,14 @@ const Aopportunity = () => {
                 <Bookmark />
                 </Button>
               </div>
-              <Link to={`/opportunity-registration/${Aopportunity._id}`}>
-              <Button size="lg">Register Now</Button>
-              </Link>
+              {
+                isRegistered ?(
+                  <Button size="lg" className="bg-green-600 dark:text-white">Already Registered</Button>
+                ):(<Link to={`/opportunity-registration/${Aopportunity._id}`}>
+                  <Button size="lg">Register Now</Button>
+                  </Link>)
+              }
+
             </div>
             <Stats Aopportunity={Aopportunity} />
             <div className="grid gap-6 p-6">
