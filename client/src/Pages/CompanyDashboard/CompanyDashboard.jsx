@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pencil, Share2, Trophy, Award, FolderGit2 , Plus, Save, LoaderPinwheel, SquareArrowOutUpRight } from 'lucide-react'
+import { Pencil, Share2, Trophy, Award, FolderGit2 , Plus, Save, LoaderPinwheel, SquareArrowOutUpRight, MapPin, Globe } from 'lucide-react'
 import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
 import useAxiosSecure from '@/Hooks/useAxiosSecure'
@@ -117,15 +117,23 @@ function CompanyDashboard() {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center space-y-4">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={profile.image || "/placeholder.svg"} />
+                  <AvatarImage src={profile?.image || "/placeholder.svg"} />
                   <AvatarFallback>{profile.firstName?.[0]}{profile.lastName?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="text-center">
                   <h2 className="text-2xl font-bold">{profile.firstName} {profile.lastName}</h2>
                   <p className="text-sm text-muted-foreground">{profile.username}</p>
                 </div>
-                <p className="text-sm text-center">{profile.institution || 'Add your institution'}</p>
-                <p className="text-sm text-muted-foreground">{profile.location || 'Add your location'}</p>
+
+                <div className="flex flex-col gap-2">
+                <Link to={`/profile/${profile.username}`} >
+                <p className="text-sm text-center text-blue-500 flex items-center">
+                  <Globe className="mr-2 h-4 w-4" />
+                  {profile.website || 'Add your website'}</p></Link>
+                <p className="text-sm text-muted-foreground flex items-center "> <MapPin className="mr-2 h-4 w-4" /> 
+                {profile.location || 'Add your location'}</p>
+                </div>
+
                 <div className="flex gap-2">
                   <EditDialog 
                     trigger={
@@ -255,38 +263,38 @@ function CompanyDashboard() {
               </EditDialog>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{profile.about || 'Add a short bio about yourself'}</p>
+              <p className="text-base text-justify ">{profile.about || 'Add a short bio about yourself'}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg">Skills</CardTitle>
+              <CardTitle className="text-lg">Services</CardTitle>
               <EditDialog 
                 trigger={<Button variant="ghost" size="sm"><Plus className="h-4 w-4" /></Button>}
-                title="Add Skill"
-                onSave={(data) => updateProfile('skills', data.skill)}
+                title="Add Service"
+                onSave={(data) => updateProfile('services', data.service)}
               >
                 {(onSave) => (
                   <form onSubmit={(e) => {
                     e.preventDefault()
-                    onSave({ skill: e.target.skill.value })
+                    onSave({ service: e.target.service.value })
                   }}>
                     <Input 
-                      name="skill"
-                      placeholder="Enter skill"
+                      name="service"
+                      placeholder="Enter service"
                       className="mb-4"
                     />
-                    <Button type="submit">Add Skill</Button>
+                    <Button type="submit">Add Service</Button>
                   </form>
                 )}
               </EditDialog>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {profile?.skills?.map((skill, index) => (
-                  <Badge key={index} variant="secondary">{skill}</Badge>
-                )) || <p>No skills added yet</p>}
+                {profile?.services?.map((service, index) => (
+                  <Badge key={index} variant="secondary">{service}</Badge>
+                )) || <p>No service added yet</p>}
               </div>
             </CardContent>
           </Card>
