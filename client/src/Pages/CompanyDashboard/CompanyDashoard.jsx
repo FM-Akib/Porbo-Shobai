@@ -21,7 +21,6 @@ function CompanyDashboard() {
   const [isSaving, setIsSaving] = useState(false);
   const axiosSecure =  useAxiosSecure();
   const [selectedImage, setSelectedImage] = useState(null);
-  
   useEffect(() => {
     setProfile(userInfo);
   }, [userInfo]);  // Only update profile when userInfo changes
@@ -107,6 +106,7 @@ function CompanyDashboard() {
   const closeModal = () => {
     setSelectedImage(null);
   };
+  console.log(profile);
 
   return (
     <div className="container mx-auto p-2 md:p-6">
@@ -117,15 +117,15 @@ function CompanyDashboard() {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center space-y-4">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={profile.image || "/placeholder.svg"} />
-                  <AvatarFallback>{profile.firstName?.[0]}{profile.lastName?.[0]}</AvatarFallback>
+                  <AvatarImage src={profile?.image || "/placeholder.svg"} />
+                  <AvatarFallback>{profile?.firstName?.[0]}{profile.lastName?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold">{profile.firstName} {profile.lastName}</h2>
-                  <p className="text-sm text-muted-foreground">{profile.username}</p>
+                  <h2 className="text-2xl font-bold">{profile?.firstName} {profile.lastName}</h2>
+                  <p className="text-sm text-muted-foreground">{profile?.username}</p>
                 </div>
-                <p className="text-sm text-center">{profile.institution || 'Add your institution'}</p>
-                <p className="text-sm text-muted-foreground">{profile.location || 'Add your location'}</p>
+                <p className="text-sm text-center">{profile?.website}</p>
+                <p className="text-sm text-muted-foreground">{profile?.location }</p>
                 <div className="flex gap-2">
                   <EditDialog 
                     trigger={
