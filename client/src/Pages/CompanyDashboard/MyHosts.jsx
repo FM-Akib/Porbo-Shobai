@@ -6,37 +6,38 @@ import { useState } from "react";
 import qs from 'qs'; 
 import TitleDashboard from "@/components/DashboardUser/TitleDashboard";
 
-const MyRegistration = () => {
+const MyHosts = () => {
     const {userInfo} = useUserInfo();
-    const [participations, setParticipations] = useState([]);
+    const [myhosts, setMyhosts] = useState([]);
     const axiosSecure = useAxiosSecure();
+    console.log(userInfo.hosts)
     useEffect(() => {
         async function fetchData() {
-            if (!userInfo.participations || userInfo.participations.length === 0) return;
+            if (!userInfo.hosts || userInfo.hosts.length === 0) return;
     
             try {
-                const query = qs.stringify({ opportunityIds: userInfo.participations }, 
+                const query = qs.stringify({ opportunityIds: userInfo.hosts }, 
                     { arrayFormat: "comma" });
                 const result = await axiosSecure.get(`/opportunitiesbyids?${query}`);
-                setParticipations(result.data);
+                setMyhosts(result.data);
             } catch (error) {
                 console.error("Error fetching opportunities:", error.message);
             }
         }
         fetchData();
-    }, [userInfo?.participations, axiosSecure]);
+    }, [userInfo?.hosts, axiosSecure]);
     
     
-    console.log(participations)
+    
     
     return (
         <section className="p-3 md:p-6">
         
-        <TitleDashboard title="My Registrations" />
+        <TitleDashboard title="My Hosts" />
        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:px-10">
         {
-            participations?.map(participation => (
+            myhosts?.map(participation => (
                 <MyRegistrationCard key={participation.id} Aopportunity={participation}/>
             ))
         }
@@ -49,4 +50,4 @@ const MyRegistration = () => {
     );
 };
 
-export default MyRegistration;
+export default MyHosts;
