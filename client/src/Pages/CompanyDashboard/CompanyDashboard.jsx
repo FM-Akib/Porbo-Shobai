@@ -25,7 +25,6 @@ function CompanyDashboard() {
   useEffect(() => {
     setProfile(userInfo);
   }, [userInfo]);  // Only update profile when userInfo changes
-
   const editProfile = (data) => {
     setProfile(prev => ({
       ...prev,
