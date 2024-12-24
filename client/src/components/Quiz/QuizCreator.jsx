@@ -1,4 +1,6 @@
-import { ClipboardList, Clock, FileText, ImagePlus, MinusCircle, PlusCircle } from 'lucide-react'
+import { toast } from '@/Hooks/use-toast'
+import useAxiosSecure from '@/Hooks/useAxiosSecure'
+import { ClipboardList, Clock, FileText, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent } from "../ui/card"
@@ -6,10 +8,12 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Textarea } from "../ui/textarea"
+import { ToastAction } from '../ui/toast'
 
-export default function QuizCreator() {
+export default function QuizCreator({opportunity}) {
   const [quizData, setQuizData] = useState({
     title: '',
+    secretKey: '',
     startDate: new Date(),
     description: '',
     duration: 30,
@@ -24,17 +28,31 @@ export default function QuizCreator() {
       }
     ]
   })
-
+  const axiosSecure =  useAxiosSecure();
+  const [loading, setLoading] = useState(false)
+  const uploadImageToCloud = async (file) => {
+    if(!file) return alert("Please upload a image");
+    const formDataToSend = new FormData();
+    formDataToSend.append("file", file);
+    formDataToSend.append("upload_preset", "porboshobai");
+    formDataToSend.append("cloud_name", "ds0io6msx");
+    const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
+      method: "POST",
+      body: formDataToSend,
+    });
+    const imageData = await response.json();
+    if(!imageData) return alert("Image upload failed");
+    return imageData.url;
+  }
   const handleImageUpload = (questionIndex, e) => {
     const file = e.target.files[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
+      uploadImageToCloud(file)
+        .then(imageUrl => {
         const newQuestions = [...quizData.questions]
-        newQuestions[questionIndex].image = reader.result
+        newQuestions[questionIndex].image = imageUrl
         setQuizData({ ...quizData, questions: newQuestions })
-      }
-      reader.readAsDataURL(file)
+        })
     }
   }
 
@@ -61,19 +79,45 @@ export default function QuizCreator() {
   }
 
   const handlePublish = () => {
-    const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]')
+    // const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]')
+    setLoading(true)
     const newQuiz = {
       ...quizData,
-      id: Date.now(),
+      
       createdAt: new Date().toISOString(),
       attempts: []
     }
-    localStorage.setItem('quizzes', JSON.stringify([...quizzes, newQuiz]))
+    // localStorage.setItem('quizzes', JSON.stringify([...quizzes, newQuiz]))
+    console.log(quizData)
+    const updatedOpportunity = {
+      ...opportunity,
+      task: {...newQuiz}
+    }
+    console.log(updatedOpportunity)
     
-    alert('Quiz published successfully!')
+    axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
+      .then(response  => {
+        console.log(response);
+        if (response?.data?.modifiedCount ) {
+          toast({
+            variant: "default",
+            title: "Task Upload",
+            description: "Task uploaded successfully",
+            action: <ToastAction altText="ok">OK!</ToastAction>,
+          })
+          setLoading(false)
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })     
+
+
+    // alert('Quiz published successfully!')
     setQuizData({
       title: '',
       startDate: new Date(),
+      secretKey: '',
       description: '',
       duration: 30,
       questions: [
@@ -88,7 +132,7 @@ export default function QuizCreator() {
       ]
     })
   }
-  console.log(quizData)
+  
   return (
     <div className="container mx-auto p-6 max-w-4xl">
       <h1 className="text-3xl text-center font-bold mb-6">Create New Quiz</h1>
@@ -139,6 +183,18 @@ export default function QuizCreator() {
               value={quizData.duration}
               onChange={(e) => setQuizData({ ...quizData, duration: parseInt(e.target.value) })}
               min="1"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="secretKey" >
+            <SquareAsterisk className="inline-block h-5 w-5 mr-1 text-muted-foreground" />
+                Secret Key for Quiz</Label>
+            <Input
+              id="secretKey"
+              value={quizData.secretKey}
+              onChange={(e) => setQuizData({ ...quizData, secretKey: e.target.value })}
+              placeholder="Enter a secret key for participants"
             />
           </div>
         </div>
@@ -200,10 +256,10 @@ export default function QuizCreator() {
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleImageUpload(questionIndex, e)}
-                        className="hidden"
+                        className="cursor-pointer "
                         id={`image-${questionIndex}`}
                       />
-                      <Label
+                      {/* <Label
                         htmlFor={`image-${questionIndex}`}
                         className="flex items-center gap-2 cursor-pointer"
                       >
@@ -211,7 +267,7 @@ export default function QuizCreator() {
                           <ImagePlus className="h-4 w-4 mr-2" />
                           Upload Image
                         </Button>
-                      </Label>
+                      </Label> */}
                       {question.image && (
                         <img
                           src={question.image}
@@ -271,14 +327,18 @@ export default function QuizCreator() {
           ))}
 
           <Button onClick={addQuestion} className="w-full" size="lg">
-            <PlusCircle className="h-4 w-4 mr-2" />
+            <PlusCircle className="h-4 w-4 mr-1" />
             Add Question
           </Button>
         </div>
-
-        <Button onClick={handlePublish} className="w-full" size="lg">
-          Publish Quiz
+          {
+            loading ?  <Button  className="w-full" size="lg">
+            Publishing ... <LoaderPinwheel className='animate-spin h-5 w-5 ml-1' />
+          </Button> :  <Button onClick={handlePublish} className="w-full" size="lg">
+          Publish Quiz <Rocket className="h-4 w-4 ml-1" />
         </Button>
+          }
+       
       </div>
     </div>
   )

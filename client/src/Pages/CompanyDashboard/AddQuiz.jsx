@@ -25,7 +25,7 @@ const AddQuiz = () => {
           </TabsContent>
           
           <TabsContent value="create">
-            <QuizCreator />
+            <QuizCreator opportunity={opportunities[0]} />
           </TabsContent>
         </Tabs>
       </div>
