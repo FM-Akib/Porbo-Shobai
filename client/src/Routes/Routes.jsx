@@ -19,6 +19,10 @@ import DashboardHome from "@/Pages/UserDashboard/DasdhboardHome";
 import DashboardUser from "@/Pages/UserDashboard/DashboardUser";
 import MyRegistration from "@/Pages/UserDashboard/MyRegistration";
 import { createBrowserRouter } from "react-router-dom";
+import CompanyDashboard from "@/Pages/CompanyDashboard/CompanyDashboard";
+import MyHosts from "@/Pages/CompanyDashboard/MyHosts";
+import MentorForm from "@/Pages/MentorForm";
+
 
 
 export const router = createBrowserRouter([
@@ -66,6 +70,11 @@ export const router = createBrowserRouter([
         {
           path: "/opportunity-registration/:id",
           element: <OpportunityRegistration/>
+        },
+        {
+          path: "/create-mentor",
+          element: <MentorForm/>
+          
         }
       ]
     },
