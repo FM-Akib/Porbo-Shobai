@@ -93,11 +93,9 @@ export default function QuizCreator({opportunity}) {
       ...opportunity,
       task: {...newQuiz}
     }
-    console.log(updatedOpportunity)
     
     axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
       .then(response  => {
-        console.log(response);
         if (response?.data?.modifiedCount ) {
           toast({
             variant: "default",

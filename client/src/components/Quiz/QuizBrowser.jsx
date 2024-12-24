@@ -1,50 +1,31 @@
+import { CircleHelp, Clock1, NotepadText, SquareDashedKanban, TimerReset } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
+import CountdownCard from './CountdownCard';
 
-export default function QuizBrowser() {
-  const [quizzes, setQuizzes] = useState([]);
-  const [selectedQuiz, setSelectedQuiz] = useState(null);
+export default function QuizBrowser({ quiz }) {
   const [showRules, setShowRules] = useState(false);
-  const [timers, setTimers] = useState({});
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    const storedQuizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
-    setQuizzes(storedQuizzes);
-
-    // Initialize countdown timers
-    const initialTimers = {};
-    storedQuizzes.forEach((quiz) => {
+    if (quiz) {
       const timeRemaining = new Date(quiz.startDate).getTime() - new Date().getTime();
-      initialTimers[quiz.id] = timeRemaining > 0 ? timeRemaining : 0;
-    });
-    setTimers(initialTimers);
-  }, []);
+      setTimer(timeRemaining > 0 ? timeRemaining : 0);
+    }
+  }, [quiz]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimers((prevTimers) => {
-        const updatedTimers = {};
-        for (const id in prevTimers) {
-          updatedTimers[id] = Math.max(prevTimers[id] - 1000, 0);
-        }
-        return updatedTimers;
-      });
+      setTimer((prevTimer) => Math.max(prevTimer - 1000, 0));
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (ms) => {
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor((ms / (1000 * 60)) % 60);
-    const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
-    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-
-    return `${days > 0 ? `${days}d ` : ''}${hours > 0 ? `${hours}h ` : ''}${minutes}m ${seconds}s`;
-  };
+  
 
   const handleStartQuiz = async () => {
     try {
@@ -56,56 +37,53 @@ export default function QuizBrowser() {
       stream.getTracks().forEach((track) => track.stop()); // Stop the stream immediately
 
       // Navigate to quiz
-      window.location.href = `/quiz/${selectedQuiz.id}`;
+      window.location.href = `/quiz/${quiz.id}`;
     } catch {
       alert('Camera and clipboard permissions are required to take the quiz');
     }
   };
 
+  const quizStartTime = new Date(quiz.startDate).getTime();
+  const quizEndTime = quizStartTime + quiz.duration * 60 * 1000; // Duration in milliseconds
+  const currentTime = new Date().getTime();
+  const isQuizExpired = currentTime > quizEndTime;
+
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Available Quizzes</h1>
+      <h1 className="text-xl font-semibold mb-6 flex items-center gap-1"><SquareDashedKanban className='h-5 w-5' />
+      Available task will be displayed here...,</h1>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {quizzes.map((quiz) => {
-          const quizStartTime = new Date(quiz.startDate).getTime();
-          const quizEndTime = quizStartTime + quiz.duration * 60 * 1000; // Duration in milliseconds
-          const currentTime = new Date().getTime();
-          const isQuizExpired = currentTime > quizEndTime;
-
-          return (
-            <Card key={quiz.id} className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle>{quiz.title}</CardTitle>
-                <CardDescription>{quiz.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p>Duration: {quiz.duration} minutes</p>
-                  <p>Questions: {quiz.questions.length}</p>
-                  {timers[quiz.id] > 0 ? (
-                    <p className="text-sm text-red-500">
-                      Starts in: {formatTime(timers[quiz.id])}
-                    </p>
-                  ) : isQuizExpired ? (
-                    <p className="text-sm text-gray-500 font-semibold">Expired</p>
-                  ) : (
-                    <Button
-                      className="w-full"
-                      onClick={() => {
-                        setSelectedQuiz(quiz);
-                        setShowRules(true);
-                      }}
-                    >
-                      Take Quiz
-                    </Button>
-                  )}
+      <Card className="cursor-pointer shadow-none  ">
+        <CardHeader>
+          <CardTitle className="flex gap-1 items-center"><NotepadText className='h-5 w-5' />{quiz.title}</CardTitle>
+          <CardDescription>{quiz.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1">
+            <p className="flex gap-1 items-center"><Clock1 className='h-5 w-5' />The quiz has a time limit of {quiz.duration} minutes.</p>
+            <p className="flex gap-1 items-center"><CircleHelp className='h-5 w-5' />Questions: There are {quiz.questions.length} questions.</p>
+          </div>
+            {timer > 0 ? (
+                <div className="">
+                  <CountdownCard targetDateTime={quiz.startDate} />
+              </div>
+            ) : isQuizExpired ? (
+              <div className="text-sm flex flex-col justify-center items-center gap-2 font-semibold">
+                <TimerReset className='h-12 w-12' />
+               <span className='text-xl bg-red-400 px-2 py-1 rounded-md text-white'>Expired</span> 
                 </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+            ) : (
+              <Button
+                className="w-full"
+                onClick={() => setShowRules(true)}
+              >
+                Take Quiz
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <Dialog open={showRules} onOpenChange={setShowRules}>
         <DialogContent>
@@ -120,7 +98,7 @@ export default function QuizBrowser() {
               </span>
 
               <ul className="list-disc pl-6 space-y-2 text-sm">
-                <li>The quiz has a time limit of {selectedQuiz?.duration} minutes</li>
+                <li>The quiz has a time limit of {quiz.duration} minutes</li>
                 <li>You cannot leave the quiz page once started</li>
                 <li>Copying text is not allowed and will be tracked</li>
                 <li>Your camera will be active during the quiz</li>
@@ -141,9 +119,7 @@ export default function QuizBrowser() {
             <Button variant="outline" onClick={() => setShowRules(false)}>
               Cancel
             </Button>
-            <Button onClick={handleStartQuiz}>
-              Accept & Start Quiz
-            </Button>
+            <Button onClick={handleStartQuiz}>Accept & Start Quiz</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
