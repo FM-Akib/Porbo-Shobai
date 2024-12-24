@@ -3,6 +3,7 @@ import OpportunityHeader from "@/components/Aopportunity/OppertunityHeader";
 import PrizeSection from "@/components/Aopportunity/PrizeSection";
 import Stats from "@/components/Aopportunity/Stats";
 import Timeline from "@/components/Aopportunity/Timeline";
+import QuizBrowser from "@/components/Quiz/QuizBrowser";
 import { Button } from "@/components/ui/button";
 import useUserInfo from "@/Hooks/useUserInfo";
 import { Bookmark } from "lucide-react";
@@ -21,6 +22,7 @@ const Aopportunity = () => {
             setAopportunity(data)
         })
     },[id])
+    console.log(Aopportunity);
 
     useEffect(() => {
         if (userInfo && Aopportunity) {
@@ -46,8 +48,14 @@ const Aopportunity = () => {
                   <Button size="lg">Register Now</Button>
                   </Link>)
               }
-
             </div>
+
+              {
+                isRegistered && (
+                  <QuizBrowser quiz={Aopportunity.task} />
+                )
+              }
+
             <Stats Aopportunity={Aopportunity} />
             <div className="grid gap-6 p-6">
               <div className="prose max-w-none text-justify" dangerouslySetInnerHTML={{ __html: Aopportunity.description }} />
