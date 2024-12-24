@@ -5,6 +5,8 @@ import { Badge } from "../ui/badge";
 import WordRotate from "../ui/word-rotate";
 import DotPattern from "../ui/dot-pattern";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
 
 const Hero = () => {
 
@@ -35,6 +37,15 @@ const Hero = () => {
           <p className=" text-lg max-w-2xl pe-10 text-left">
             Porbo Shoabi connects students with <span className="bg-yellow-200 dark:bg-gray-800 px-1 py-1 rounded"> opportunities, competitions, and mentors.</span> Earn points through learning and redeem them for educational rewards.
           </p>
+
+          <div className="flex flex-col md:flex-row gap-2 mt-4">
+            <Link>
+            <Button className="w-full md:w-auto">Find Mentor</Button>
+            </Link>
+            <Link to="/create-mentor">
+            <Button className="w-full md:w-auto">Be A Mentor</Button>
+            </Link>
+          </div>
         </div>
   
      
