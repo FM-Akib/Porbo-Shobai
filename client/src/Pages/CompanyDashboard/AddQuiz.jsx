@@ -1,12 +1,11 @@
-import QuizBrowser from "@/components/Quiz/QuizBrowser";
 import QuizCreator from "@/components/Quiz/QuizCreator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLocation } from "react-router-dom";
 
 const AddQuiz = () => {
   const location = useLocation();
-  const { opportunities } = location.state || {}; 
-  const { title } = opportunities[0];
+  const { opportunity } = location.state || {}; 
+  const { title } = opportunity;
     return (
         <div className="min-h-screen bg-gray-50/50">
       <div className="container mx-auto p-6">
@@ -21,11 +20,11 @@ const AddQuiz = () => {
           </TabsList>
           
           <TabsContent value="browse">
-            <QuizBrowser />
+            {/* <QuizBrowser /> */}
           </TabsContent>
           
           <TabsContent value="create">
-            <QuizCreator opportunity={opportunities[0]} />
+            <QuizCreator opportunity={opportunity} />
           </TabsContent>
         </Tabs>
       </div>

@@ -14,9 +14,8 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
-
-  const handleAddTask =()=>{
-    navigate("/dashboard/add-quiz", { state: { opportunities } });
+  const handleAddTask =(opportunity)=>{
+    navigate("/dashboard/add-quiz", { state: { opportunity } });
   }
 
   return (
@@ -65,7 +64,7 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={handleAddTask}>
+                        <DropdownMenuItem onClick={() => handleAddTask(opportunity)}>
                           <ExternalLink className="h-4 w-4 mr-2" /> Add Task
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onUpdate(opportunity._id)}>
