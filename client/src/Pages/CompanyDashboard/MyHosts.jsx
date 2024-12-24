@@ -1,16 +1,16 @@
-import MyRegistrationCard from "@/components/DashboardUser/MyRegistrationCard";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import useUserInfo from "@/Hooks/useUserInfo";
-import {  useEffect } from "react";
-import { useState } from "react";
-import qs from 'qs'; 
+import { useEffect, useState } from "react";
+import qs from 'qs';
 import TitleDashboard from "@/components/DashboardUser/TitleDashboard";
+import Loader from "@/components/shared/Loader";
+import OpportunitiesTable from "@/components/DashboardCompany/OpportunitiesTable";
 
 const MyHosts = () => {
-    const {userInfo} = useUserInfo();
+    const { userInfo, isLoading } = useUserInfo();
     const [myhosts, setMyhosts] = useState([]);
     const axiosSecure = useAxiosSecure();
-    console.log(userInfo.hosts)
+
     useEffect(() => {
         async function fetchData() {
             if (!userInfo.hosts || userInfo.hosts.length === 0) return;
@@ -26,26 +26,27 @@ const MyHosts = () => {
         }
         fetchData();
     }, [userInfo?.hosts, axiosSecure]);
+
+    const handleDelete = async (id) => {
+        try {
+            await axiosSecure.delete(`/opportunities/${id}`);
+            setMyhosts(prev => prev.filter(host => host._id !== id));
+        } catch (error) {
+            console.error("Error deleting opportunity:", error.message);
+        }
+    };
     
-    
-    
+    if (isLoading) return <Loader />;
     
     return (
         <section className="p-3 md:p-6">
-        
-        <TitleDashboard title="My Hosts" />
-       
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:px-10">
-        {
-            myhosts?.map(participation => (
-                <MyRegistrationCard key={participation.id} Aopportunity={participation}/>
-            ))
-        }
-        </div>
-
-       
-
-            
+            <TitleDashboard title="My Hosts" />
+            <div className="md:px-10">
+                <OpportunitiesTable 
+                    opportunities={myhosts}
+                    onDelete={handleDelete}
+                />
+            </div>
         </section>
     );
 };
