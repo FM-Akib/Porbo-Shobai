@@ -1,7 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Clock, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
 const CountdownCard = ({ targetDateTime }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -85,11 +84,12 @@ const CountdownCard = ({ targetDateTime }) => {
   });
 
   return (
-    <Card className="w-full max-w-[280px] relative shadow-none border-none">  
+    <Card className="w-full max-w-[280px] relative bg-transparent shadow-none border-none ">  
       <CardContent className="relative p-4">
         <div className="flex items-center justify-center mb-4 space-x-2">
-          <Clock className="w-4 h-4 text-red-600 dark:text-red-400" />
-          <h2 className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-700 to-rose-700 dark:from-red-400 dark:to-rose-400">
+          <Clock className="w-4 h-4 " />
+          <h2 className="text-base font-semibold bg-clip-text  
+           ">
             Start Time
           </h2>
         </div>
