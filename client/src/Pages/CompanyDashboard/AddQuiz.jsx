@@ -1,3 +1,4 @@
+import BrowseParticipants from "@/components/Quiz/BrowseParticipants";
 import QuizCreator from "@/components/Quiz/QuizCreator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLocation } from "react-router-dom";
@@ -15,12 +16,12 @@ const AddQuiz = () => {
         
         <Tabs defaultValue="browse" className="max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="browse">Browse Quizzes</TabsTrigger>
+            <TabsTrigger value="browse">Browse Participants</TabsTrigger>
             <TabsTrigger value="create">Create Quiz</TabsTrigger>
           </TabsList>
           
           <TabsContent value="browse">
-            {/* <QuizBrowser /> */}
+            <BrowseParticipants opportunity={opportunity} />
           </TabsContent>
           
           <TabsContent value="create">

@@ -1,6 +1,6 @@
 import Navbar from "@/components/shared/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 import { Outlet } from "react-router-dom";
-import { Toaster } from "@/components/ui/toaster"
 
 const MainLayout = () => {
     return (
