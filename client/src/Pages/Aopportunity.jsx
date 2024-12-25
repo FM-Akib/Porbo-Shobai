@@ -22,7 +22,6 @@ const Aopportunity = () => {
             setAopportunity(data)
         })
     },[id])
-    console.log(Aopportunity);
 
     useEffect(() => {
         if (userInfo && Aopportunity) {
@@ -52,7 +51,7 @@ const Aopportunity = () => {
 
               {
                 isRegistered && (
-                  <QuizBrowser quiz={Aopportunity.task} />
+                  <QuizBrowser opportunity={Aopportunity} />
                 )
               }
 

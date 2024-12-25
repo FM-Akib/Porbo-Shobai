@@ -88,7 +88,7 @@ export default function QuizCreator({opportunity}) {
       attempts: []
     }
     // localStorage.setItem('quizzes', JSON.stringify([...quizzes, newQuiz]))
-    console.log(quizData)
+    // console.log(quizData)
     const updatedOpportunity = {
       ...opportunity,
       task: {...newQuiz}
