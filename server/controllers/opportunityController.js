@@ -62,9 +62,10 @@ const updateAopportunity = async (req, res) => {
     try {
       const opportunityId = req.params.id;
       const updatedOpportunity = req.body;
+      const { _id, ...opportunityDataToUpdate } = updatedOpportunity;
       const result = await opportunityCollection.updateOne(
         { _id: new ObjectId(opportunityId) },
-        { $set: updatedOpportunity }
+        { $set: opportunityDataToUpdate }
       );
       res.json(result);
     } catch (error) {

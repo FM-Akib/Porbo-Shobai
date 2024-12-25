@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pencil, Share2, Trophy, Briefcase, GraduationCap, Award, FolderGit2, Heart, Flame, Plus, Save, LoaderPinwheel, SquareArrowOutUpRight } from 'lucide-react'
+import { toast } from '@/Hooks/use-toast'
+import useAxiosSecure from '@/Hooks/useAxiosSecure'
 import useUserInfo from '@/Hooks/useUserInfo'
 import { EditDialog } from '@/components/DashboardUser/EditDialog'
-import useAxiosSecure from '@/Hooks/useAxiosSecure'
-import { toast } from '@/Hooks/use-toast'
-import { ToastAction } from '@/components/ui/toast'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { ToastAction } from '@/components/ui/toast'
+import { Award, Briefcase, Flame, FolderGit2, GraduationCap, Heart, LoaderPinwheel, Pencil, Plus, Save, Share2, SquareArrowOutUpRight, Trophy } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function DashboardUser() {
@@ -54,7 +54,6 @@ function DashboardUser() {
 
   const updateProfile = (section, newData) => {
     setIsEditing(true)
-    console.log(section, newData);
     if(section === 'certificates' || section === 'achievements' || section === 'projects') {
       const image = newData.image;
       uploadImageToCloud(image)
@@ -74,8 +73,6 @@ function DashboardUser() {
     }))
   }
   }
-     console.log(profile);
-  // console.log(isEditing, isSaving);
 
   const saveProfile = () => {
     setIsSaving(true)
@@ -84,7 +81,7 @@ function DashboardUser() {
     setProfile(updatedProfile)
     axiosSecure.patch(`/users/${profile._id}`, updatedProfile)
       .then(response  => {
-         console.log(response);
+        
         if (response?.data?.modifiedCount ) {
           toast({
             variant: "default",
