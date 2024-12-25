@@ -31,7 +31,7 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
         <div className="w-full overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-gray-50">
+              <tr className="border-b ">
                 <th className="px-4 py-3 text-left font-medium">Title</th>
                 <th className="px-4 py-3 text-left font-medium">Start Date & Time</th>
                 <th className="px-4 py-3 text-left font-medium">Status</th>
@@ -40,7 +40,7 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
             </thead>
             <tbody>
               {opportunities?.map((opportunity) => (
-                <tr key={opportunity._id} className="border-b hover:bg-gray-50">
+                <tr key={opportunity._id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="px-4 py-3 font-medium ">
                   <Link to={`/a-opportunity/${opportunity._id}`} className="flex items-center gap-1">{opportunity.title}
                    <span>

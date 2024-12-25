@@ -8,11 +8,11 @@ const AddQuiz = () => {
   const { opportunity } = location.state || {}; 
   const { title } = opportunity;
     return (
-        <div className="min-h-screen bg-gray-50/50">
+        <div className="min-h-screen ">
       <div className="container mx-auto p-6">
         <h1 className="text-4xl font-bold text-center mb-5">Quiz Platform</h1>
         <p className="text-lg text-center mb-8">Welcome to the Quiz Platform for 
-            <span className="bg-pink-100 mx-2 px-1 rounded-sm">{title}</span></p>
+            <span className="bg-pink-100 dark:bg-yellow-600 mx-2 px-1 rounded-sm">{title}</span></p>
         
         <Tabs defaultValue="browse" className="max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 mb-8">
