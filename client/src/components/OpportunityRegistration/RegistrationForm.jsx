@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Phone, User, Building2,  UserPlus, CreditCard, Users, SendHorizontal, CircleArrowLeft, LoaderPinwheel } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
-import { AddMemberSheet } from "./AddMemberSheet";
-import { TeamPreview } from "./TeamPreview";
-import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormError";
-import confetti from "canvas-confetti";
-import sound from '../../assets/Audio/ps1.wav';
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import useUserInfo from "@/Hooks/useUserInfo";
+import { registrationSchema, registrationSchemaIndividual } from "@/utils/FormError";
+import { zodResolver } from "@hookform/resolvers/zod";
+import confetti from "canvas-confetti";
+import { Building2, CircleArrowLeft, CreditCard, LoaderPinwheel, Mail, Phone, SendHorizontal, User, UserPlus, Users } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import sound from '../../assets/Audio/ps1.wav';
+import { AddMemberSheet } from "./AddMemberSheet";
+import { TeamPreview } from "./TeamPreview";
 
 export function RegistrationForm({ Aopportunity }) {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
@@ -78,7 +78,7 @@ export function RegistrationForm({ Aopportunity }) {
     if (result?.data?.modifiedCount && userResult?.data?.modifiedCount) {
       setLoading(false);
     
-    toast.success("Team registration submitted successfully!");
+    toast.success("Registration submitted successfully!");
     palySound();
     const end = Date.now() + 4 * 1000; // 3 seconds
     const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
