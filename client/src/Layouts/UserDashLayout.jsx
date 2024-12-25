@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const UserDashLayout = () => {
   return (
     <>
-     <Toaster/>
+     <Toaster  />
     <div className="md:grid grid-cols-12 h-screen ">
       <div className="col-span-2">
       <Sidebar />

@@ -1,4 +1,5 @@
 
+import AQuiz from "@/components/Quiz/AQuiz";
 import MainLayout from "@/Layouts/MainLayout";
 import UserDashLayout from "@/Layouts/UserDashLayout";
 import AllOpportunities from "@/Pages/AllOpportunities";
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
           path: "/create-mentor",
           element: <MentorForm/>
           
+        },
+        {
+          path: "/quiz/psq",
+          element: <AQuiz/>
         }
       ]
     },
