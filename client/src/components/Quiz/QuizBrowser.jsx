@@ -1,4 +1,4 @@
-import { CircleHelp, Clock1, NotepadText, SquareDashedKanban, TimerReset } from 'lucide-react';
+import { CircleHelp, ClipboardList, Clock1, NotepadText, SquareDashedKanban, TimerReset } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
@@ -53,7 +53,10 @@ export default function QuizBrowser({ quiz }) {
       <h1 className="text-xl font-semibold mb-6 flex items-center gap-1"><SquareDashedKanban className='h-5 w-5' />
       Available task will be displayed here...,</h1>
 
-      <Card className="cursor-pointer shadow-none  ">
+      <Card className="cursor-pointer shadow-none 
+       bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1735102760/vrlx6bc0879rsyccpxg3.png')]
+        bg-contain  md:bg-right bg-no-repeat
+      ">
         <CardHeader>
           <CardTitle className="flex gap-1 items-center"><NotepadText className='h-5 w-5' />{quiz.title}</CardTitle>
           <CardDescription>{quiz.description}</CardDescription>
@@ -75,10 +78,14 @@ export default function QuizBrowser({ quiz }) {
                 </div>
             ) : (
               <Button
-                className="w-full"
+                className="w-1/2 relative rounded"
                 onClick={() => setShowRules(true)}
               >
-                Take Quiz
+                  <span className="absolute top-0 right-0 flex h-3 w-3 -translate-y-1/2 translate-x-1/2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </span>
+               <ClipboardList /> Enter Task
               </Button>
             )}
           </div>
