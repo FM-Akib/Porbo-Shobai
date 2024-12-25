@@ -136,7 +136,7 @@ export default function QuizCreator({opportunity}) {
       <h1 className="text-3xl text-center font-bold mb-6">Create New Quiz</h1>
       
       <div className="space-y-6">
-        <div className="grid gap-4 bg-white border rounded-lg  p-6">
+        <div className="grid gap-4 bg-white dark:bg-gray-900 border rounded-lg  p-6">
           <div className="space-y-2">
             <Label htmlFor="title" >
             <ClipboardList className="inline-block h-5 w-5 mr-1 text-muted-foreground" />
