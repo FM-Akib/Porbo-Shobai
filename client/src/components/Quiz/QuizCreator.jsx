@@ -1,6 +1,7 @@
 import { toast } from '@/Hooks/use-toast'
 import useAxiosSecure from '@/Hooks/useAxiosSecure'
-import { ClipboardList, Clock, FileText, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
+import useOpportunities from '@/Hooks/useOpportunities'
+import { ClipboardList, Clock, FileText, LaptopMinimalCheck, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent } from "../ui/card"
@@ -12,12 +13,12 @@ import { ToastAction } from '../ui/toast'
 
 export default function QuizCreator({opportunity}) {
   const [quizData, setQuizData] = useState({
-    title: '',
-    secretKey: '',
-    startDate: new Date(),
-    description: '',
+    title: opportunity?.task?.title || '',
+    secretKey: opportunity?.task?.secretKey || '',
+    startDate: opportunity?.task?.startDate || new Date().toISOString(),
+    description: opportunity?.task?.description || '',
     duration: 30,
-    questions: [
+    questions: opportunity?.task?.questions || [
       {
         type: 'multiple',
         question: '',
@@ -26,8 +27,10 @@ export default function QuizCreator({opportunity}) {
         correctAnswer: 0,
         points: 1 // Default points
       }
-    ]
+    ],
+    
   })
+  const {refetch} = useOpportunities();
   const axiosSecure =  useAxiosSecure();
   const [loading, setLoading] = useState(false)
   const uploadImageToCloud = async (file) => {
@@ -103,6 +106,7 @@ export default function QuizCreator({opportunity}) {
             description: "Task uploaded successfully",
             action: <ToastAction altText="ok">OK!</ToastAction>,
           })
+          refetch();
           setLoading(false)
         }
       })
@@ -133,7 +137,8 @@ export default function QuizCreator({opportunity}) {
   
   return (
     <div className="container mx-auto p-6 max-w-4xl">
-      <h1 className="text-3xl text-center font-bold mb-6">Create New Quiz</h1>
+      <h1 className="text-3xl text-center font-bold mb-6 flex items-center justify-center gap-2">
+        <LaptopMinimalCheck className='size-8' /> Quiz Creator</h1>
       
       <div className="space-y-6">
         <div className="grid gap-4 bg-white dark:bg-gray-900 border rounded-lg  p-6">

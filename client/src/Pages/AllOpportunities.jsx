@@ -1,14 +1,14 @@
-import  { useState } from "react";
-import { Search } from 'lucide-react';
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import OpportunityCard from "@/components/AllOpportunities/OpportunityCard";
+import Loader from "@/components/shared/Loader";
+import NotFoundCompetition from "@/components/shared/NotFoundCompetition";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Loader from "@/components/shared/Loader";
-import OpportunityCard from "@/components/AllOpportunities/OpportunityCard";
-import useOpportunities from "@/Hooks/useOpportunities";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import WordRotate from "@/components/ui/word-rotate";
-import NotFoundCompetition from "@/components/shared/NotFoundCompetition";
+import useOpportunities from "@/Hooks/useOpportunities";
+import { Search } from 'lucide-react';
+import { useState } from "react";
 
 const AllOpportunities = () => {
   const [filters, setFilters] = useState({

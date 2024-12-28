@@ -1,7 +1,9 @@
 import { toast } from '@/Hooks/use-toast';
-import { CircleHelp, ClipboardList, Clock1, CornerRightDown, NotepadText, ShieldAlert, SquareDashedKanban, TimerReset } from 'lucide-react';
+import useUserInfo from '@/Hooks/useUserInfo';
+import { CircleHelp, ClipboardList, Clock1, FilePenLine, NotepadText, ShieldAlert, TimerReset, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
@@ -11,12 +13,13 @@ import { ScrollArea } from '../ui/scroll-area';
 import { ToastAction } from '../ui/toast';
 import CountdownCard from './CountdownCard';
 
-export default function QuizBrowser({ opportunity }) {
+export default function QuizBrowser({ opportunity,onEditTask }) {
   const [showRules, setShowRules] = useState(false);
   const [showAuth, setAuth] = useState(false);
   const [timer, setTimer] = useState(0);
   const navigate = useNavigate();
-
+  const { userInfo } = useUserInfo();
+  const location = useLocation();
   useEffect(() => {
     if (opportunity?.task) {
       const timeRemaining = new Date(opportunity?.task.startDate).getTime() - new Date().getTime();
@@ -102,11 +105,15 @@ export default function QuizBrowser({ opportunity }) {
     }
   };
 
+  const handleDeleteTask = () => {
+    console.log("Deleting task");
+  }
+  
+  
+
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-xl font-semibold mb-6 flex items-center gap-1"><SquareDashedKanban className='h-5 w-5' />
-      <span className='flex items-end gap-1'> Available task will be displayed here <CornerRightDown className='size-4' /></span></h1>
-
+      
       <Card className="cursor-pointer shadow-none 
        bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1735102760/vrlx6bc0879rsyccpxg3.png')]
         bg-contain  md:bg-right bg-no-repeat
@@ -120,6 +127,36 @@ export default function QuizBrowser({ opportunity }) {
             <div className="flex flex-col gap-1">
             <p className="flex gap-1 items-center"><Clock1 className='h-5 w-5' />The quiz has a time limit of {opportunity?.task.duration} minutes.</p>
             <p className="flex gap-1 items-center"><CircleHelp className='h-5 w-5' />Questions: There are {opportunity?.task.questions.length} questions.</p>
+            {
+              userInfo?.role==='company' && location.pathname==='/dashboard/add-quiz' && (
+                <div className="flex gap-2 md:gap-4 items-center">
+                
+                <Button onClick={onEditTask} className="w-fit  mt-2 bg-green-500"><FilePenLine />Edit</Button>
+              
+                {/* deleting the task */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                  <Button className="w-fit  mt-2 bg-red-500"><Trash2 />Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your
+                        account and remove your data from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDeleteTask}>Confirm</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                </div>
+              )
+            }
+
+          
           </div>
             {timer > 0 ? (
                 <div className="">
