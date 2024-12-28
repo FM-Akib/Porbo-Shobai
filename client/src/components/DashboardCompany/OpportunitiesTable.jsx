@@ -65,7 +65,7 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleAddTask(opportunity)}>
-                          <ExternalLink className="h-4 w-4 mr-2" /> Add Task
+                          <ExternalLink className="h-4 w-4 mr-2" /> Task
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onUpdate(opportunity._id)}>
                           <Pencil className="h-4 w-4 mr-2" /> Update

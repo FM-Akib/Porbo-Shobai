@@ -52,7 +52,7 @@ const Aopportunity = () => {
               {
                 isRegistered && (
                   <>
-                  <h1 className="text-xl font-semibold mb-6 flex items-center gap-1">
+                  <h1 className="text-xl font-semibold  flex items-center gap-1 mt-3">
                     <SquareDashedKanban className='h-5 w-5' />
                   <span className='flex items-end gap-1'> Available task will be displayed here 
                     <CornerRightDown className='size-4' /></span></h1>
