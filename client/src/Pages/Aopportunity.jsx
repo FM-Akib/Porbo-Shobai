@@ -6,7 +6,7 @@ import Timeline from "@/components/Aopportunity/Timeline";
 import QuizBrowser from "@/components/Quiz/QuizBrowser";
 import { Button } from "@/components/ui/button";
 import useUserInfo from "@/Hooks/useUserInfo";
-import { Bookmark } from "lucide-react";
+import { Bookmark, CornerRightDown, SquareDashedKanban } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -51,7 +51,13 @@ const Aopportunity = () => {
 
               {
                 isRegistered && (
+                  <>
+                  <h1 className="text-xl font-semibold mb-6 flex items-center gap-1">
+                    <SquareDashedKanban className='h-5 w-5' />
+                  <span className='flex items-end gap-1'> Available task will be displayed here 
+                    <CornerRightDown className='size-4' /></span></h1>
                   <QuizBrowser opportunity={Aopportunity} />
+                  </>
                 )
               }
 
