@@ -1,12 +1,12 @@
 import React from "react";
 import { Input } from "../ui/input";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "../ui/table";
 import MonitoredData from "./MonitoredData";
 
@@ -21,7 +21,7 @@ const BrowseAttempts = ({ opportunity }) => {
   const filteredAttempts = attempts.filter(
     (attempt) =>
     //   attempt.name.toLowerCase().includes(filter.toLowerCase()) ||
-      attempt.email.toLowerCase().includes(filter.toLowerCase())
+      attempt?.email?.toLowerCase()?.includes(filter?.toLowerCase())
   );
 
   // Calculate total points
