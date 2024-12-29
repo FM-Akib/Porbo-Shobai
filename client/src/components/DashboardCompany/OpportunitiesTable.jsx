@@ -6,17 +6,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ExternalLink, MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
-  const handleAddTask =(opportunity)=>{
-    navigate("/dashboard/add-quiz", { state: { opportunity } });
-  }
+  // const handleAddTask =(opportunity)=>{
+  //   navigate("/dashboard/add-quiz", { state: { opportunity } });
+  // }
 
   return (
     <div className="w-full">
@@ -64,9 +64,11 @@ const OpportunitiesTable = ({ opportunities, onDelete, onUpdate }) => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleAddTask(opportunity)}>
+                        <Link to={`/dashboard/add-quiz/${opportunity._id}`}>
+                        <DropdownMenuItem >
                           <ExternalLink className="h-4 w-4 mr-2" /> Task
                         </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem onClick={() => onUpdate(opportunity._id)}>
                           <Pencil className="h-4 w-4 mr-2" /> Update
                         </DropdownMenuItem>
