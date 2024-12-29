@@ -8,6 +8,7 @@ export const baseApi = createApi({
   tagTypes: ['Opportunities'],
   endpoints: (builder) => ({
     
+    // Fetch opportunities
     getOpportunities: builder.query({
         query: ({ filters = {}, page = 1, limit = 10 })=>{
             const queryParams = new URLSearchParams({
@@ -23,7 +24,17 @@ export const baseApi = createApi({
         providesTags: ['Opportunities']
     }),
 
+    // Post a new opportunity
+    postOpportunity: builder.mutation({
+      query:(opportunityData)=>({
+        url: '/opportunities',
+        method: 'POST',
+        body: opportunityData
+      }),
+      invalidatesTags: ['Opportunities']
+    })
+
   })
 })
 
-export const {useGetOpportunitiesQuery} = baseApi
+export const {useGetOpportunitiesQuery, usePostOpportunityMutation} = baseApi
