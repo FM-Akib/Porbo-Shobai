@@ -4,30 +4,31 @@ import PrizeSection from "@/components/Aopportunity/PrizeSection";
 import Stats from "@/components/Aopportunity/Stats";
 import Timeline from "@/components/Aopportunity/Timeline";
 import QuizBrowser from "@/components/Quiz/QuizBrowser";
+import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
 import useUserInfo from "@/Hooks/useUserInfo";
-import { Bookmark } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useGetOpportunitiesQuery } from "@/redux/api/api";
+import { Bookmark, CornerRightDown, SquareDashedKanban } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 const Aopportunity = () => {
     const {id} = useParams();
-    const [Aopportunity, setAopportunity] = useState({});
-    const [isRegistered, setIsRegistered] = useState(false);
+    const { data, isLoading, isError } = useGetOpportunitiesQuery({
+      filters: id ? { id } : {}, 
+      page: 1,
+      limit: id ? 1 : 10, 
+    });
+    const Aopportunity = data?.opportunities[0];
     const {userInfo} = useUserInfo();
-    useEffect(() =>{
-        fetch(`${import.meta.env.VITE_server_url}/opportunities/${id}`)
-        .then(res => res.json())
-        .then(data =>{
-            setAopportunity(data)
-        })
-    },[id])
+    const isRegistered = userInfo?.participations?.includes(Aopportunity?._id);
+    if(isLoading){
+        return <Loader/>
+    }
+    if(isError|| !Aopportunity){
+        return <div className="text-center text-red-500 font-bold text-xl mt-8">
+          Something went wrong. Please try again later.</div>
+    }
 
-    useEffect(() => {
-        if (userInfo && Aopportunity) {
-          setIsRegistered(userInfo?.participations?.includes(Aopportunity._id));
-        }
-      }, [userInfo, Aopportunity]);
     return (
         <div className="min-h-screen ">
         <div className="max-w-4xl mx-auto py-8 px-4">
@@ -51,7 +52,13 @@ const Aopportunity = () => {
 
               {
                 isRegistered && (
+                  <>
+                  <h1 className="text-xl font-semibold  flex items-center gap-1 mt-3">
+                    <SquareDashedKanban className='h-5 w-5' />
+                  <span className='flex items-end gap-1'> Available task will be displayed here 
+                    <CornerRightDown className='size-4' /></span></h1>
                   <QuizBrowser opportunity={Aopportunity} />
+                  </>
                 )
               }
 

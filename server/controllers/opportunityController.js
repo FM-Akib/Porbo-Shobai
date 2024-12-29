@@ -17,15 +17,22 @@ const init = (db) => {
 // };
 const getAllOpportunities = async (req, res) => {
   try {
-    const { opportunityType, category, eventType, status, eligibility, page = 1, limit = 10 } = req.query;
-
+    const { id, opportunityType, category, eventType, status, eligibility, page = 1, limit = 10 } = req.query;
     const query = {};
 
+    if (id) {
+      try {
+        query._id = new ObjectId(id); // Ensure `id` is a valid MongoDB ObjectId
+      } catch (error) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+    } else {
     if (opportunityType) query.opportunityType = opportunityType;
     if (category) query.categories = { $regex: category, $options: "i" };
     if (eventType) query.mode = eventType;
     if (status) query.status = status;
     if (eligibility) query.eligibility = eligibility;
+    }
 
     const skip = (page - 1) * limit;
     const total = await opportunityCollection.countDocuments(query);

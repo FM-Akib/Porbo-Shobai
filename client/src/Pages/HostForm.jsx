@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { formSchema } from "@/utils/FormError";
+import { zodResolver } from "@hookform/resolvers/zod";
+import JoditEditor from 'jodit-react';
 import { ArrowLeft, Globe, ImageUp, Lock } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import JoditEditor from 'jodit-react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { formSchema } from "@/utils/FormError";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 const HostComForm = () => {
     const [content, setContent] = useState('');
@@ -22,7 +22,6 @@ const HostComForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { title } = location.state|| {};
-    console.log(title);
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {

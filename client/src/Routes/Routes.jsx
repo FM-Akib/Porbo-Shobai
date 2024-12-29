@@ -107,7 +107,7 @@ export const router = createBrowserRouter([
           element: <MyHosts/>
         },
         {
-          path: "add-quiz",
+          path: "add-quiz/:id",
           element: <AddQuiz/>
         }
       ]
