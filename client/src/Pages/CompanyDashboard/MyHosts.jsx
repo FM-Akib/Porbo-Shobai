@@ -6,24 +6,6 @@ import { useGetOpportunitiesByIdsQuery } from "@/redux/api/api";
 
 const MyHosts = () => {
     const { userInfo, isLoading: loadUserInfo } = useUserInfo();
-    // const [myhosts, setMyhosts] = useState([]);
-    // const axiosSecure = useAxiosSecure();
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         if (!userInfo.hosts || userInfo.hosts.length === 0) return;
-    
-    //         try {
-    //             const query = qs.stringify({ opportunityIds: userInfo.hosts }, 
-    //                 { arrayFormat: "comma" });
-    //             const result = await axiosSecure.get(`/opportunitiesbyids?${query}`);
-    //             setMyhosts(result.data);
-    //         } catch (error) {
-    //             console.error("Error fetching opportunities:", error.message);
-    //         }
-    //     }
-    //     fetchData();
-    // }, [userInfo?.hosts, axiosSecure]);
- // Fetch opportunities by IDs
     const {
         data: myhosts = [],
         isLoading,

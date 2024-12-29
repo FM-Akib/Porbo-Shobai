@@ -31,12 +31,9 @@ export default function QuizCreator({opportunity}) {
     ],
   })
   
-  // const axiosSecure =  useAxiosSecure();
-  // const [loading, setLoading] = useState(false)
+ 
   const [updateOpportunity, {isLoading}] = useUpdateOpportunityMutation()
-  // if(isLoading){
-  //   setLoading(true)
-  // }
+
   const handleImageUpload = (questionIndex, e) => {
     const file = e.target.files[0]
     if (file) {
@@ -72,16 +69,14 @@ export default function QuizCreator({opportunity}) {
   }
 
   const handlePublish = async () => {
-    // const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]')
-    // setLoading(true)
+  
     const newQuiz = {
       ...quizData,
       
       createdAt: new Date().toISOString(),
       attempts: []
     }
-    // localStorage.setItem('quizzes', JSON.stringify([...quizzes, newQuiz]))
-    // console.log(quizData)
+ 
     const updatedOpportunity = {
       ...opportunity,
       task: {...newQuiz}
@@ -109,25 +104,7 @@ export default function QuizCreator({opportunity}) {
         action: <ToastAction altText="retry">Retry</ToastAction>,
       });
     }
-    // axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
-    //   .then(response  => {
-    //     if (response?.data?.modifiedCount ) {
-    //       toast({
-    //         variant: "default",
-    //         title: "Task Upload",
-    //         description: "Task uploaded successfully",
-    //         action: <ToastAction altText="ok">OK!</ToastAction>,
-    //       })
-         
-    //       setLoading(false)
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   })     
-
-
-    // alert('Quiz published successfully!')
+    
     setQuizData({
       title: '',
       startDate: new Date(),
