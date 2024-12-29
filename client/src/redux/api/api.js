@@ -56,10 +56,19 @@ export const baseApi = createApi({
       providesTags: ['OpportunitiesByIds'],
     }),
 
+    //delete a Opportunity
+    deleteOpportunity: builder.mutation({
+      query: (id)=>({
+        url: `/opportunities/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Opportunities']
+    }),
+
 
   })
 })
 
 export const {useGetOpportunitiesQuery, usePostOpportunityMutation, useUpdateOpportunityMutation,
-useGetOpportunitiesByIdsQuery
+useGetOpportunitiesByIdsQuery, useDeleteOpportunityMutation
 } = baseApi

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ToastAction } from '@/components/ui/toast'
+import { uploadImageToCloud } from '@/lib/uploadImageToCloud'
 import { Award, Briefcase, Flame, FolderGit2, GraduationCap, Heart, LoaderPinwheel, Pencil, Plus, Save, Share2, SquareArrowOutUpRight, Trophy } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -37,20 +38,6 @@ function DashboardUser() {
     }))
   }
 
-  const uploadImageToCloud = async (file) => {
-    if(!file) return alert("Please upload a banner image");
-    const formDataToSend = new FormData();
-    formDataToSend.append("file", file);
-    formDataToSend.append("upload_preset", "porboshobai");
-    formDataToSend.append("cloud_name", "ds0io6msx");
-    const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
-      method: "POST",
-      body: formDataToSend,
-    });
-    const imageData = await response.json();
-    if(!imageData) return alert("Image upload failed");
-    return imageData.url;
-  }
 
   const updateProfile = (section, newData) => {
     setIsEditing(true)
