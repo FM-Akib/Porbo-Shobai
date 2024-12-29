@@ -1,6 +1,8 @@
 import { toast } from '@/Hooks/use-toast'
-import useAxiosSecure from '@/Hooks/useAxiosSecure'
-import { ClipboardList, Clock, FileText, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
+// import useAxiosSecure from '@/Hooks/useAxiosSecure'
+import { uploadImageToCloud } from '@/lib/uploadImageToCloud'
+import { useUpdateOpportunityMutation } from '@/redux/api/api'
+import { ClipboardList, Clock, FileText, LaptopMinimalCheck, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent } from "../ui/card"
@@ -12,12 +14,12 @@ import { ToastAction } from '../ui/toast'
 
 export default function QuizCreator({opportunity}) {
   const [quizData, setQuizData] = useState({
-    title: '',
-    secretKey: '',
-    startDate: new Date(),
-    description: '',
+    title: opportunity?.task?.title || '',
+    secretKey: opportunity?.task?.secretKey || '',
+    startDate: opportunity?.task?.startDate || new Date().toISOString(),
+    description: opportunity?.task?.description || '',
     duration: 30,
-    questions: [
+    questions: opportunity?.task?.questions || [
       {
         type: 'multiple',
         question: '',
@@ -26,24 +28,12 @@ export default function QuizCreator({opportunity}) {
         correctAnswer: 0,
         points: 1 // Default points
       }
-    ]
+    ],
   })
-  const axiosSecure =  useAxiosSecure();
-  const [loading, setLoading] = useState(false)
-  const uploadImageToCloud = async (file) => {
-    if(!file) return alert("Please upload a image");
-    const formDataToSend = new FormData();
-    formDataToSend.append("file", file);
-    formDataToSend.append("upload_preset", "porboshobai");
-    formDataToSend.append("cloud_name", "ds0io6msx");
-    const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
-      method: "POST",
-      body: formDataToSend,
-    });
-    const imageData = await response.json();
-    if(!imageData) return alert("Image upload failed");
-    return imageData.url;
-  }
+  
+ 
+  const [updateOpportunity, {isLoading}] = useUpdateOpportunityMutation()
+
   const handleImageUpload = (questionIndex, e) => {
     const file = e.target.files[0]
     if (file) {
@@ -78,40 +68,43 @@ export default function QuizCreator({opportunity}) {
     setQuizData({ ...quizData, questions: newQuestions })
   }
 
-  const handlePublish = () => {
-    // const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]')
-    setLoading(true)
+  const handlePublish = async () => {
+  
     const newQuiz = {
       ...quizData,
       
       createdAt: new Date().toISOString(),
       attempts: []
     }
-    // localStorage.setItem('quizzes', JSON.stringify([...quizzes, newQuiz]))
-    // console.log(quizData)
+ 
     const updatedOpportunity = {
       ...opportunity,
       task: {...newQuiz}
     }
+    try {
+      const response = await updateOpportunity({
+        id: opportunity._id,
+        updatedOpportunity,
+      }).unwrap(); // Unwrap to handle promise resolution/rejection
+
+      if (response?.modifiedCount) {
+        toast({
+          variant: "default",
+          title: "Task Upload",
+          description: "Task uploaded successfully",
+          action: <ToastAction altText="ok">OK!</ToastAction>,
+        });
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to upload task. Please try again.",
+        action: <ToastAction altText="retry">Retry</ToastAction>,
+      });
+    }
     
-    axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
-      .then(response  => {
-        if (response?.data?.modifiedCount ) {
-          toast({
-            variant: "default",
-            title: "Task Upload",
-            description: "Task uploaded successfully",
-            action: <ToastAction altText="ok">OK!</ToastAction>,
-          })
-          setLoading(false)
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })     
-
-
-    // alert('Quiz published successfully!')
     setQuizData({
       title: '',
       startDate: new Date(),
@@ -133,7 +126,8 @@ export default function QuizCreator({opportunity}) {
   
   return (
     <div className="container mx-auto p-6 max-w-4xl">
-      <h1 className="text-3xl text-center font-bold mb-6">Create New Quiz</h1>
+      <h1 className="text-3xl text-center font-bold mb-6 flex items-center justify-center gap-2">
+        <LaptopMinimalCheck className='size-8' /> Quiz Creator</h1>
       
       <div className="space-y-6">
         <div className="grid gap-4 bg-white dark:bg-gray-900 border rounded-lg  p-6">
@@ -330,7 +324,7 @@ export default function QuizCreator({opportunity}) {
           </Button>
         </div>
           {
-            loading ?  <Button  className="w-full" size="lg">
+            isLoading ?  <Button  className="w-full" size="lg">
             Publishing ... <LoaderPinwheel className='animate-spin h-5 w-5 ml-1' />
           </Button> :  <Button onClick={handlePublish} className="w-full" size="lg">
           Publish Quiz <Rocket className="h-4 w-4 ml-1" />

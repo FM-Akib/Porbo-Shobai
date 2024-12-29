@@ -1,42 +1,32 @@
-import useAxiosSecure from "@/Hooks/useAxiosSecure";
-import useUserInfo from "@/Hooks/useUserInfo";
-import { useEffect, useState } from "react";
-import qs from 'qs';
+import OpportunitiesTable from "@/components/DashboardCompany/OpportunitiesTable";
 import TitleDashboard from "@/components/DashboardUser/TitleDashboard";
 import Loader from "@/components/shared/Loader";
-import OpportunitiesTable from "@/components/DashboardCompany/OpportunitiesTable";
+import useUserInfo from "@/Hooks/useUserInfo";
+import { useGetOpportunitiesByIdsQuery } from "@/redux/api/api";
 
 const MyHosts = () => {
-    const { userInfo, isLoading } = useUserInfo();
-    const [myhosts, setMyhosts] = useState([]);
-    const axiosSecure = useAxiosSecure();
+    const { userInfo, isLoading: loadUserInfo } = useUserInfo();
+    const {
+        data: myhosts = [],
+        isLoading,
+        isError,
+    } = useGetOpportunitiesByIdsQuery(userInfo?.hosts?.join(','), {
+        skip: !userInfo?.hosts || userInfo?.hosts.length === 0, // Skip if no hosts
+    });
 
-    useEffect(() => {
-        async function fetchData() {
-            if (!userInfo.hosts || userInfo.hosts.length === 0) return;
-    
-            try {
-                const query = qs.stringify({ opportunityIds: userInfo.hosts }, 
-                    { arrayFormat: "comma" });
-                const result = await axiosSecure.get(`/opportunitiesbyids?${query}`);
-                setMyhosts(result.data);
-            } catch (error) {
-                console.error("Error fetching opportunities:", error.message);
-            }
-        }
-        fetchData();
-    }, [userInfo?.hosts, axiosSecure]);
-
-    const handleDelete = async (id) => {
-        try {
-            await axiosSecure.delete(`/opportunities/${id}`);
-            setMyhosts(prev => prev.filter(host => host._id !== id));
-        } catch (error) {
-            console.error("Error deleting opportunity:", error.message);
-        }
+    const handleDelete =  (id) => {
+        console.log("Delete opportunity with ID:", id);
+        // try {
+        //     await axiosSecure.delete(`/opportunities/${id}`);
+        //     setMyhosts(prev => prev.filter(host => host._id !== id));
+        // } catch (error) {
+        //     console.error("Error deleting opportunity:", error.message);
+        // }
     };
     
-    if (isLoading) return <Loader />;
+    if (isLoading || loadUserInfo) return <Loader />;
+    if (isError) return <div className="text-center text-red-500 font-bold text-xl mt-8">
+        Something went wrong. Please try again later.</div>;
     
     return (
         <section className="p-3 md:p-6">
