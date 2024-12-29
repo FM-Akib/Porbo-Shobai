@@ -1,6 +1,5 @@
 import { toast } from '@/Hooks/use-toast'
 import useAxiosSecure from '@/Hooks/useAxiosSecure'
-import useOpportunities from '@/Hooks/useOpportunities'
 import { ClipboardList, Clock, FileText, LaptopMinimalCheck, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
@@ -30,7 +29,7 @@ export default function QuizCreator({opportunity}) {
     ],
     
   })
-  const {refetch} = useOpportunities();
+  
   const axiosSecure =  useAxiosSecure();
   const [loading, setLoading] = useState(false)
   const uploadImageToCloud = async (file) => {
@@ -106,7 +105,7 @@ export default function QuizCreator({opportunity}) {
             description: "Task uploaded successfully",
             action: <ToastAction altText="ok">OK!</ToastAction>,
           })
-          refetch();
+         
           setLoading(false)
         }
       })
