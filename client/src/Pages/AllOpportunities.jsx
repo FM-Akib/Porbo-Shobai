@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import WordRotate from "@/components/ui/word-rotate";
-import useOpportunities from "@/Hooks/useOpportunities";
+import { useGetOpportunitiesQuery } from "@/redux/api/api";
 import { Search } from 'lucide-react';
 import { useState } from "react";
 
@@ -18,7 +18,17 @@ const AllOpportunities = () => {
     eligibility: ""
   });
   const [page, setPage] = useState(1);
-  const {loader, opportunities, totalPages } = useOpportunities(filters, page, 9);
+  // const {loader, opportunities, totalPages } = useOpportunities(filters, page, 9);
+  const { data, error, isLoading,totalPages } = useGetOpportunitiesQuery({ filters, page, limit:9 });
+  const opportunities = data?.opportunities;
+
+  if(error){
+    return (
+      <div className="text-center text-red-500 font-bold text-xl mt-8">
+        Something went wrong. Please try again later.
+      </div>
+    );
+  }
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
     setPage(1); // Reset to first page when filters change
@@ -37,6 +47,9 @@ const AllOpportunities = () => {
     });
     setPage(1);
   };
+  if(isLoading){
+    return <Loader/>;
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 ">
@@ -120,8 +133,8 @@ const AllOpportunities = () => {
       }
       
       {/* Opportunities */}
-      {!loader && opportunities?.length === 0 &&  <NotFoundCompetition clearFilters={clearFilters} />}
-      {loader && <Loader /> }
+      {!isLoading && opportunities?.length === 0 &&  <NotFoundCompetition clearFilters={clearFilters} />}
+      {/* {isLoading && <Loader /> } */}
       {opportunities?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {opportunities.map((opportunity) => (
