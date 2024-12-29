@@ -1,5 +1,7 @@
 import { toast } from '@/Hooks/use-toast'
-import useAxiosSecure from '@/Hooks/useAxiosSecure'
+// import useAxiosSecure from '@/Hooks/useAxiosSecure'
+import { uploadImageToCloud } from '@/lib/uploadImageToCloud'
+import { useUpdateOpportunityMutation } from '@/redux/api/api'
 import { ClipboardList, Clock, FileText, LaptopMinimalCheck, LoaderPinwheel, MinusCircle, PlusCircle, Rocket, SquareAsterisk } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
@@ -27,25 +29,14 @@ export default function QuizCreator({opportunity}) {
         points: 1 // Default points
       }
     ],
-    
   })
   
-  const axiosSecure =  useAxiosSecure();
-  const [loading, setLoading] = useState(false)
-  const uploadImageToCloud = async (file) => {
-    if(!file) return alert("Please upload a image");
-    const formDataToSend = new FormData();
-    formDataToSend.append("file", file);
-    formDataToSend.append("upload_preset", "porboshobai");
-    formDataToSend.append("cloud_name", "ds0io6msx");
-    const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
-      method: "POST",
-      body: formDataToSend,
-    });
-    const imageData = await response.json();
-    if(!imageData) return alert("Image upload failed");
-    return imageData.url;
-  }
+  // const axiosSecure =  useAxiosSecure();
+  // const [loading, setLoading] = useState(false)
+  const [updateOpportunity, {isLoading}] = useUpdateOpportunityMutation()
+  // if(isLoading){
+  //   setLoading(true)
+  // }
   const handleImageUpload = (questionIndex, e) => {
     const file = e.target.files[0]
     if (file) {
@@ -80,9 +71,9 @@ export default function QuizCreator({opportunity}) {
     setQuizData({ ...quizData, questions: newQuestions })
   }
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     // const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]')
-    setLoading(true)
+    // setLoading(true)
     const newQuiz = {
       ...quizData,
       
@@ -95,23 +86,45 @@ export default function QuizCreator({opportunity}) {
       ...opportunity,
       task: {...newQuiz}
     }
-    
-    axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
-      .then(response  => {
-        if (response?.data?.modifiedCount ) {
-          toast({
-            variant: "default",
-            title: "Task Upload",
-            description: "Task uploaded successfully",
-            action: <ToastAction altText="ok">OK!</ToastAction>,
-          })
+    try {
+      const response = await updateOpportunity({
+        id: opportunity._id,
+        updatedOpportunity,
+      }).unwrap(); // Unwrap to handle promise resolution/rejection
+
+      if (response?.modifiedCount) {
+        toast({
+          variant: "default",
+          title: "Task Upload",
+          description: "Task uploaded successfully",
+          action: <ToastAction altText="ok">OK!</ToastAction>,
+        });
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to upload task. Please try again.",
+        action: <ToastAction altText="retry">Retry</ToastAction>,
+      });
+    }
+    // axiosSecure.patch(`/opportunities/${opportunity._id}`, updatedOpportunity)
+    //   .then(response  => {
+    //     if (response?.data?.modifiedCount ) {
+    //       toast({
+    //         variant: "default",
+    //         title: "Task Upload",
+    //         description: "Task uploaded successfully",
+    //         action: <ToastAction altText="ok">OK!</ToastAction>,
+    //       })
          
-          setLoading(false)
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })     
+    //       setLoading(false)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   })     
 
 
     // alert('Quiz published successfully!')
@@ -334,7 +347,7 @@ export default function QuizCreator({opportunity}) {
           </Button>
         </div>
           {
-            loading ?  <Button  className="w-full" size="lg">
+            isLoading ?  <Button  className="w-full" size="lg">
             Publishing ... <LoaderPinwheel className='animate-spin h-5 w-5 ml-1' />
           </Button> :  <Button onClick={handlePublish} className="w-full" size="lg">
           Publish Quiz <Rocket className="h-4 w-4 ml-1" />
