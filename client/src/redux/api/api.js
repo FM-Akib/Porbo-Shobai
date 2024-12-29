@@ -32,9 +32,34 @@ export const baseApi = createApi({
         body: opportunityData
       }),
       invalidatesTags: ['Opportunities']
-    })
+    }),
+
+    //update a Opportunity
+    updateOpportunity: builder.mutation({
+      query: ({id, updatedOpportunity})=>({
+        url: `/opportunities/${id}`,
+        method: 'PATCH',
+        body: updatedOpportunity
+      }),
+      invalidatesTags: ['Opportunities', 'OpportunitiesByIds']
+    }),
+
+    // Fetch opportunities by ids for my hosts
+    getOpportunitiesByIds: builder.query({
+      query: (opportunityIds) => {
+        const queryParams = new URLSearchParams({ opportunityIds }).toString();
+        return {
+          url: `/opportunitiesbyids?${queryParams}`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['OpportunitiesByIds'],
+    }),
+
 
   })
 })
 
-export const {useGetOpportunitiesQuery, usePostOpportunityMutation} = baseApi
+export const {useGetOpportunitiesQuery, usePostOpportunityMutation, useUpdateOpportunityMutation,
+useGetOpportunitiesByIdsQuery
+} = baseApi
