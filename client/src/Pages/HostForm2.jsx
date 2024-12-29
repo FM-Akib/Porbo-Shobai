@@ -1,23 +1,24 @@
-import  { useState } from "react";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, PlusCircle, User, Users, X, Calendar, Clock, LoaderPinwheel, SendHorizontal, Eraser } from 'lucide-react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/Hooks/use-toast";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import { usePostOpportunityMutation } from "@/redux/api/api";
 import { formSchema2 } from "@/utils/FormError";
-import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import { zodResolver } from "@hookform/resolvers/zod";
 import confetti from "canvas-confetti";
+import { ArrowLeft, Calendar, Clock, Eraser, LoaderPinwheel, PlusCircle, SendHorizontal, User, Users, X } from 'lucide-react';
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Link, useLocation } from "react-router-dom";
 
 
 
@@ -26,8 +27,9 @@ const HostForm2 = () => {
   const location = useLocation();
   const [participationType, setParticipationType] = useState('individual');
   const { formData } = location.state || {};
-  const axioSecure = useAxiosSecure();
+  // const axioSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
+  const [postOpportunity, { isLoading }] = usePostOpportunityMutation();
 
 
   const form = useForm({
@@ -69,7 +71,7 @@ const HostForm2 = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("Form data:", { ...formData, ...data });
+      // console.log("Form data:", { ...formData, ...data });
       setLoading(true);
       const file = formData.banner;
       if(!file) return alert("Please upload a banner image");
@@ -100,10 +102,12 @@ const HostForm2 = () => {
         ...data,
         participants: [],
       }
-      console.log("Opportunity data:", opportunityData);
-      const response2 = await axioSecure.post("/opportunities", opportunityData);
+      // console.log("Opportunity data:", opportunityData);
+      // const response2 = await axioSecure.post("/opportunities", opportunityData);
       // console.log("Response:", response2.data);
-      if(response2.data.acknowledged){
+      const response2 = await postOpportunity(opportunityData).unwrap();
+      // console.log("Response:", response2);
+      if(response2.acknowledged){
       setLoading(false);
       toast({
         variant: "default",
@@ -147,7 +151,9 @@ const HostForm2 = () => {
     }
   };
 
-
+  if ( isLoading) {
+    setLoading(true);
+  }
 
   return (
     <div className="min-h-screen md:p-8 mb-10 md:mb-20">
