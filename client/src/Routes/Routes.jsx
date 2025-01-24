@@ -15,6 +15,7 @@ import HostForm2 from "@/Pages/HostForm2";
 import Landing from "@/Pages/Landing";
 import Login from "@/Pages/Login";
 import MentorForm from "@/Pages/MentorForm";
+import MentorForm2 from "@/Pages/MentorForm2";
 import OpportunityRegistration from "@/Pages/OpportunityRegistration";
 import Register from "@/Pages/Register";
 import DashboardHome from "@/Pages/UserDashboard/DasdhboardHome";
@@ -74,6 +75,11 @@ export const router = createBrowserRouter([
           path: "/create-mentor",
           element: <MentorForm/>
           
+        },
+        {
+          path: "/complete-mentor",
+          element: <MentorForm2/>
+
         },
         {
           path: "/quiz/psq",

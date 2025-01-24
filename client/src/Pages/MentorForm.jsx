@@ -26,18 +26,17 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ImageUp, PlusCircle, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import JoditEditor from "jodit-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { formSchema } from "@/utils/FormError";
+import { formSchemaMentor } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaFemale, FaMale } from "react-icons/fa";
 const MentorForm = () => {
   const [content, setContent] = useState("");
   const [bannerPreview, setBannerPreview] = useState(null);
   const [banner, setBanner] = useState(null);
-  const [mode, setMode] = useState(false);
   const [newLanguage, setnewLanguage] = useState("");
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -45,19 +44,11 @@ const MentorForm = () => {
   const { title } = location.state || {};
   console.log(title);
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchemaMentor),
     defaultValues: {
-      visibility: "public",
-      mode: "online",
-      opportunityType: title || "General & Case Competitions",
-      title: "Example Title",
-      organization: "your organization name",
-      websiteUrl: "https://",
-      city: "City",
-      location: "Location",
-      subtitle: "Example Subtitle",
+      gender: "male",
     },
-    mode: "onBlur",
+    gender: "onBlur",
   });
 
   const config = useMemo(
@@ -92,12 +83,6 @@ const MentorForm = () => {
     [content]
   );
 
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      setMode(value.mode === "offline");
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   // Handle banner upload
   const handleBannerChange = (e) => {
@@ -111,8 +96,8 @@ const MentorForm = () => {
   };
 
   const onSubmit = (value) => {
-    console.log({ ...value, content, banner });
-    navigate("/complete-competition", {
+    console.log(value);
+    navigate("/complete-mentor", {
       state: { formData: { ...value, content, banner } },
     });
   };
@@ -213,7 +198,7 @@ const MentorForm = () => {
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter opportunity title"
+                          placeholder="Enter Your First Name"
                           {...field}
                         />
                       </FormControl>
@@ -232,7 +217,7 @@ const MentorForm = () => {
                       <FormLabel>Last Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter opportunity subtitle"
+                          placeholder="Enter Your Last Name"
                           {...field}
                         />
                       </FormControl>
@@ -245,7 +230,7 @@ const MentorForm = () => {
                 {/*Gender*/}
                 <FormField
                   control={form.control}
-                  name="Gender"
+                  name="gender"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
                       <FormLabel>Gender</FormLabel>
@@ -509,7 +494,7 @@ const MentorForm = () => {
                 {/* Youtube URL */}
                 <FormField
                   control={form.control}
-                  name="facebookUrl"
+                  name="youtubeUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Youtube</FormLabel>
