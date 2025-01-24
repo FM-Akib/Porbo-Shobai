@@ -35,7 +35,6 @@ export default function QuizBrowser({ opportunity,onEditTask }) {
     return () => clearInterval(interval);
   }, []);
 
-  
 
   const handleStartQuiz = async () => {
     try {
@@ -104,9 +103,8 @@ export default function QuizBrowser({ opportunity,onEditTask }) {
       }
     }
   };
-
   const handleDeleteTask = () => {
-    console.log("Deleting task");
+   console.log('delete task')
   }
   
   
@@ -128,7 +126,7 @@ export default function QuizBrowser({ opportunity,onEditTask }) {
             <p className="flex gap-1 items-center"><Clock1 className='h-5 w-5' />The quiz has a time limit of {opportunity?.task.duration} minutes.</p>
             <p className="flex gap-1 items-center"><CircleHelp className='h-5 w-5' />Questions: There are {opportunity?.task.questions.length} questions.</p>
             {
-              userInfo?.role==='company' && location.pathname==='/dashboard/add-quiz' && (
+              userInfo?.role==='company' && location.pathname===`/dashboard/add-quiz/${opportunity?._id}` && (
                 <div className="flex gap-2 md:gap-4 items-center">
                 
                 <Button onClick={onEditTask} className="w-fit  mt-2 bg-green-500"><FilePenLine />Edit</Button>
