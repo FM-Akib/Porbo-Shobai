@@ -88,3 +88,78 @@ export const teamMemberSchema = z.object({
     required_error: "Please select your gender",
   }),
 });
+
+
+
+export const formSchemaMentor = z.object({
+  firstName: z
+    .string()
+    .min(1, "First name is required")
+    .max(190, "First name cannot exceed 190 characters"),
+  lastName: z
+    .string()
+    .min(1, "Last name is required")
+    .max(190, "Last name cannot exceed 190 characters"),
+  gender: z.enum(["male", "female"], "Please select a valid gender"),
+  mobileNo: z
+    .string()
+    .regex(/^\+?[0-9]{10,15}$/, "Invalid mobile number")
+    .optional(),
+  organisation: z.string().min(1, "Organisation/Institute is required"),
+  domain: z
+    .string()
+    .min(1, "Domain is required")
+    .optional(),
+  workExperience: z
+    .string()
+    .max(190, "Work experience cannot exceed 190 characters")
+    .optional(),
+  bio: z.string().optional(),
+  languages: z
+    .array(z.string().nonempty("Language cannot be empty"))
+    .optional(),
+  linkedinUrl: z
+    .string()
+    .url("Please enter a valid LinkedIn URL")
+    .optional(),
+  facebookUrl: z
+    .string()
+    .url("Please enter a valid Facebook URL")
+    .optional(),
+  youtubeUrl: z
+    .string()
+    .url("Please enter a valid YouTube URL")
+    .optional(),
+  protfolioUrl: z
+    .string()
+    .url("Please enter a valid portfolio URL")
+    .optional(),
+});
+
+export const formSchemaMentor2 = z.object({
+  schoolName: z
+    .string()
+    .min(1, { message: "School name is required." })
+    .max(100, { message: "School name cannot exceed 100 characters." }),
+
+  collegeName: z
+    .string()
+    .min(1, { message: "College name is required." })
+    .max(100, { message: "College name cannot exceed 100 characters." }),
+
+  universityName: z
+    .string()
+    .min(1, { message: "University name is required." })
+    .max(100, { message: "University name cannot exceed 100 characters." }),
+
+  skills: z
+    .array(z.string().min(1, { message: "Skill cannot be empty." }))
+    .min(1, { message: "At least one skill is required." }),
+
+  topics: z
+    .array(z.string().min(1, { message: "Topic cannot be empty." }))
+    .min(1, { message: "At least one topic is required." }),
+});
+
+ 
+
