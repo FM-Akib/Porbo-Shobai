@@ -18,26 +18,49 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, PlusCircle, X } from "lucide-react";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { formSchemaMentor } from "@/utils/FormError";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { formSchemaMentor2 } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const MentorForm = () => {
-  const [newSkill, setNewSkill] = useState("");
+  const [newSkill, setNewSkill] = useState(""); 
   const [newTopic, setNewTopic] = useState("");
+  const location = useLocation();
+  const { formData } = location.state || {};
+  
   const navigate = useNavigate();
 
   const form = useForm({
-    resolver: zodResolver(formSchemaMentor),
+    resolver: zodResolver(formSchemaMentor2),
     defaultValues: {
-      gender: "male",
+      ...formData,
     },
   });
 
-  const onSubmit = (value) => {
-    navigate("/complete-mentor", {
-      state: { formData: value },
-    });
+  const onSubmit = async (value) => {
+
+    try {
+      // console.log("Form data:", { ...formData, ...value });
+      const file = formData.banner;
+      if(!file) return alert("Please upload a banner image");
+      const formDataToSend = new FormData();
+      formDataToSend.append("file", file);
+      formDataToSend.append("upload_preset", "porboshobai");
+      formDataToSend.append("cloud_name", "ds0io6msx");
+      const response = await fetch("https://api.cloudinary.com/v1_1/ds0io6msx/image/upload", {
+        method: "POST",
+        body: formDataToSend,
+      });
+      const imageData = await response.json();
+      if(!imageData) return alert("Image upload failed");
+
+
+      console.log("Form data:", { ...formData, ...value, banner: imageData.url });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+    
   };
 
   const { fields: skillField, append: appendSkill, remove: removeSkill } = useFieldArray({

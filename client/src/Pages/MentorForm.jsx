@@ -97,9 +97,7 @@ const MentorForm = () => {
 
   const onSubmit = (value) => {
     console.log(value);
-    navigate("/complete-mentor", {
-      state: { formData: { ...value, content, banner } },
-    });
+    navigate("/complete-mentor", { state: { formData: { ...value, content, banner } } });
   };
 
   const onError = (errors) => {
