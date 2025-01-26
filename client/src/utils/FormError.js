@@ -136,3 +136,30 @@ export const formSchemaMentor = z.object({
     .optional(),
 });
 
+export const formSchemaMentor2 = z.object({
+  schoolName: z
+    .string()
+    .min(1, { message: "School name is required." })
+    .max(100, { message: "School name cannot exceed 100 characters." }),
+
+  collegeName: z
+    .string()
+    .min(1, { message: "College name is required." })
+    .max(100, { message: "College name cannot exceed 100 characters." }),
+
+  universityName: z
+    .string()
+    .min(1, { message: "University name is required." })
+    .max(100, { message: "University name cannot exceed 100 characters." }),
+
+  skills: z
+    .array(z.string().min(1, { message: "Skill cannot be empty." }))
+    .min(1, { message: "At least one skill is required." }),
+
+  topics: z
+    .array(z.string().min(1, { message: "Topic cannot be empty." }))
+    .min(1, { message: "At least one topic is required." }),
+});
+
+ 
+
