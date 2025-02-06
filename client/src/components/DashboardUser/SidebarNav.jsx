@@ -25,7 +25,7 @@ const routesCompany = [
 ];
 
 const routesMentor = [
-  { label: "Profile", icon: UserCircle, href: "/dashboard/mentor-profile" },
+  { label: "Profile", icon: UserCircle, href: "/dashboard/profile" },
   { label: "Bookings", icon: Bookmark, href: "/dashboard/bookings" },
   { label: "Availability", icon: Clock, href: "/dashboard/availability" },
   { label: "Payments", icon: DollarSign, href: "/dashboard/payments" },

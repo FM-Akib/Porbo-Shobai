@@ -22,17 +22,23 @@ import { uploadImageToCloud } from '@/lib/uploadImageToCloud';
 import {
   Award,
   Briefcase,
+  Facebook,
   Flame,
   FolderGit2,
   GraduationCap,
   Heart,
+  Link2Icon,
+  Linkedin,
   LoaderPinwheel,
+  Mail,
   Pencil,
+  Phone,
   Plus,
   Save,
   Share2,
   SquareArrowOutUpRight,
   Trophy,
+  Youtube,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -258,6 +264,68 @@ function DashboardUser() {
               </div>
             </CardContent>
           </Card>
+
+          {/* for mentors */}
+          {
+            profile.role === 'mentor' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Contact Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"> <Phone className="mr-3 h-5 w-5"/> Mobile Number : </span>
+                    <p>{profile.mobileNo || 0}</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"> <Mail className='mr-3 h-5 w-5'/> Email : </span>
+                    <p>{profile.email || "N/A"}</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"> <Linkedin className='mr-3 h-5 w-5' /> LinkedIn : </span>
+                    {
+                      profile.linkedin ? (
+                        <Link to={`${profile.linkedin}`} target="_blank" className='underline text-blue-400 hover:text-blue-700 inline-block max-w-[200px] truncate'>{profile.linkedin}</Link>
+                      ) : (
+                        <p>N/A</p>
+                      )
+                    }
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"><Link2Icon className='mr-3 h-5 w-5'/>Portfolio : </span>
+                    {
+                      profile.portfolio ? (
+                        <Link to={`${profile.portfolio}`} target="_blank" className='underline text-blue-400 hover:text-blue-700 inline-block max-w-[200px] truncate'>{profile.portfolio}</Link>
+                      ) : (
+                        <p>N/A</p>
+                      )
+                    }
+                  </div>  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"><Facebook className='mr-3 h-5 w-5'/>Facebook : </span>
+                    {
+                      profile.facebook ? (
+                        <Link to={`${profile.facebook}`} target="_blank" className='underline text-blue-400 hover:text-blue-700 inline-block max-w-[200px] truncate'>{profile.facebook}</Link>
+                      ) : (
+                        <p>N/A</p>
+                      )
+                    }
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold flex"> <Youtube className='mr-3 h-5 w-5'/>Youtube : </span>
+                    {
+                      profile.youtube ? (
+                        <Link to={`${profile.youtube}`} target="_blank" className='underline text-blue-400 hover:text-blue-700 inline-block max-w-[200px] truncate'>{profile.youtube}</Link>
+                      ) : (
+                        <p>N/A</p>
+                      )
+                    }
+                  </div>
+                  
+                </CardContent>  
+              </Card>
+            )
+          }
 
           <Card>
             <CardHeader>
