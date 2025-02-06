@@ -1,5 +1,5 @@
 import useUserInfo from '@/Hooks/useUserInfo';
-import { Award, BookOpen, Clock, Gift, Home, House, LayoutDashboard, LogOut, PanelRightClose, ScreenShare, ScrollText, Settings, Star, UserCircle, Users, X } from 'lucide-react';
+import { Award, Bookmark, BookOpen, Clock, DollarSign, FileQuestionIcon, Gift, Home, House, LayoutDashboard, LogOut, PanelRightClose, ScreenShare, ScrollText, Settings, Star, UserCircle, Users, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -22,6 +22,15 @@ const routesCompany = [
   { label: "Certificates", icon: Award, href: "/dashboard/certificates" },
   { label: "Rewards", icon: Gift, href: "/dashboard/rewards" },
   { label: "Settings", icon: Settings, href: "/dashboard/settings" },
+];
+
+const routesMentor = [
+  { label: "Profile", icon: UserCircle, href: "/dashboard/mentor-profile" },
+  { label: "Bookings", icon: Bookmark, href: "/dashboard/bookings" },
+  { label: "Availability", icon: Clock, href: "/dashboard/availability" },
+  { label: "Payments", icon: DollarSign, href: "/dashboard/payments" },
+  { label: "Reviews", icon: Star, href: "/dashboard/reviews" },
+  { label: "FAQs", icon: FileQuestionIcon, href: "/dashboard/faqs" },
 ];
 
 const generalRoutes = [
@@ -75,7 +84,7 @@ const Sidebar = () => {
 
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="flex-1 px-2 space-y-1">
-              {(userInfo?.role === "student" ? routes : routesCompany)?.map((route) => (
+              {(userInfo?.role === "student" ? routes : (userInfo?.role === "company" ? routesCompany : routesMentor))?.map((route) => (
                 <Link
                   key={route.href}
                   to={route.href}
