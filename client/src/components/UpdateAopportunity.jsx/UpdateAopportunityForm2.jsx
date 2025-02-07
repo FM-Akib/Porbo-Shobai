@@ -27,7 +27,10 @@ import { Switch } from '@/components/ui/switch';
 import { ToastAction } from '@/components/ui/toast';
 import { toast } from '@/Hooks/use-toast';
 // import useAxiosSecure from "@/Hooks/useAxiosSecure";
-import { usePostOpportunityMutation } from '@/redux/api/api';
+import {
+  useGetOpportunitiesQuery,
+  usePostOpportunityMutation,
+} from '@/redux/api/api';
 import { formSchema2 } from '@/utils/FormError';
 import { zodResolver } from '@hookform/resolvers/zod';
 import confetti from 'canvas-confetti';
@@ -47,9 +50,21 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import Loader from '../shared/Loader';
 
-const HostForm2 = () => {
+const UpdateAopportunityForm2 = () => {
+  const { id } = useParams();
+  const {
+    data,
+    isLoading: opportunityLoader,
+    isError,
+  } = useGetOpportunitiesQuery({
+    filters: id ? { id } : {},
+    page: 1,
+    limit: id ? 1 : 10,
+  });
+
   const [newCategory, setNewCategory] = useState('');
   const location = useLocation();
   const [participationType, setParticipationType] = useState('individual');
@@ -57,27 +72,42 @@ const HostForm2 = () => {
   // const axioSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
   const [postOpportunity, { isLoading }] = usePostOpportunityMutation();
-
+  const Aopportunity = data?.opportunities[0];
   const form = useForm({
     resolver: zodResolver(formSchema2),
     defaultValues: {
-      registrationFee: '0',
-      competitionStartDate: null,
-      competitionStartTime: null,
-      registrationStartDate: null,
-      registrationStartTime: null,
-      registrationEndDate: null,
-      registrationEndTime: null,
-      eligibility: '',
-      categories: [],
-      festival: '',
-      participationType: 'individual',
-      teamSize: { minSize: 1, maxSize: 1 },
-      hideHost: false,
-      contacts: [{ name: '', email: '', mobile: '' }],
-      certificate: false,
-      numOfParticipantsAllowed: 1,
-      prizes: [{ prizeName: '', prizeAmount: 0 }],
+      registrationFee: Aopportunity?.registrationFee,
+      competitionStartDate: Aopportunity?.competitionStartDate
+        ? new Date(Aopportunity.competitionStartDate) // Ensure it's a Date object
+        : null,
+      competitionStartTime: Aopportunity?.competitionStartTime
+        ? new Date(Aopportunity.competitionStartTime) // Ensure it's a Date object
+        : null,
+      registrationStartDate: Aopportunity?.registrationStartDate
+        ? new Date(Aopportunity.registrationStartDate)
+        : null,
+      registrationStartTime: Aopportunity?.registrationStartTime
+        ? new Date(Aopportunity.registrationStartTime)
+        : null,
+      registrationEndDate: Aopportunity?.registrationEndDate
+        ? new Date(Aopportunity.registrationEndDate)
+        : null,
+      registrationEndTime: Aopportunity?.registrationEndTime
+        ? new Date(Aopportunity.registrationEndTime)
+        : null,
+      eligibility: Aopportunity?.eligibility,
+      categories: Aopportunity?.categories,
+      festival: Aopportunity?.festival,
+      participationType: Aopportunity?.participationType,
+      teamSize: {
+        minSize: Aopportunity?.teamSize?.minSize,
+        maxSize: Aopportunity?.teamSize?.maxSize,
+      },
+      hideHost: Aopportunity?.hideHost,
+      contacts: Aopportunity?.contacts || [], // Show all contacts by default
+      certificate: Aopportunity?.certificate,
+      numOfParticipantsAllowed: Aopportunity?.numOfParticipantsAllowed,
+      prizes: Aopportunity?.prizes || [], // Show all prizes by default
       ...formData,
     },
   });
@@ -196,6 +226,17 @@ const HostForm2 = () => {
     setLoading(true);
   }
 
+  if (opportunityLoader) {
+    return <Loader />;
+  }
+  if (isError || !Aopportunity) {
+    return (
+      <div className="text-center text-red-500 font-bold text-xl mt-8">
+        Something went wrong. Please try again later.
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen md:p-8 mb-10 md:mb-20">
       <div className="mx-auto max-w-4xl">
@@ -272,7 +313,8 @@ const HostForm2 = () => {
                                 className="w-full justify-start text-left font-normal"
                               >
                                 <Calendar className="mr-2 h-4 w-4" />
-                                {field.value ? (
+                                {field.value instanceof Date &&
+                                !isNaN(field.value) ? (
                                   field.value.toDateString()
                                 ) : (
                                   <span>Pick a date</span>
@@ -963,4 +1005,4 @@ const HostForm2 = () => {
   );
 };
 
-export default HostForm2;
+export default UpdateAopportunityForm2;
