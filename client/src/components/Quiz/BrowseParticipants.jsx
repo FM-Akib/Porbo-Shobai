@@ -1,5 +1,5 @@
-import React from "react";
-import { Input } from "../ui/input";
+import React from 'react';
+import { Input } from '../ui/input';
 import {
   Table,
   TableBody,
@@ -7,32 +7,30 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import MonitoredData from "./MonitoredData";
+} from '../ui/table';
+import MonitoredData from './MonitoredData';
 
 const BrowseAttempts = ({ opportunity }) => {
-  const [filter, setFilter] = React.useState("");
+  const [filter, setFilter] = React.useState('');
 
   // Ensure task and attempts exist
   const attempts = opportunity?.task?.attempts || [];
   const questions = opportunity?.task?.questions || [];
 
   // Filtered data based on input
-  const filteredAttempts = attempts.filter(
-    (attempt) =>
-    //   attempt.name.toLowerCase().includes(filter.toLowerCase()) ||
-      attempt?.email?.toLowerCase()?.includes(filter?.toLowerCase())
+  const filteredAttempts = attempts.filter(attempt =>
+    attempt?.email?.toLowerCase()?.includes(filter?.toLowerCase()),
   );
 
   // Calculate total points
-  const calculateTotalPoints = (attempt) => {
+  const calculateTotalPoints = attempt => {
     let totalPoints = 0;
     questions.forEach((question, index) => {
       if (
-        question.type === "multiple" &&
+        question.type === 'multiple' &&
         parseInt(attempt.answers[index]) === question.correctAnswer
       ) {
-        totalPoints += 1;
+        totalPoints += question.points;
       }
     });
     return totalPoints;
@@ -44,7 +42,7 @@ const BrowseAttempts = ({ opportunity }) => {
         <Input
           placeholder="Filter by name or email..."
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          onChange={e => setFilter(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -65,7 +63,9 @@ const BrowseAttempts = ({ opportunity }) => {
                 <TableRow key={index}>
                   <TableCell>
                     <div>
-                      <p>{attempt.firstName} {attempt.lastName}</p>
+                      <p>
+                        {attempt.firstName} {attempt.lastName}
+                      </p>
                       <p className="text-muted-foreground">
                         {attempt.organization}
                       </p>
