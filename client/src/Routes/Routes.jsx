@@ -15,6 +15,7 @@ import HostComForm from '@/Pages/HostForm';
 import HostForm2 from '@/Pages/HostForm2';
 import Landing from '@/Pages/Landing';
 import Login from '@/Pages/Login';
+import MentorPayments from '@/Pages/MentorDashboard/MentorPayments';
 import MyBookings from '@/Pages/MentorDashboard/MyBookings';
 import MentorForm from '@/Pages/MentorForm';
 import MentorForm2 from '@/Pages/MentorForm2';
@@ -125,6 +126,10 @@ export const router = createBrowserRouter([
       {
         path: '/dashboard/bookings',
         element: <MyBookings/>,
+      },
+      {
+        path: '/dashboard/payments',
+        element: <MentorPayments/>
       }
     ],
   },
