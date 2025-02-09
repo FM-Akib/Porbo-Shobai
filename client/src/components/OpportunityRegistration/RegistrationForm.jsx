@@ -38,7 +38,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import sound from '../../assets/Audio/ps1.wav';
 import { AddMemberSheet } from './AddMemberSheet';
@@ -50,6 +50,7 @@ export function RegistrationForm({ Aopportunity }) {
   const [loading, setLoading] = useState(false);
   const axioSecure = useAxiosSecure();
   const { userInfo } = useUserInfo();
+  const navigate = useNavigate();
   let zodresolver =
     Aopportunity?.participationType === 'team'
       ? registrationSchema
@@ -108,11 +109,11 @@ export function RegistrationForm({ Aopportunity }) {
       `/opportunities/participants/${Aopportunity?._id}`,
       { formData },
     );
-    console.log(result);
+    // console.log(result);
 
     if (result?.data?.modifiedCount && userResult?.data?.modifiedCount) {
       setLoading(false);
-
+      navigate(`/a-opportunity/${Aopportunity?._id}`);
       toast.success('Registration submitted successfully!');
       palySound();
       const end = Date.now() + 4 * 1000; // 3 seconds

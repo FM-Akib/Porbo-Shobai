@@ -10,6 +10,7 @@ import MyHosts from '@/Pages/CompanyDashboard/MyHosts';
 import UpdateAnOpportunity from '@/Pages/CompanyDashboard/UpdateAnOpportunity';
 import Competitions from '@/Pages/Competitions';
 import ErrorPage from '@/Pages/Error404';
+import GlobalLeaderboard from '@/Pages/GlobalLeaderBoard';
 import HostCompetitions from '@/Pages/HostCompetitions';
 import HostComForm from '@/Pages/HostForm';
 import HostForm2 from '@/Pages/HostForm2';
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path: '/quiz/psq',
         element: <AQuiz />,
+      },
+      {
+        path: '/leaderboard',
+        element: <GlobalLeaderboard />,
       },
     ],
   },
