@@ -1,3 +1,5 @@
+import { toast } from '@/Hooks/use-toast';
+import useAuth from '@/Hooks/useAuth';
 import useUserInfo from '@/Hooks/useUserInfo';
 import {
   Award,
@@ -22,6 +24,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Button } from '../ui/button';
+import { ToastAction } from '../ui/toast';
 
 const routes = [
   { label: 'Profile', icon: UserCircle, href: '/dashboard/profile' },
@@ -63,8 +67,28 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { userInfo } = useUserInfo();
+  const { user, logOut } = useAuth();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        toast({
+          variant: 'default',
+          title: 'Logged Out Successfully',
+          description: `See you soon, ${user?.name}`,
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        });
+      })
+      .catch(() => {
+        toast({
+          variant: 'destructive',
+          title: 'Log Out Failed',
+          description: 'Something went wrong',
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        });
+      });
+  };
 
   return (
     <>
@@ -153,13 +177,14 @@ const Sidebar = () => {
           </div>
 
           <div className="p-4 border-t">
-            <Link
-              to="/logout"
+            <Button
+              onClick={handleLogOut}
+              variant="ghost"
               className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-gray-900"
             >
               <LogOut className="mr-3 h-6 w-6" />
               Logout
-            </Link>
+            </Button>
           </div>
         </div>
       </aside>
