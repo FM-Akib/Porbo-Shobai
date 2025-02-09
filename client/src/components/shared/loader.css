@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+
+.text-neon {
+  font-family: 'Tilt Neon', sans-serif;
+  stroke-width: 2;
+  stroke: #5cf64a;
+  font-size: 92px;
+}
+
+@keyframes stroke {
+  0% {
+    fill: rgba(40, 180, 92, 0);
+    stroke: rgba(92, 246, 74, 1);
+    stroke-dashoffset: 25%;
+    stroke-dasharray: 0 50%;
+    stroke-width: 2;
+  }
+  70% {
+    fill: rgba(40, 180, 92, 0);
+    stroke: rgba(92, 246, 74, 1);
+  }
+  80% {
+    fill: rgba(40, 180, 92, 0);
+    stroke: rgba(92, 246, 74, 1);
+    stroke-width: 3;
+  }
+  100% {
+    fill: rgba(40, 180, 92, 1);
+    stroke: rgba(92, 246, 74, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+}
+
+.animate-stroke {
+  animation: stroke 3s infinite alternate;
+}
