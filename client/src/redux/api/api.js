@@ -63,6 +63,15 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ['Opportunities'],
     }),
+
+    //get all users
+    getUsers: builder.query({
+      query: () => ({
+        url: '/users/ranks',
+        method: 'GET',
+      }),
+      providesTags: ['UsersRanks'],
+    }),
   }),
 });
 
@@ -72,4 +81,5 @@ export const {
   useUpdateOpportunityMutation,
   useGetOpportunitiesByIdsQuery,
   useDeleteOpportunityMutation,
+  useGetUsersQuery,
 } = baseApi;
