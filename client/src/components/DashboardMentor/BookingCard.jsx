@@ -9,6 +9,7 @@ const BookingCard = ({ number, title, textColor }) => {
           <CardTitle className="text-3xl font-bold">
             <NumberTicker
               value={number}
+              decimalPlaces={title === "Average Rating" ? 1 : 0}
               className={`whitespace-pre-wrap text-3xl font-medium tracking-tighter dark:text-white text-${textColor}-500`}
             />
           </CardTitle>
