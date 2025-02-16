@@ -21,8 +21,12 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { formSchemaMentor2 } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useUserInfo from "@/hooks/useUserInfo";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 const MentorForm = () => {
+  const { userInfo } = useUserInfo();
+  const axiosSecure = useAxiosSecure();
   const [newSkill, setNewSkill] = useState(""); 
   const [newTopic, setNewTopic] = useState("");
   const location = useLocation();
@@ -30,6 +34,7 @@ const MentorForm = () => {
   
   const navigate = useNavigate();
 
+  console.log("userinfo====>",userInfo._id);
   const form = useForm({
     resolver: zodResolver(formSchemaMentor2),
     defaultValues: {
@@ -55,7 +60,29 @@ const MentorForm = () => {
       if(!imageData) return alert("Image upload failed");
 
 
-      console.log("Form data:", { ...formData, ...value, banner: imageData.url });
+      console.log("Form data:", { ...formData, ...value, banner: imageData.url, userId:userInfo._id });
+      
+      const finalData = {
+        ...formData,
+        ...value,
+        banner: imageData.url, // Attach uploaded image URL
+        userId: userInfo._id,
+    };
+
+    console.log("🚀 Final Data to be Sent:", finalData);
+
+    // Step 3: Send Data to Backend Using Axios Secure
+    const { data } = await axiosSecure.post("/mentors", finalData);
+    console.log("Backend Response:", data);
+
+    // Log Response from the Database
+    console.log("✅ Data Successfully Posted to Database:", data);
+
+    if (data.insertedId) {
+        alert("Mentor added successfully!");
+    } else {
+        alert("Failed to add mentor.");
+    }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
