@@ -18,6 +18,10 @@ const {
   getOpportunitiesByIds,
 } = require('../controllers/opportunityController');
 
+const {
+  postAMentor,
+} = require('../controllers/mentorController');
+
 const router = express.Router();
 
 // USERS ROUTES
@@ -40,5 +44,8 @@ router.patch(
   updateAopportunityWithparticipants,
 );
 router.delete('/opportunities/:id', deleteAopportunity);
+
+// MENTOR ROUTE
+router.post('/mentors', postAMentor);
 
 module.exports = router;
