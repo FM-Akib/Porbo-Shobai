@@ -16,6 +16,9 @@ import HostComForm from '@/Pages/HostForm';
 import HostForm2 from '@/Pages/HostForm2';
 import Landing from '@/Pages/Landing';
 import Login from '@/Pages/Login';
+import MentorPayments from '@/Pages/MentorDashboard/MentorPayments';
+import MentorReviews from '@/Pages/MentorDashboard/MentorReviews';
+import MyBookings from '@/Pages/MentorDashboard/MyBookings';
 import MentorForm from '@/Pages/MentorForm';
 import MentorForm2 from '@/Pages/MentorForm2';
 import OpportunityRegistration from '@/Pages/OpportunityRegistration';
@@ -126,6 +129,18 @@ export const router = createBrowserRouter([
         path: 'update-a-opportuinity-final/:id',
         element: <UpdateAopportunityForm2 />,
       },
+      {
+        path: '/dashboard/bookings',
+        element: <MyBookings/>,
+      },
+      {
+        path: '/dashboard/payments',
+        element: <MentorPayments/>
+      },
+      {
+        path: '/dashboard/reviews',
+        element: <MentorReviews/>
+      }
     ],
   },
 ]);
