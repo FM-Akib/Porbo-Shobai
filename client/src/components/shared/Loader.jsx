@@ -2,7 +2,7 @@ import './loader.css';
 
 const Loader = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
+    <div className="flex justify-center items-center min-h-screen bg-transparent">
       <svg className="w-full h-full">
         <text
           x="50%"
