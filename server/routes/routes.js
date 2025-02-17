@@ -20,6 +20,9 @@ const {
 
 const {
   postAMentor,
+  getAllMentors,
+  getAMentor,
+  
 } = require('../controllers/mentorController');
 
 const router = express.Router();
@@ -47,5 +50,7 @@ router.delete('/opportunities/:id', deleteAopportunity);
 
 // MENTOR ROUTE
 router.post('/mentors', postAMentor);
+router.get('/mentors', getAllMentors);
+router.get('/mentors/:id', getAMentor );
 
 module.exports = router;
