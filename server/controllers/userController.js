@@ -136,6 +136,22 @@ const deleteAuser = async (req, res) => {
   }
 };
 
+const makeMentor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mentorDetails = req.body;
+
+    const result = await usersCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...mentorDetails, role: 'mentor' } },
+    );
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to make mentor' });
+  }
+};
+
 module.exports = {
   init,
   getUsers,
@@ -145,4 +161,5 @@ module.exports = {
   getAuser,
   updateUserWithParticipation,
   getStudentsRank,
+  makeMentor,
 };

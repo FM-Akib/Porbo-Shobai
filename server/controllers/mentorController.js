@@ -33,4 +33,17 @@ const getAMentor = async (req, res) => {
     }
 };
 
-module.exports = { init, postAMentor, getAllMentors, getAMentor };
+const updateAMentor = async (req, res) => {
+    try {
+        const mentorId = req.params.id;
+        
+        const result = await mentorCollection.updateOne(
+            { _id: new ObjectId(mentorId) },
+            { $set: {status: "accepted"} }
+        );
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update mentor" });
+    }
+}
+module.exports = { init, postAMentor, getAllMentors, getAMentor, updateAMentor };
