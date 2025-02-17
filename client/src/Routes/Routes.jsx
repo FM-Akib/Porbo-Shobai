@@ -2,6 +2,7 @@ import AQuiz from '@/components/Quiz/AQuiz';
 import UpdateAopportunityForm2 from '@/components/UpdateAopportunity.jsx/UpdateAopportunityForm2';
 import MainLayout from '@/Layouts/MainLayout';
 import UserDashLayout from '@/Layouts/UserDashLayout';
+import MentorRequests from '@/Pages/AdminDashboard/MentorRequests';
 import AllOpportunities from '@/Pages/AllOpportunities';
 import Aopportunity from '@/Pages/Aopportunity';
 import AddQuiz from '@/Pages/CompanyDashboard/AddQuiz';
@@ -140,6 +141,10 @@ export const router = createBrowserRouter([
       {
         path: '/dashboard/reviews',
         element: <MentorReviews/>
+      },
+      {
+        path: '/dashboard/mentor-requests',
+        element: <MentorRequests/>
       }
     ],
   },
