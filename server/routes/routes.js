@@ -7,6 +7,7 @@ const {
   getAuser,
   updateUserWithParticipation,
   getStudentsRank,
+  makeMentor,
 } = require('../controllers/userController');
 const {
   getAopportunity,
@@ -22,6 +23,7 @@ const {
   postAMentor,
   getAllMentors,
   getAMentor,
+  updateAMentor,
   
 } = require('../controllers/mentorController');
 
@@ -52,5 +54,7 @@ router.delete('/opportunities/:id', deleteAopportunity);
 router.post('/mentors', postAMentor);
 router.get('/mentors', getAllMentors);
 router.get('/mentors/:id', getAMentor );
+router.patch('/mentors/:id',makeMentor );
+router.patch('/mentor-status/:id', updateAMentor);
 
 module.exports = router;

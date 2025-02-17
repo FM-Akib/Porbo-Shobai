@@ -65,7 +65,22 @@ const MentorCandidateProfile = () => {
     topics,
     userId,
     status,
+    _id,
   } = mentor;
+
+
+  const handleMakeMentor = async () => {
+       
+    console.log("handel mentor hits");
+
+    try {  
+      const result = await axiosSecure.patch(`/mentors/${userId}`, { mentor });
+      const statusResult = await axiosSecure.patch(`/mentor-status/${_id}`, { status });
+      console.log(result, statusResult);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -311,12 +326,12 @@ const MentorCandidateProfile = () => {
 
                 {
                     status === "pending" && (  
-                        <Button variant="outline" className="bg-green-600 hover:bg-green-700">Make Mentor</Button>
+                        <Button onClick={handleMakeMentor} variant="outline" className="bg-green-600 hover:bg-green-700">Make Mentor</Button>
                     )
                 }
                 {
-                    status === "approved" && (  
-                        <Button variant="outline" className="bg-red-600 hover:bg-red-700">Remove</Button>
+                    status === "accepted" && (  
+                        <Button variant="outline" className="bg-red-600 hover:bg-red-700">Remove Mentor</Button>
                     )
                 }
 
