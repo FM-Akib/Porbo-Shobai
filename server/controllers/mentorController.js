@@ -46,4 +46,13 @@ const updateAMentor = async (req, res) => {
         res.status(500).json({ error: "Failed to update mentor" });
     }
 }
-module.exports = { init, postAMentor, getAllMentors, getAMentor, updateAMentor };
+
+const getVerifiedMentors = async (req, res) => {
+    try {
+        const mentors = await mentorCollection.find({ status: "accepted" }).toArray();
+        res.json(mentors);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch mentors" });
+    }
+}
+module.exports = { init, postAMentor, getAllMentors, getAMentor, updateAMentor, getVerifiedMentors };

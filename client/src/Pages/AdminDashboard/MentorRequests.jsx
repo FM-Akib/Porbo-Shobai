@@ -30,7 +30,7 @@ const MentorRequests = () => {
       <div className="grid grid-cols-1 gap-4">
         {
           mentors.map((mentor) => (
-            <MentorRequestCard key={mentor._id} mentor={mentor} />
+            <MentorRequestCard key={mentor._id} mentor={mentor} path={"/dashboard/mentor-candidate-profile"} />
           ))
         }
         
