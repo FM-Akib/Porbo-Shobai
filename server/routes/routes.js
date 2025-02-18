@@ -24,6 +24,7 @@ const {
   getAllMentors,
   getAMentor,
   updateAMentor,
+  getVerifiedMentors,
   
 } = require('../controllers/mentorController');
 
@@ -56,5 +57,6 @@ router.get('/mentors', getAllMentors);
 router.get('/mentors/:id', getAMentor );
 router.patch('/mentors/:id',makeMentor );
 router.patch('/mentor-status/:id', updateAMentor);
+router.get('/verified-mentors', getVerifiedMentors);
 
 module.exports = router;

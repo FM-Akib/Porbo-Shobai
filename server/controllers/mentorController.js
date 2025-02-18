@@ -16,7 +16,7 @@ const postAMentor = async (req, res) => {
 
 const getAllMentors = async (req, res) => {
     try {
-        const mentors = await mentorCollection.find().toArray();
+        const mentors = await mentorCollection.find().sort({ _id: -1 }).toArray();
         res.json(mentors);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch mentors" });
@@ -46,4 +46,51 @@ const updateAMentor = async (req, res) => {
         res.status(500).json({ error: "Failed to update mentor" });
     }
 }
-module.exports = { init, postAMentor, getAllMentors, getAMentor, updateAMentor };
+
+const getVerifiedMentors = async (req, res) => {
+    try {
+        const { search, domain, sort } = req.query;
+
+        let query = { status: "accepted" };
+
+        // Apply search filter if provided
+        if (search) {
+            const searchTerms = search.trim().split(/\s+/); // Split by spaces
+
+            if (searchTerms.length === 2) {
+                // If user entered two words (First and Last name)
+                query.$or = [
+                    { $and: [{ firstName: { $regex: searchTerms[0], $options: "i" } }, { lastName: { $regex: searchTerms[1], $options: "i" } }] },
+                    { $and: [{ firstName: { $regex: searchTerms[1], $options: "i" } }, { lastName: { $regex: searchTerms[0], $options: "i" } }] }
+                ];
+            } else {
+                // If single-word search, check both firstName and lastName
+                query.$or = [
+                    { firstName: { $regex: search, $options: "i" } },
+                    { lastName: { $regex: search, $options: "i" } }
+                ];
+            }
+        }
+
+        // Apply domain filter if provided
+        if (domain) {
+            query.domain = domain;
+        }
+
+        // Define sorting option
+        let sortOption = {};
+        if (sort === "asc") {
+            sortOption.rating = 1; // Lowest to highest
+        } else if (sort === "desc") {
+            sortOption.rating = -1; // Highest to lowest
+        }
+
+        // Fetch mentors with applied filters & sorting
+        const mentors = await mentorCollection.find(query).sort(sortOption).toArray();
+
+        res.json(mentors);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch mentors" });
+    }
+};
+module.exports = { init, postAMentor, getAllMentors, getAMentor, updateAMentor, getVerifiedMentors };

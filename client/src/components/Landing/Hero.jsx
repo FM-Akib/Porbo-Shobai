@@ -39,7 +39,7 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col md:flex-row gap-2 mt-4">
-            <Link>
+            <Link to="/find-mentor">
             <Button className="w-full md:w-auto">Find Mentor</Button>
             </Link>
             <Link to="/create-mentor">
