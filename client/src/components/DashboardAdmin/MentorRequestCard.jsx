@@ -16,7 +16,7 @@ const MentorRequestCard = ({ mentor }) => {
     linkedinUrl,
     facebookUrl,
     youtubeUrl,
-    banner,
+    image,
   } = mentor;
 
   return (
@@ -25,7 +25,7 @@ const MentorRequestCard = ({ mentor }) => {
         {/* Avatar */}
         <Avatar className="w-full md:w-16 md:h-16   ">
           <AvatarImage
-            src={banner}
+            src={image}
             alt={`${firstName} ${lastName}`}
             className="rounded-lg" // Slightly rounded image
           />
