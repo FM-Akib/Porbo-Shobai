@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FaFacebook, FaLinkedin, FaYoutube } from "react-icons/fa";
 
-const MentorRequestCard = ({ mentor }) => {
+const MentorRequestCard = ({ mentor, path }) => {
   const navigate = useNavigate();
   const {
     _id,
@@ -67,7 +67,7 @@ const MentorRequestCard = ({ mentor }) => {
             variant="outline"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/dashboard/mentor-candidate-profile/${_id}`);
+              navigate(`${path}/${_id}`);
             }}
             className="md:ml-auto" // Align button to the right on larger screens
           >
