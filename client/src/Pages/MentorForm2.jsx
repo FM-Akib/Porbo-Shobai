@@ -67,6 +67,7 @@ const MentorForm = () => {
         ...value,
         image: imageData.url, // Attach uploaded image URL
         userId: userInfo._id,
+        rating: 0,
         status: "pending",
     };
 
