@@ -5,8 +5,8 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useQuery } from "@tanstack/react-query";
 import {
-    AtomIcon,
-    BookPlus,
+  AtomIcon,
+  BookPlus,
   Facebook,
   Languages,
   Link2Icon,
@@ -19,12 +19,14 @@ import {
   Workflow,
   Youtube,
 } from "lucide-react";
+import { useState } from "react";
 import { FaGenderless } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 const MentorCandidateProfile = () => {
   const params = useParams();
   const axiosSecure = useAxiosSecure();
+  const [currentStatus, setCuttentStatus ] = useState("");
 
   const {
     data: mentor = [],
@@ -34,6 +36,7 @@ const MentorCandidateProfile = () => {
     queryKey: ["mentor"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/mentors/${params.id}`);
+      setCuttentStatus(data.status);
       return data;
     },
   });
@@ -57,7 +60,7 @@ const MentorCandidateProfile = () => {
     youtubeUrl,
     protfolioUrl,
     content,
-    banner,
+    image,
     schoolName,
     collegeName,
     universityName,
@@ -68,14 +71,42 @@ const MentorCandidateProfile = () => {
     _id,
   } = mentor;
 
-
   const handleMakeMentor = async () => {
-       
     console.log("handel mentor hits");
 
-    try {  
-      const result = await axiosSecure.patch(`/mentors/${userId}`, { mentor });
-      const statusResult = await axiosSecure.patch(`/mentor-status/${_id}`, { status });
+    try {
+      const finalData = {
+        firstName,
+        lastName,
+        gender,
+        mobileNo,
+        organisation,
+        domain,
+        workExperience,
+        languages,
+        linkedinUrl,
+        facebookUrl,
+        youtubeUrl,
+        protfolioUrl,
+        content,
+        image,
+        schoolName,
+        collegeName,
+        universityName,
+        skills,
+        topics,
+        mentorID: _id,
+        
+      };
+      const result = await axiosSecure.patch(`/mentors/${userId}`, { ...finalData });
+      const statusResult = await axiosSecure.patch(`/mentor-status/${_id}`, {
+        status,
+      });
+
+      if (result && statusResult) {
+        setCuttentStatus("accepted");
+        console.log("success");
+      }
       console.log(result, statusResult);
     } catch (error) {
       console.error("Error updating status:", error);
@@ -93,7 +124,7 @@ const MentorCandidateProfile = () => {
             <div className="flex flex-col items-center space-y-4">
               <Avatar className="h-24 w-24 md:h-52 md:w-52 rounded-full">
                 <AvatarImage
-                  src={banner || "/placeholder.svg"}
+                  src={image || "/placeholder.svg"}
                   className="rounded-full h-24 w-24 md:h-52 md:w-52"
                 />
                 <AvatarFallback>
@@ -253,7 +284,7 @@ const MentorCandidateProfile = () => {
                 </CardContent>
               </Card>
               {/* Experience & skills */}
-              <Card  className="md:col-span-2" >
+              <Card className="md:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-lg">Basic Details</CardTitle>
                 </CardHeader>
@@ -313,28 +344,31 @@ const MentorCandidateProfile = () => {
                       ))}
                     </span>
                   </div>
-
                 </CardContent>
               </Card>
-              
-              
             </div>
 
             <hr className="my-8" />
             <div className="flex justify-between">
-            <Button variant="outline">Back</Button>
+              <Button variant="outline">Back</Button>
 
-                {
-                    status === "pending" && (  
-                        <Button onClick={handleMakeMentor} variant="outline" className="bg-green-600 hover:bg-green-700">Make Mentor</Button>
-                    )
-                }
-                {
-                    status === "accepted" && (  
-                        <Button variant="outline" className="bg-red-600 hover:bg-red-700">Remove Mentor</Button>
-                    )
-                }
-
+              {currentStatus === "pending" && (
+                <Button
+                  onClick={handleMakeMentor}
+                  variant="outline"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Make Mentor
+                </Button>
+              )}
+              {currentStatus === "accepted" && (
+                <Button
+                  variant="outline"
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Remove Mentor
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>

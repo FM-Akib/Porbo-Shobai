@@ -16,7 +16,7 @@ const postAMentor = async (req, res) => {
 
 const getAllMentors = async (req, res) => {
     try {
-        const mentors = await mentorCollection.find().toArray();
+        const mentors = await mentorCollection.find().sort({ _id: -1 }).toArray();
         res.json(mentors);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch mentors" });

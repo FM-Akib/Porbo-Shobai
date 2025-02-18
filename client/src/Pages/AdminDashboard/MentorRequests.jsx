@@ -27,7 +27,7 @@ const MentorRequests = () => {
     <div className="p-4">
       <MentorDashboardTitle title="Mentor Requests" />
       <hr className="my-8" />
-      <div>
+      <div className="grid grid-cols-1 gap-4">
         {
           mentors.map((mentor) => (
             <MentorRequestCard key={mentor._id} mentor={mentor} />
