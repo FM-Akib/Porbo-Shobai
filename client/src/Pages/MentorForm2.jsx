@@ -65,8 +65,10 @@ const MentorForm = () => {
       const finalData = {
         ...formData,
         ...value,
-        banner: imageData.url, // Attach uploaded image URL
+        image: imageData.url, // Attach uploaded image URL
         userId: userInfo._id,
+        rating: 0,
+        status: "pending",
     };
 
     console.log("🚀 Final Data to be Sent:", finalData);

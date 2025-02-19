@@ -2,6 +2,8 @@ import AQuiz from '@/components/Quiz/AQuiz';
 import UpdateAopportunityForm2 from '@/components/UpdateAopportunity.jsx/UpdateAopportunityForm2';
 import MainLayout from '@/Layouts/MainLayout';
 import UserDashLayout from '@/Layouts/UserDashLayout';
+import MentorCandidateProfile from '@/Pages/AdminDashboard/MentorCandidateProfile';
+import MentorRequests from '@/Pages/AdminDashboard/MentorRequests';
 import AllOpportunities from '@/Pages/AllOpportunities';
 import Aopportunity from '@/Pages/Aopportunity';
 import AddQuiz from '@/Pages/CompanyDashboard/AddQuiz';
@@ -10,6 +12,7 @@ import MyHosts from '@/Pages/CompanyDashboard/MyHosts';
 import UpdateAnOpportunity from '@/Pages/CompanyDashboard/UpdateAnOpportunity';
 import Competitions from '@/Pages/Competitions';
 import ErrorPage from '@/Pages/Error404';
+import FindMentors from '@/Pages/FindMentors';
 import GlobalLeaderboard from '@/Pages/GlobalLeaderBoard';
 import HostCompetitions from '@/Pages/HostCompetitions';
 import HostComForm from '@/Pages/HostForm';
@@ -26,6 +29,7 @@ import Register from '@/Pages/Register';
 import DashboardHome from '@/Pages/UserDashboard/DasdhboardHome';
 import DashboardUser from '@/Pages/UserDashboard/DashboardUser';
 import MyRegistration from '@/Pages/UserDashboard/MyRegistration';
+import ViewMentor from '@/Pages/ViewMentor';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -83,12 +87,20 @@ export const router = createBrowserRouter([
         element: <MentorForm2 />,
       },
       {
+        path: '/find-mentor',
+        element: <FindMentors />,
+      },
+      {
         path: '/quiz/psq',
         element: <AQuiz />,
       },
       {
         path: '/leaderboard',
         element: <GlobalLeaderboard />,
+      },
+      {
+        path: '/view-mentor-profile/:id',
+        element: <ViewMentor/>,
       },
     ],
   },
@@ -140,6 +152,14 @@ export const router = createBrowserRouter([
       {
         path: '/dashboard/reviews',
         element: <MentorReviews/>
+      },
+      {
+        path: '/dashboard/mentor-requests',
+        element: <MentorRequests/>
+      },
+      {
+        path: 'mentor-candidate-profile/:id',
+        element: <MentorCandidateProfile/>
       }
     ],
   },
