@@ -13,6 +13,11 @@ const MyRegistrationCard = ({ Aopportunity }) => {
         src={Aopportunity?.banner}
         alt="banner"
         className="md:w-1/3  object-cover rounded-t-xl md:rounded-e-none md:rounded-s-xl"
+        onError={e => {
+          e.target.onerror = null;
+          e.target.src =
+            'https://res.cloudinary.com/ds0io6msx/image/upload/v1733134035/wqux5fkhs6ctl0mxzabe.png';
+        }}
       />
 
       <div className="rounded-b-xl md:rounded-s-none md:rounded-e-xl w-full bg-white p-4  sm:p-6">
