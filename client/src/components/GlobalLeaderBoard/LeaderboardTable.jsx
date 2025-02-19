@@ -5,7 +5,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -27,10 +26,10 @@ import { useState } from 'react';
 import { FaMedal, FaStar, FaTrophy } from 'react-icons/fa';
 
 const badgeStyles = {
-  Low: 'bg-gray-200 text-gray-800',
-  Intermediate: 'bg-yellow-500 text-white',
-  Advanced: 'bg-orange-500 text-white',
-  Expert: 'bg-red-500 text-white',
+  Low: 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+  Intermediate: 'bg-yellow-500 text-white dark:bg-yellow-600',
+  Advanced: 'bg-orange-500 text-white dark:bg-orange-600',
+  Expert: 'bg-red-500 text-white dark:bg-red-600',
 };
 
 const badgeIcons = {
@@ -144,21 +143,8 @@ export default function LeaderboardTable({ users }) {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-auto p-4 dark:bg-gray-900 dark:text-white">
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by name or email..."
-          value={
-            (table.getColumn('name')?.getFilterValue() ||
-              table.getColumn('email')?.getFilterValue()) ??
-            ''
-          }
-          onChange={event => {
-            table.getColumn('name')?.setFilterValue(event.target.value);
-            table.getColumn('email')?.setFilterValue(event.target.value);
-          }}
-          className="max-w-sm"
-        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -184,34 +170,33 @@ export default function LeaderboardTable({ users }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border dark:border-gray-700">
+        <Table className="min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+              <TableRow
+                key={headerGroup.id}
+                className="bg-gray-100 dark:bg-gray-800"
+              >
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  className={`${
-                    row.getValue('rank') % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                  }`}
+                  className="even:bg-gray-50 odd:bg-white dark:even:bg-gray-700 dark:odd:bg-gray-800"
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
@@ -235,24 +220,6 @@ export default function LeaderboardTable({ users }) {
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
