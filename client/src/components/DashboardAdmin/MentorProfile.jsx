@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import MentorDashboardTitle from "../DashboardMentor/MentorDashboardTitle";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { AtomIcon, BookPlus, Facebook, Languages, Link2Icon, Linkedin, OrigamiIcon, Phone, School, SparkleIcon, University, Workflow, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
