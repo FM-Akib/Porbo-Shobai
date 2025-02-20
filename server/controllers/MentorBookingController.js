@@ -65,24 +65,40 @@ const getUpcomingBookings = async (req, res) => {
     const currentTime = new Date();
 
     // Find bookings for the given mentor with start time >= current time
+    // and sort them by start time in ascending order (earliest first)
     const upcomingBookings = await mentorBookingCollection
       .find({
         mentorId,
         start: { $gte: currentTime },
       })
+      .sort({ start: 1 })
       .toArray();
 
     const count = upcomingBookings.length;
-
     res.status(200).json({ count, bookings: upcomingBookings });
   } catch (error) {
     console.error("Error fetching upcoming bookings:", error);
     res.status(500).json({ error: "Failed to fetch upcoming bookings" });
   }
 };
+const patchBookingUrl = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { meetingURL } = req.body;
+    const result = await mentorBookingCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { meetingURL } }
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Error updating booking URL:", error);
+    res.status(500).json({ error: "Failed to update booking URL" });
+  }
+}
 module.exports = {
   init,
   postMentorBooking,
   getMentorBookings,
   getUpcomingBookings,
+  patchBookingUrl,
 };
