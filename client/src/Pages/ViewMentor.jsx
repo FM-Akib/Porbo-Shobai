@@ -17,14 +17,6 @@ const ViewMentor = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
-  const [bookedSlots, setBookedSlots] = useState([
-    {
-      start: new Date("2025-02-02T09:00"),
-      end: new Date("2025-02-02T10:00"),
-      title: "Booked",
-    },
-  ]);
-
   const { data: mentor = [], isLoading } = useQuery({
     queryKey: ["mentor"],
     queryFn: async () => {
@@ -34,17 +26,20 @@ const ViewMentor = () => {
     },
   });
 
+  
+  const { data: bookings = [], isLoading: isLoadingBookings , refetch} = useQuery({
+    queryKey: ["bookings", params.id],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/mentor-bookings/${params.id}`);
+      return data;
+    },
+  });
+
+
   const handleDateTimeSubmit = (date, timeStart, timeEnd) => {
     setSelectedDate(date);
     setStartTime(timeStart);
     setEndTime(timeEnd);
-
-    const newSlot = {
-      start: new Date(date + "T" + timeStart),
-      end: new Date(date + "T" + timeEnd),
-      title: "Booked",
-    };
-    setBookedSlots([...bookedSlots, newSlot]);
     axiosSecure
       .post("/mentor-bookings", {
         mentorId: params.id,
@@ -54,14 +49,18 @@ const ViewMentor = () => {
         title:"Booked",
       })
       .then((res) => {
+        refetch();
         console.log(res);
-      });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
 
     console.log(date + "T" + timeStart);
     console.log(date + "T" + timeEnd);
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingBookings) {
     return <p className="text-center">Loading mentors...</p>;
   }
 
@@ -86,7 +85,7 @@ const ViewMentor = () => {
                 )}
               </CardContent>
               <CardContent>
-                <BookingCalendar bookedSlots={bookedSlots} />
+                <BookingCalendar bookedSlots={bookings} />
               </CardContent>
             </div>
           </Card>

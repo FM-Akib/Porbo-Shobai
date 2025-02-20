@@ -34,6 +34,7 @@ const postMentorBooking = async (req, res) => {
       end: newEnd,
       title,
       createdAt: new Date(),
+      meetingURL: "",
     };
 
     const result = await mentorBookingCollection.insertOne(bookingData);
@@ -57,8 +58,31 @@ const getMentorBookings = async (req, res) => {
   }
 };
 
+const getUpcomingBookings = async (req, res) => {
+  try {
+    // Assuming mentorId is provided as a route parameter
+    const { mentorId } = req.params;
+    const currentTime = new Date();
+
+    // Find bookings for the given mentor with start time >= current time
+    const upcomingBookings = await mentorBookingCollection
+      .find({
+        mentorId,
+        start: { $gte: currentTime },
+      })
+      .toArray();
+
+    const count = upcomingBookings.length;
+
+    res.status(200).json({ count, bookings: upcomingBookings });
+  } catch (error) {
+    console.error("Error fetching upcoming bookings:", error);
+    res.status(500).json({ error: "Failed to fetch upcoming bookings" });
+  }
+};
 module.exports = {
   init,
   postMentorBooking,
   getMentorBookings,
+  getUpcomingBookings,
 };
