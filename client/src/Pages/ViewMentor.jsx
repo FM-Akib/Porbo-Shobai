@@ -4,12 +4,14 @@ import BookingCalendar from "@/components/MentorBooking/BookingCalendar";
 import DateTimePicker from "@/components/MentorBooking/DateTimePicker";
 import { Card, CardContent } from "@/components/ui/card";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useUserInfo from "@/hooks/useUserInfo";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ViewMentor = () => {
   const params = useParams();
+  const {userInfo} = useUserInfo();
   const axiosSecure = useAxiosSecure();
   const [selectedDate, setSelectedDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -40,8 +42,21 @@ const ViewMentor = () => {
     const newSlot = {
       start: new Date(date + "T" + timeStart),
       end: new Date(date + "T" + timeEnd),
+      title: "Booked",
     };
     setBookedSlots([...bookedSlots, newSlot]);
+    axiosSecure
+      .post("/mentor-bookings", {
+        mentorId: params.id,
+        userId: userInfo._id,
+        start: date + "T" + timeStart,
+        end: date + "T" + timeEnd,
+        title:"Booked",
+      })
+      .then((res) => {
+        console.log(res);
+      });
+
     console.log(date + "T" + timeStart);
     console.log(date + "T" + timeEnd);
   };
