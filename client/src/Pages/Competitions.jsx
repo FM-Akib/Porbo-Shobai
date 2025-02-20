@@ -1,11 +1,13 @@
-import CompetitionsHero from "@/components/Competitions/CompetitionsHero";
+import CompetitionsFeature from '@/components/Competitions/CompetitionsFeature';
+import CompetitionsHero from '@/components/Competitions/CompetitionsHero';
 
 const Competitions = () => {
-    return (
-        <>
-            <CompetitionsHero/>
-        </>
-    );
+  return (
+    <>
+      <CompetitionsHero />
+      <CompetitionsFeature />
+    </>
+  );
 };
 
 export default Competitions;
