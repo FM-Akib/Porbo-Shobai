@@ -5,6 +5,7 @@ const { connectDB } = require("./config/database");
 const { init: initUserController, init } = require("./controllers/userController");
 const { init: initOpportunityController } = require("./controllers/opportunityController");
 const { init: initMentorController } = require("./controllers/mentorController");
+const { init: initMentorBookingController } = require("./controllers/MentorBookingController");
 const router = require("./routes/routes");
 
 dotenv.config();
@@ -22,6 +23,7 @@ connectDB().then((db) => {
   initUserController(db);
   initOpportunityController(db);
   initMentorController(db);
+  initMentorBookingController(db);
 
   // Routes
   app.use("/", router);

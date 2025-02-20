@@ -27,6 +27,7 @@ const {
   getVerifiedMentors,
   
 } = require('../controllers/mentorController');
+const { postMentorBooking } = require('../controllers/MentorBookingController');
 
 const router = express.Router();
 
@@ -58,5 +59,9 @@ router.get('/mentors/:id', getAMentor );
 router.patch('/mentors/:id',makeMentor );
 router.patch('/mentor-status/:id', updateAMentor);
 router.get('/verified-mentors', getVerifiedMentors);
+
+//Mentor Bookings
+
+router.post('/mentor-bookings', postMentorBooking );
 
 module.exports = router;

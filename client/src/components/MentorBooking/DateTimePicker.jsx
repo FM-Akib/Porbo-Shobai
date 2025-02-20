@@ -4,18 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { addMinutes } from "date-fns";
+import { addMinutes, parse } from "date-fns";
 
 const DateTimePicker = ({ onSubmit }) => {
   const [tempDate, setTempDate] = useState("");
   const [tempTime, setTempTime] = useState("");
   const [duration, setDuration] = useState(60); // Default: 1 Hour
+  const [error, setError] = useState("");
 
   const handleSubmit = () => {
     if (tempDate && tempTime) {
-      const startDateTime = new Date(`${tempDate}T${tempTime}`);
-      const endDateTime = addMinutes(startDateTime, duration);
+      const startDateTime = parse(tempTime, "HH:mm", new Date());
+      const hours = startDateTime.getHours();
 
+      // Check if the selected time is within 11 AM - 7 PM
+      if (hours < 11 || hours >= 19) {
+        setError("Please select a time between 11:00 AM and 7:00 PM.");
+        return;
+      }
+
+      const endDateTime = addMinutes(startDateTime, duration);
+      setError(""); // Clear error if valid
       onSubmit(tempDate, tempTime, endDateTime.toTimeString().slice(0, 5));
     }
   };
@@ -43,6 +52,7 @@ const DateTimePicker = ({ onSubmit }) => {
             onChange={(e) => setTempTime(e.target.value)}
             className="w-full mt-1"
           />
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
 
         {/* Meeting Duration Selection */}
