@@ -6,6 +6,7 @@ import MentorCandidateProfile from '@/Pages/AdminDashboard/MentorCandidateProfil
 import MentorRequests from '@/Pages/AdminDashboard/MentorRequests';
 import AllOpportunities from '@/Pages/AllOpportunities';
 import Aopportunity from '@/Pages/Aopportunity';
+import Chat from '@/Pages/Chat';
 import AddQuiz from '@/Pages/CompanyDashboard/AddQuiz';
 import CompanyDashboard from '@/Pages/CompanyDashboard/CompanyDashboard';
 import MyHosts from '@/Pages/CompanyDashboard/MyHosts';
@@ -101,7 +102,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/view-mentor-profile/:id',
-        element: <ViewMentor/>,
+        element: <ViewMentor />,
+      },
+      {
+        path: '/chat',
+        element: <Chat />,
       },
     ],
   },
@@ -144,28 +149,28 @@ export const router = createBrowserRouter([
       },
       {
         path: 'bookings',
-        element: <MyBookings/>,
+        element: <MyBookings />,
       },
       {
         path: 'payments',
-        element: <MentorPayments/>
+        element: <MentorPayments />,
       },
       {
         path: 'reviews',
-        element: <MentorReviews/>
+        element: <MentorReviews />,
       },
       {
         path: 'mentor-requests',
-        element: <MentorRequests/>
+        element: <MentorRequests />,
       },
       {
         path: 'mentor-candidate-profile/:id',
-        element: <MentorCandidateProfile/>
+        element: <MentorCandidateProfile />,
       },
       {
         path: 'availability',
-        element: <MentorAvailability/>
-      }
+        element: <MentorAvailability />,
+      },
     ],
   },
 ]);
