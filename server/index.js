@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB } = require("./config/database");
-const { init: initUserController } = require("./controllers/userController");
+const { init: initUserController, init } = require("./controllers/userController");
 const { init: initOpportunityController } = require("./controllers/opportunityController");
+const { init: initMentorController } = require("./controllers/mentorController");
+const { init: initMentorBookingController } = require("./controllers/MentorBookingController");
 const router = require("./routes/routes");
 
 dotenv.config();
@@ -20,6 +22,8 @@ connectDB().then((db) => {
   // Initialize with database 
   initUserController(db);
   initOpportunityController(db);
+  initMentorController(db);
+  initMentorBookingController(db);
 
   // Routes
   app.use("/", router);
