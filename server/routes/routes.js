@@ -33,6 +33,7 @@ const {
   postMentorBooking,
   getMentorBookings,
   getUpcomingBookings,
+  patchBookingUrl,
 } = require('../controllers/MentorBookingController');
 
 const router = express.Router();
@@ -104,5 +105,6 @@ router.get('/verified-mentors', getVerifiedMentors);
 router.post('/mentor-bookings', postMentorBooking);
 router.get('/mentor-bookings/:mentorId', getMentorBookings),
   router.get('/upcoming-bookings/:mentorId', getUpcomingBookings);
+router.patch('/meeting-link/:id', patchBookingUrl);
 
 module.exports = router;
