@@ -1,4 +1,7 @@
 const express = require('express');
+const axios = require('axios');
+require('dotenv').config();
+
 const {
   getUsers,
   postAuser,
@@ -34,6 +37,44 @@ const {
 } = require('../controllers/MentorBookingController');
 
 const router = express.Router();
+// const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+//Chat Routes
+router.post('/chat', async (req, res) => {
+  try {
+    const userMessage = req.body.message.trim().toLowerCase();
+
+    // Check for specific question like "Who are you?"
+    if (
+      userMessage === 'who are you?' ||
+      userMessage === 'who are you' ||
+      userMessage === 'who are you? '
+    ) {
+      return res.json({
+        reply:
+          'I am a teacher and also your brother from Porbo Shobai. You can ask me anything!',
+      });
+    }
+
+    // Proceed with the regular AI response if the question is not "Who are you?"
+    try {
+      const response = await axios.post(
+        'https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct',
+        { inputs: userMessage },
+        {
+          headers: { Authorization: `Bearer ${process.env.HF_API_KEY}` },
+        },
+      );
+
+      res.json({ reply: response.data[0].generated_text });
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+      res.status(500).json({ error: 'Error processing AI response' });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Error processing request' });
+  }
+});
 
 // USERS ROUTES
 router.get('/users', getUsers);
