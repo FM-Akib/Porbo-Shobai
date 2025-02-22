@@ -26,6 +26,7 @@ import MentorReviews from '@/Pages/MentorDashboard/MentorReviews';
 import MyBookings from '@/Pages/MentorDashboard/MyBookings';
 import MentorForm from '@/Pages/MentorForm';
 import MentorForm2 from '@/Pages/MentorForm2';
+import Mentors from '@/Pages/Mentors';
 import OpportunityRegistration from '@/Pages/OpportunityRegistration';
 import Register from '@/Pages/Register';
 import DashboardHome from '@/Pages/UserDashboard/DasdhboardHome';
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: '/opportunity-registration/:id',
         element: <OpportunityRegistration />,
+      },
+      {
+        path: '/mentors',
+        element: <Mentors />,
       },
       {
         path: '/create-mentor',

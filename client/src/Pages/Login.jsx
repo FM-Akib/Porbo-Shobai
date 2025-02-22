@@ -66,7 +66,7 @@ const Login = () => {
             className="md:w-1/2 bg-cover bg-no-repeat bg-center rounded-lg"
             style={{
               backgroundImage:
-                "url('https://i.ibb.co/w016jcN/undraw-Emails-re-cqen.png')",
+                "url('https://res.cloudinary.com/ds0io6msx/image/upload/v1740158962/PorboShobai/bwqkwxtvhtcu8jqyqlwp.png')",
             }}
           ></div>
           {/* Form div */}
