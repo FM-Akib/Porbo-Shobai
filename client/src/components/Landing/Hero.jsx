@@ -1,9 +1,7 @@
 import { cn } from '@/lib/utils';
 import { BookOpen, Star, Trophy, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import DotPattern from '../ui/dot-pattern';
 import WordRotate from '../ui/word-rotate';
@@ -45,14 +43,14 @@ const Hero = () => {
           Earn points through learning and redeem them for educational rewards.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-2 mt-4">
+        {/* <div className="flex flex-col md:flex-row gap-2 mt-4">
           <Link to="/find-mentor">
             <Button className="w-full md:w-auto">Find Mentor</Button>
           </Link>
           <Link to="/create-mentor">
             <Button className="w-full md:w-auto">Be A Mentor</Button>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       {/* Grid Layout */}

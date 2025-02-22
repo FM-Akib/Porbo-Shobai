@@ -40,6 +40,7 @@ const routes = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
   { name: 'Competitions', path: '/competitions' },
+  { name: 'Mentors', path: '/mentors' },
   { name: 'Leaderboard', path: '/leaderboard' },
   { name: 'Contact', path: '/contact' },
 ];
