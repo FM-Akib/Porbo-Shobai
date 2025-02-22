@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useToast } from "@/Hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
-import useAuth from "@/hooks/useAuth";
-import { updateProfile } from "firebase/auth";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { confettiShape } from "@/utils/ConfettiShape";
+import { useToast } from '@/Hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
+import useAuth from '@/hooks/useAuth';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { confettiShape } from '@/utils/ConfettiShape';
+import { updateProfile } from 'firebase/auth';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sound from '../assets/Audio/ps1.wav';
 
 const Register = () => {
@@ -15,59 +15,55 @@ const Register = () => {
   const axiosSecure = useAxiosSecure();
   const [eye, setEye] = useState(false);
   const [eyeTwo, setEyeTwo] = useState(false);
-  const [role, setRole] = useState("student");
+  const [role, setRole] = useState('student');
   const location = useLocation();
   const navigate = useNavigate();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-
-
-    function palySound() {
-      const audio = new Audio(sound);
-      audio.play();
-    }
-  const onSubmit = async (data) => {
+  function palySound() {
+    const audio = new Audio(sound);
+    audio.play();
+  }
+  const onSubmit = async data => {
     // console.log(data);
-    if(data.Password !== data.confirmPassword){
+    if (data.Password !== data.confirmPassword) {
       toast({
-        variant: "destructive",
+        variant: 'destructive',
         title: "Password didn't match",
-        description: "Password and Confirm Password has to be same",
+        description: 'Password and Confirm Password has to be same',
         action: <ToastAction altText="Try again">OK!</ToastAction>,
-      })
-      return ;
+      });
+      return;
     }
 
     createUser(data.email, data.Password)
-      .then((result) => {
+      .then(result => {
         const user = result.user;
         // console.log(user);
         updateProfile(user, {
           displayName: data.firstName,
-        })
-        
-        .then(() => {
+        }).then(() => {
           setUpdate(!update);
           let userInfo = {};
-          if (role === "student") {
+          if (role === 'student') {
             userInfo = {
               firstName: data.firstName,
               lastName: data.lastName,
               username: `@${data.firstName}`,
               email: data.email,
-              about: "",
-              institution: "",
+              about: '',
+              institution: '',
               mobileNo: data.mobileNumber,
-              location: "Chittagong",
+              location: 'Chittagong',
               points: 100,
               badges: [],
               coins: 10,
-              image: "",
+              image: '',
               password: data.Password,
               role: role,
               skills: [],
@@ -80,139 +76,135 @@ const Register = () => {
               extraCurricular: [],
               participations: [],
               streaks: [],
-            }
+            };
           }
-          if(role === "company"){
+          if (role === 'company') {
             userInfo = {
               name: data.firstName,
               lastName: data.lastName,
               username: `@${data.firstName}`,
               email: data.email,
-              about: "",
-              website: "",
+              about: '',
+              website: '',
               services: [],
-              banner: "",
+              banner: '',
               mobileNo: data.mobileNumber,
-              location: "",
+              location: '',
               points: 100,
               badges: [],
               coins: 10,
-              image: "",
+              image: '',
               password: data.Password,
               role: role,
               hosts: [],
-            }
+            };
           }
 
-       
-          axiosSecure.post("/users", userInfo)
+          axiosSecure
+            .post('/users', userInfo)
+            .then(data => {
+              // console.log(data.data);
+              if (data.data.insertedId) {
+                confettiShape();
+                palySound();
+                navigate(location?.state ? location.state : '/');
+                toast({
+                  variant: 'default',
+                  title: 'Welcome to Porbo Shobai',
+                  description: 'User Created Successfully',
+                  action: <ToastAction altText="Try again">OK!</ToastAction>,
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const handleGoogleLogIn = () => {
+    googleLogIn()
+      .then(result => {
+        let userInfo = {};
+        if (role === 'student') {
+          userInfo = {
+            firstName: result.user?.displayName.split(' ')[0],
+            lastName: result.user?.displayName.split(' ').slice(1).join(' '),
+            username: `@${result.user?.displayName.split(' ')[0]}`,
+            email: result.user?.email,
+            about: '',
+            institution: '',
+            mobileNo: '',
+            location: 'Chittagong',
+            points: 1250,
+            badges: [],
+            coins: 300,
+            image: result.user?.photoURL,
+            password: '',
+            role: role,
+            skills: [],
+            workExperience: [],
+            education: [],
+            certificates: [],
+            projects: [],
+            achievements: [],
+            hobbies: [],
+            extraCurricular: [],
+            participations: [],
+            streaks: [],
+          };
+        }
+        if (role === 'company') {
+          userInfo = {
+            firstName: result.user?.displayName.split(' ')[0],
+            lastName: result.user?.displayName.split(' ').slice(1).join(' '),
+            username: `@${result.user?.displayName.split(' ')[0]}`,
+            email: result.user?.email,
+            about: '',
+            website: '',
+            services: [],
+            mobileNo: '',
+            location: '',
+            points: 100,
+            badges: [],
+            coins: 10,
+            image: result.user?.photoURL,
+            password: '',
+            role: role,
+            hosts: [],
+          };
+        }
+        axiosSecure
+          .post('/users', userInfo)
           .then(data => {
             // console.log(data.data);
             if (data.data.insertedId) {
               confettiShape();
               palySound();
-              navigate(location?.state ? location.state : "/");
+              navigate(location?.state ? location.state : '/');
               toast({
-                variant: "default",
-                title: "Welcome to Porbo Shobai",
-                description: "User Created Successfully",
+                variant: 'default',
+                title: 'Welcome to Porbo Shobai',
+                description: 'User Created Successfully',
                 action: <ToastAction altText="Try again">OK!</ToastAction>,
-              })
+              });
             }
-            
           })
           .catch(error => {
             console.log(error);
-          })
-        })
-        
+          });
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  const handleGoogleLogIn = () => {
-    googleLogIn()
-      .then((result) => {
-        let userInfo = {};
-        if(role === "student"){
-        userInfo = {
-          firstName: result.user?.displayName.split(" ")[0],
-          lastName: result.user?.displayName.split(" ").slice(1).join(" "),
-          username: `@${result.user?.displayName.split(" ")[0]}`,
-          email: result.user?.email,
-          about: "",
-          institution: "",
-          mobileNo: "",
-          location: "Chittagong",
-          points: 1250,
-          badges: [],
-          coins: 300,
-          image: result.user?.photoURL,
-          password: "",
-          role: role,
-          skills: [],
-          workExperience: [],
-          education: [],
-          certificates: [],
-          projects: [],
-          achievements: [],
-          hobbies: [],
-          extraCurricular: [],
-          participations: [],
-          streaks: [],
-        }
-      }
-      if(role === "company"){
-        userInfo = {
-          firstName: result.user?.displayName.split(" ")[0],
-          lastName: result.user?.displayName.split(" ").slice(1).join(" "),
-          username: `@${result.user?.displayName.split(" ")[0]}`,
-          email: result.user?.email,
-          about: "",
-          website: "",
-          services: [],
-          mobileNo: "",
-          location: "",
-          points: 100,
-          badges: [],
-          coins: 10,
-          image: result.user?.photoURL,
-          password: "",
-          role: role,
-          hosts: [],
-        }
-      }
-        axiosSecure.post("/users", userInfo)
-        .then(data => {
-          // console.log(data.data);
-          if (data.data.insertedId) {
-            confettiShape();
-            palySound();
-            navigate(location?.state ? location.state : "/");
-            toast({
-              variant: "default",
-              title: "Welcome to Porbo Shobai",
-              description: "User Created Successfully",
-              action: <ToastAction altText="Try again">OK!</ToastAction>,
-            })
-          }
-          
-        })
-        .catch(error => {
-          console.log(error);
-        })
-       
-      })
-      .catch(()=>{
+      .catch(() => {
         toast({
-          variant: "destructive",
-          title: "Registration failed",
-          description: "Something went wrong",
+          variant: 'destructive',
+          title: 'Registration failed',
+          description: 'Something went wrong',
           action: <ToastAction altText="Try again">OK!</ToastAction>,
-        })
-
+        });
       });
   };
 
@@ -222,7 +214,7 @@ const Register = () => {
   const handelSeePassTwo = () => {
     setEyeTwo(!eyeTwo);
   };
-  const handleRole = (e) => {
+  const handleRole = e => {
     setRole(e.target.value);
   };
   return (
@@ -230,31 +222,39 @@ const Register = () => {
       <div className=" border border-black dark:border-white shadow-md bg-white w-full max-w-4xl p-8 space-y-3 rounded-tl-xl rounded-br-xl dark:bg-black dark:text-white">
         <div className="space-y-6 flex flex-col md:flex-row  gap-4">
           {/* image div */}
-          <div  className="md:w-3/6 bg-[url('https://i.ibb.co.com/w016jcN/undraw-Emails-re-cqen.png')] bg-cover bg-no-repeat bg-center"></div>
+          <div className="md:w-3/6 bg-[url('https://res.cloudinary.com/ds0io6msx/image/upload/v1740159149/tyjosmei1q3nmhq4cqc5.png')] bg-contain bg-no-repeat bg-center"></div>
           {/* form div */}
           <div className="md:w-3/6">
             <h3 className="text-sm font-semibold ">Ready to be a Achiever</h3>
             <h1 className="text-xl font-bold mt-2">Create An Account</h1>
             <p className="text-sm dark:text-white font-semibold my-4">
-              Create as a{" "}
+              Create as a{' '}
             </p>
             <div className="flex gap-5">
               <Link
                 onClick={() => {
-                  handleRole({ target: { value: "student" } });
+                  handleRole({ target: { value: 'student' } });
                 }}
-                className={`flex border border-black dark:border-white ${role !== "student" ? "text-black dark:text-white" : ""} font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
-                  role === "student" ? "bg-black dark:bg-white text-white dark:text-black" : ""
+                className={`flex border border-black dark:border-white ${
+                  role !== 'student' ? 'text-black dark:text-white' : ''
+                } font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                  role === 'student'
+                    ? 'bg-black dark:bg-white text-white dark:text-black'
+                    : ''
                 } `}
               >
                 Student
               </Link>
               <Link
                 onClick={() => {
-                  handleRole({ target: { value: "company" } });
+                  handleRole({ target: { value: 'company' } });
                 }}
-                className={`flex border border-black dark:border-white ${role !== "company" ? "text-black dark:text-white" : ""} font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
-                  role === "company" ? "bg-black dark:bg-white text-white dark:text-black" : ""
+                className={`flex border border-black dark:border-white ${
+                  role !== 'company' ? 'text-black dark:text-white' : ''
+                } font-bold w-40 h-16 justify-center items-center align-center rounded-2xl ${
+                  role === 'company'
+                    ? 'bg-black dark:bg-white text-white dark:text-black'
+                    : ''
                 } `}
               >
                 Company
@@ -265,10 +265,7 @@ const Register = () => {
               {/* name field */}
               <div className="flex gap-4 justify-between">
                 <div className="space-y-1 text-sm">
-                  <label
-                    htmlFor="username"
-                    className="block dark:text-white"
-                  >
+                  <label htmlFor="username" className="block dark:text-white">
                     First Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -277,17 +274,14 @@ const Register = () => {
                     id="firstName"
                     placeholder="First Name"
                     className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                    {...register("firstName", { required: true })}
+                    {...register('firstName', { required: true })}
                   />
                   {errors.name && (
                     <span className="text-red-500">First Name is required</span>
                   )}
                 </div>
                 <div className="space-y-1 text-sm">
-                  <label
-                    htmlFor="username"
-                    className="block dark:text-white"
-                  >
+                  <label htmlFor="username" className="block dark:text-white">
                     Last Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -296,7 +290,7 @@ const Register = () => {
                     id="lastName"
                     placeholder="Last Name"
                     className="border border-black  w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-white focus:dark:border-violet-600"
-                    {...register("lastName", { required: true })}
+                    {...register('lastName', { required: true })}
                   />
                   {errors.name && (
                     <span className="text-red-500">Last Name is required</span>
@@ -314,7 +308,7 @@ const Register = () => {
                   id="email"
                   placeholder="Email"
                   className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                  {...register("email", { required: true })}
+                  {...register('email', { required: true })}
                 />
                 {errors.name && (
                   <span className="text-red-500">Email is required</span>
@@ -331,7 +325,7 @@ const Register = () => {
                   id="mobileNumber"
                   placeholder="Mobile Number"
                   className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                  {...register("mobileNumber", { required: true })}
+                  {...register('mobileNumber', { required: true })}
                 />
                 {errors.name && (
                   <span className="text-red-500">
@@ -343,39 +337,36 @@ const Register = () => {
               <div className="flex gap-4 justify-between">
                 {/* password field 1 */}
                 <div className="space-y-1 text-sm relative">
-                  <label
-                    htmlFor="password"
-                    className="block dark:text-white"
-                  >
+                  <label htmlFor="password" className="block dark:text-white">
                     Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type={eye ? "text" : "password"}
+                    type={eye ? 'text' : 'password'}
                     name="password"
                     id="password"
                     placeholder="Password"
                     className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                    {...register("Password", {
+                    {...register('Password', {
                       required: true,
                       minLength: 6,
                       maxLength: 20,
                       pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/,
                     })}
                   />
-                  {errors.Password?.type === "required" && (
+                  {errors.Password?.type === 'required' && (
                     <span className="text-red-500">Password is required</span>
                   )}
-                  {errors.Password?.type === "minLength" && (
+                  {errors.Password?.type === 'minLength' && (
                     <span className="text-red-500">
                       Password must be 6 characters
                     </span>
                   )}
-                  {errors.Password?.type === "maxLength" && (
+                  {errors.Password?.type === 'maxLength' && (
                     <span className="text-red-500">
                       Password must be less than 20 characters
                     </span>
                   )}
-                  {errors.Password?.type === "pattern" && (
+                  {errors.Password?.type === 'pattern' && (
                     <span className="text-red-500">
                       Password must have at least one uppercase, one lowercase,
                       one number and one special character
@@ -395,19 +386,16 @@ const Register = () => {
                 </div>
                 {/* password field 2 */}
                 <div className="space-y-1 text-sm relative">
-                  <label
-                    htmlFor="password"
-                    className="block dark:text-white"
-                  >
+                  <label htmlFor="password" className="block dark:text-white">
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type={eyeTwo ? "text" : "password"}
+                    type={eyeTwo ? 'text' : 'password'}
                     name="Confirmpassword"
                     id="ConfirmPassword"
                     placeholder="Confirm Password"
                     className="border border-black w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                    {...register("confirmPassword", {
+                    {...register('confirmPassword', {
                       required: true,
                       minLength: 6,
                       maxLength: 20,
@@ -415,20 +403,20 @@ const Register = () => {
                       pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/,
                     })}
                   />
-                  {errors.confirmPassword?.type === "required" && (
+                  {errors.confirmPassword?.type === 'required' && (
                     <span className="text-red-500">Password is required</span>
                   )}
-                  {errors.confirmPassword?.type === "minLength" && (
+                  {errors.confirmPassword?.type === 'minLength' && (
                     <span className="text-red-500">
                       Password must be 6 characters
                     </span>
                   )}
-                  {errors.confirmPassword?.type === "maxLength" && (
+                  {errors.confirmPassword?.type === 'maxLength' && (
                     <span className="text-red-500">
-                      Password must be less than or equal to 20 characters{" "}
+                      Password must be less than or equal to 20 characters{' '}
                     </span>
                   )}
-                  {errors.confirmPassword?.type === "pattern" && (
+                  {errors.confirmPassword?.type === 'pattern' && (
                     <span className="text-red-500">
                       Password must be at least one uppercase, one lowercase,
                       one number and one special character
@@ -440,28 +428,25 @@ const Register = () => {
                   >
                     {eyeTwo ? <FaRegEye /> : <FaRegEyeSlash />}
                   </Link>
-                  
                 </div>
               </div>
               <div className="flex items-center ">
-              <input
-                type="checkbox"
-                name="acceptTerms"
-                id="acceptTerms"
-                aria-label="I agree to the terms and conditions."
-                className="mr-1 rounded-sm  focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
-                {...register("acceptTerms", { required: true })}
-              />
-              
-              <p>I agree to the terms and conditions.</p>
+                <input
+                  type="checkbox"
+                  name="acceptTerms"
+                  id="acceptTerms"
+                  aria-label="I agree to the terms and conditions."
+                  className="mr-1 rounded-sm  focus:dark:ring-violet-600 focus:dark:border-violet-600 focus:ring-2 dark:accent-violet-600"
+                  {...register('acceptTerms', { required: true })}
+                />
+
+                <p>I agree to the terms and conditions.</p>
               </div>
-              {
-                errors.acceptTerms?.type === "required" && (
-                  <span className="text-red-500">
-                    You must agree to the terms and conditions
-                  </span>
-                )
-              }
+              {errors.acceptTerms?.type === 'required' && (
+                <span className="text-red-500">
+                  You must agree to the terms and conditions
+                </span>
+              )}
 
               <div className="flex justify-center">
                 <button className="flex border border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black font-bold w-2/3 h-16 justify-center items-center align-center rounded-2xl">
@@ -492,11 +477,11 @@ const Register = () => {
               </button>
             </div>
             <p className="text-xs text-center sm:px-6 dark:text-white">
-              {"Already have an account? "}
+              {'Already have an account? '}
               <Link
                 rel="noopener noreferrer"
-                to={"/Login"}
-                className="underline dark:text-white font-bold" 
+                to={'/Login'}
+                className="underline dark:text-white font-bold"
               >
                 Login
               </Link>
