@@ -73,7 +73,7 @@ const CompetitionsFeature = () => {
                   <MapPin className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-300" />
                   {opportunity.location}
                 </div>
-                <Link to={`/opportunity/${opportunity._id}`} passHref>
+                <Link to={`/a-opportunity/${opportunity._id}`} passHref>
                   <Button className="w-full bg-emerald-400 hover:bg-emerald-600 transition-all">
                     View Details
                   </Button>

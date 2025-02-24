@@ -42,7 +42,7 @@ const routes = [
   { name: 'Competitions', path: '/competitions' },
   { name: 'Mentors', path: '/mentors' },
   { name: 'Leaderboard', path: '/leaderboard' },
-  { name: 'Contact', path: '/contact' },
+  // { name: 'Contact', path: '/contact' },
 ];
 
 const Navbar = () => {
