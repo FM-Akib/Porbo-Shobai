@@ -2,6 +2,7 @@ import AQuiz from '@/components/Quiz/AQuiz';
 import UpdateAopportunityForm2 from '@/components/UpdateAopportunity.jsx/UpdateAopportunityForm2';
 import MainLayout from '@/Layouts/MainLayout';
 import UserDashLayout from '@/Layouts/UserDashLayout';
+import About from '@/Pages/About';
 import MentorCandidateProfile from '@/Pages/AdminDashboard/MentorCandidateProfile';
 import MentorRequests from '@/Pages/AdminDashboard/MentorRequests';
 import AllOpportunities from '@/Pages/AllOpportunities';
@@ -34,6 +35,7 @@ import DashboardUser from '@/Pages/UserDashboard/DashboardUser';
 import MyRegistration from '@/Pages/UserDashboard/MyRegistration';
 import ViewMentor from '@/Pages/ViewMentor';
 import { createBrowserRouter } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 
 export const router = createBrowserRouter([
   {
@@ -63,11 +65,20 @@ export const router = createBrowserRouter([
       },
       {
         path: '/create-competition',
-        element: <HostComForm />,
+        element: (
+          <PrivateRoute>
+            {' '}
+            <HostComForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/complete-competition',
-        element: <HostForm2 />,
+        element: (
+          <PrivateRoute>
+            <HostForm2 />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/all-opportunities',
@@ -75,11 +86,19 @@ export const router = createBrowserRouter([
       },
       {
         path: '/a-opportunity/:id',
-        element: <Aopportunity />,
+        element: (
+          <PrivateRoute>
+            <Aopportunity />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/opportunity-registration/:id',
-        element: <OpportunityRegistration />,
+        element: (
+          <PrivateRoute>
+            <OpportunityRegistration />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/mentors',
@@ -87,11 +106,19 @@ export const router = createBrowserRouter([
       },
       {
         path: '/create-mentor',
-        element: <MentorForm />,
+        element: (
+          <PrivateRoute>
+            <MentorForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/complete-mentor',
-        element: <MentorForm2 />,
+        element: (
+          <PrivateRoute>
+            <MentorForm2 />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/find-mentor',
@@ -99,7 +126,12 @@ export const router = createBrowserRouter([
       },
       {
         path: '/quiz/psq',
-        element: <AQuiz />,
+        element: (
+          <PrivateRoute>
+            {' '}
+            <AQuiz />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/leaderboard',
@@ -107,17 +139,33 @@ export const router = createBrowserRouter([
       },
       {
         path: '/view-mentor-profile/:id',
-        element: <ViewMentor />,
+        element: (
+          <PrivateRoute>
+            <ViewMentor />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/chat',
-        element: <Chat />,
+        element: (
+          <PrivateRoute>
+            <Chat />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/about',
+        element: <About />,
       },
     ],
   },
   {
     path: 'dashboard',
-    element: <UserDashLayout />,
+    element: (
+      <PrivateRoute>
+        <UserDashLayout />
+      </PrivateRoute>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {

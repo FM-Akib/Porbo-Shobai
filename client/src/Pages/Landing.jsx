@@ -1,4 +1,5 @@
 import CompetitionsFeature from '@/components/Competitions/CompetitionsFeature';
+import FeatureSection from '@/components/Landing/FeatureSection';
 import Hero from '@/components/Landing/Hero';
 
 const Landing = () => {
@@ -6,6 +7,7 @@ const Landing = () => {
     <div>
       <Hero />
       <CompetitionsFeature />
+      <FeatureSection />
     </div>
   );
 };
