@@ -42,6 +42,7 @@ const routes = [
   { name: 'Competitions', path: '/competitions' },
   { name: 'Mentors', path: '/mentors' },
   { name: 'Leaderboard', path: '/leaderboard' },
+  { name: 'Rewards', path: '/rewards' },
   // { name: 'Contact', path: '/contact' },
 ];
 

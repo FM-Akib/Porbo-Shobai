@@ -72,6 +72,22 @@ export const baseApi = createApi({
       }),
       providesTags: ['UsersRanks'],
     }),
+
+    //get all rewards
+    getRewards: builder.query({
+      query: () => ({
+        url: '/rewards',
+        method: 'GET',
+      }),
+      providesTags: ['Rewards'],
+    }),
+    placeOrder: builder.mutation({
+      query: order => ({
+        url: '/placeolder',
+        method: 'POST',
+        body: order,
+      }),
+    }),
   }),
 });
 
@@ -82,4 +98,6 @@ export const {
   useGetOpportunitiesByIdsQuery,
   useDeleteOpportunityMutation,
   useGetUsersQuery,
+  useGetRewardsQuery,
+  usePlaceOrderMutation,
 } = baseApi;

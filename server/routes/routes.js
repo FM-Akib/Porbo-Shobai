@@ -35,6 +35,8 @@ const {
   getUpcomingBookings,
   patchBookingUrl,
 } = require('../controllers/MentorBookingController');
+const { getAllRewards } = require('../controllers/rewardsController');
+const { placeOrder } = require('../controllers/orderController');
 
 const router = express.Router();
 // const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -111,5 +113,11 @@ router.post('/mentor-bookings', postMentorBooking);
 router.get('/mentor-bookings/:mentorId', getMentorBookings),
   router.get('/upcoming-bookings/:mentorId', getUpcomingBookings);
 router.patch('/meeting-link/:id', patchBookingUrl);
+
+//rewards
+router.get('/rewards', getAllRewards);
+
+//placeholder
+router.post('/placeolder', placeOrder);
 
 module.exports = router;

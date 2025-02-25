@@ -30,6 +30,7 @@ import MentorForm2 from '@/Pages/MentorForm2';
 import Mentors from '@/Pages/Mentors';
 import OpportunityRegistration from '@/Pages/OpportunityRegistration';
 import Register from '@/Pages/Register';
+import Rewards from '@/Pages/Rewards';
 import DashboardHome from '@/Pages/UserDashboard/DasdhboardHome';
 import DashboardUser from '@/Pages/UserDashboard/DashboardUser';
 import MyRegistration from '@/Pages/UserDashboard/MyRegistration';
@@ -156,6 +157,10 @@ export const router = createBrowserRouter([
       {
         path: '/about',
         element: <About />,
+      },
+      {
+        path: '/rewards',
+        element: <Rewards />,
       },
     ],
   },
