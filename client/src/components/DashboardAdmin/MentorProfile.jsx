@@ -1,39 +1,55 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { AtomIcon, BookPlus, Facebook, Languages, Link2Icon, Linkedin, OrigamiIcon, Phone, School, SparkleIcon, University, Workflow, Youtube } from "lucide-react";
+import {
+  AtomIcon,
+  BookPlus,
+  Facebook,
+  Languages,
+  Link2Icon,
+  Linkedin,
+  OrigamiIcon,
+  Phone,
+  School,
+  SparkleIcon,
+  University,
+  Workflow,
+  Youtube,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaGenderless } from "react-icons/fa";
 import { Button } from "../ui/button";
 
-const MentorProfile = ({mentor}) => {
+const HtmlRenderer = ({ content }) => {
+  return <div dangerouslySetInnerHTML={{ __html: content }} />;
+};
 
-    const {
-        firstName,
-        lastName,
-        gender,
-        mobileNo,
-        organisation,
-        domain,
-        workExperience,
-        languages,
-        linkedinUrl,
-        facebookUrl,
-        youtubeUrl,
-        protfolioUrl,
-        content,
-        image,
-        schoolName,
-        collegeName,
-        universityName,
-        skills,
-        topics,
-        userId,
-        status,
-        _id,
-      } = mentor;
-    return (
-        <div className="p-4">
-
+const MentorProfile = ({ mentor }) => {
+  const {
+    firstName,
+    lastName,
+    gender,
+    mobileNo,
+    organisation,
+    domain,
+    workExperience,
+    languages,
+    linkedinUrl,
+    facebookUrl,
+    youtubeUrl,
+    protfolioUrl,
+    content,
+    image,
+    schoolName,
+    collegeName,
+    universityName,
+    skills,
+    topics,
+    userId,
+    status,
+    _id,
+  } = mentor;
+  return (
+    <div className="p-4">
       <div>
         <Card>
           <CardContent className="pt-6">
@@ -52,8 +68,9 @@ const MentorProfile = ({mentor}) => {
                 <h2 className="text-2xl font-bold">
                   {firstName} {lastName}
                 </h2>
-                <p className="text-sm text-muted-foreground">
-                  {content || "Add your username"}
+                <p className="text-sm text-muted-foreground max-w-[400px]">
+                  <HtmlRenderer content={content} />
+                  
                 </p>
               </div>
             </div>
@@ -263,12 +280,11 @@ const MentorProfile = ({mentor}) => {
                 </CardContent>
               </Card>
             </div>
-            
           </CardContent>
         </Card>
       </div>
     </div>
-    );
+  );
 };
 
 export default MentorProfile;

@@ -1,5 +1,6 @@
 import MentorRequestCard from "@/components/DashboardAdmin/MentorRequestCard";
 import MentorDashboardTitle from "@/components/DashboardMentor/MentorDashboardTitle";
+import Loader from "@/components/shared/Loader";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
@@ -19,7 +20,7 @@ const MentorRequests = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center">Loading mentors...</p>;
+  if (isLoading) return <Loader />;
   if (isError)
     return <p className="text-center text-red-500">Failed to fetch mentors.</p>;
 

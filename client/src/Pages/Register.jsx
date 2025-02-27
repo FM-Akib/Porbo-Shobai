@@ -117,6 +117,13 @@ const Register = () => {
               }
             })
             .catch(error => {
+
+              toast({
+                variant: 'destructive',
+                title: 'User creation failed',
+                description: 'Something went wrong',
+                action: <ToastAction altText="Try again">OK!</ToastAction>,
+              })
               console.log(error);
             });
         });

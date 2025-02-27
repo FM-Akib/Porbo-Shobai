@@ -13,6 +13,7 @@ import useUserInfo from '@/Hooks/useUserInfo';
 import { usePlaceOrderMutation } from '@/redux/api/api';
 import { useState } from 'react';
 import { ToastAction } from '../ui/toast';
+import Loader from '../shared/Loader';
 
 export default function CheckoutModal({ open, onClose, cart, totalAmount }) {
   const [placeOrder, { isLoading }] = usePlaceOrderMutation();
@@ -95,7 +96,7 @@ export default function CheckoutModal({ open, onClose, cart, totalAmount }) {
     }));
   };
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (

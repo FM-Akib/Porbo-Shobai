@@ -11,6 +11,7 @@ import {
   Languages,
   Link2Icon,
   Linkedin,
+  Loader,
   OrigamiIcon,
   Phone,
   School,
@@ -41,7 +42,7 @@ const MentorCandidateProfile = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center">Loading mentors...</p>;
+  if (isLoading) return <Loader />;
 
   if (isError)
     return <p className="text-center text-red-500">Failed to fetch mentors.</p>;

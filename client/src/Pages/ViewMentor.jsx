@@ -2,6 +2,7 @@ import MentorProfile from "@/components/DashboardAdmin/MentorProfile";
 import { HyperText } from "@/components/magicui/hyper-text";
 import BookingCalendar from "@/components/MentorBooking/BookingCalendar";
 import DateTimePicker from "@/components/MentorBooking/DateTimePicker";
+import Loader from "@/components/shared/Loader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/Hooks/use-toast";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -79,7 +80,7 @@ const ViewMentor = () => {
   };
 
   if (isLoading || isLoadingBookings) {
-    return <p className="text-center">Loading mentors...</p>;
+    return <Loader/>;
   }
 
   return (
