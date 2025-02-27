@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { CalendarDays, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Marquee } from '../magicui/marquee';
+import Loader from '../shared/Loader';
 
 const statusStyles = {
   Live: 'bg-green-500 text-white animate-pulse',
@@ -22,7 +23,7 @@ const CompetitionsFeature = () => {
 
   const opportunities = data?.opportunities;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error loading opportunities</div>;
 
   return (
