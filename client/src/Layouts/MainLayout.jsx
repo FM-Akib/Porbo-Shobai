@@ -7,7 +7,7 @@ const MainLayout = () => {
   return (
     <>
       <Navbar />
-      <Toaster />
+      <Toaster position="top-right" />
       <main className="">
         <Outlet />
         <ChatAssistant />

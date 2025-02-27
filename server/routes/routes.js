@@ -34,6 +34,8 @@ const {
   getMentorBookings,
   getUpcomingBookings,
   patchBookingUrl,
+  getStudentBookings,
+  getStudentUpcomingBookings,
 } = require('../controllers/MentorBookingController');
 const { getAllRewards } = require('../controllers/rewardsController');
 const { placeOrder } = require('../controllers/orderController');
@@ -154,6 +156,10 @@ router.post('/mentor-bookings', postMentorBooking);
 router.get('/mentor-bookings/:mentorId', getMentorBookings),
   router.get('/upcoming-bookings/:mentorId', getUpcomingBookings);
 router.patch('/meeting-link/:id', patchBookingUrl);
+
+//STUDENT ROUTES
+router.get('/student-bookings/:userId', getStudentBookings);
+router.get('/student-upcoming-bookings/:userId', getStudentUpcomingBookings);
 
 //rewards
 router.get('/rewards', getAllRewards);

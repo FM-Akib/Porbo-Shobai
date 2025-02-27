@@ -34,7 +34,7 @@ const routes = [
   { label: "Referrals", icon: Star, href: "/dashboard/referrals" },
   { label: "My Rounds", icon: Clock, href: "/dashboard/rounds" },
   { label: "Watchlist", icon: Home, href: "/dashboard/watchlist" },
-  { label: "Mentor Sessions", icon: Users, href: "/dashboard/mentor" },
+  { label: "Mentor Sessions", icon: Users, href: "/dashboard/mentor-sessions" },
   { label: "Courses", icon: BookOpen, href: "/dashboard/courses" },
   { label: "Certificates", icon: Award, href: "/dashboard/certificates" },
   { label: "Rewards", icon: Gift, href: "/dashboard/rewards" },
