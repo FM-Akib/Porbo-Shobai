@@ -37,6 +37,7 @@ import MyRegistration from '@/Pages/UserDashboard/MyRegistration';
 import ViewMentor from '@/Pages/ViewMentor';
 import { createBrowserRouter } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import StudentSessions from '@/Pages/UserDashboard/StudentSessions';
 
 export const router = createBrowserRouter([
   {
@@ -229,6 +230,10 @@ export const router = createBrowserRouter([
         path: 'availability',
         element: <MentorAvailability />,
       },
+      {
+        path: 'mentor-sessions',
+        element: <StudentSessions/>
+      }
     ],
   },
 ]);

@@ -95,10 +95,50 @@ const patchBookingUrl = async (req, res) => {
     res.status(500).json({ error: "Failed to update booking URL" });
   }
 }
+
+const getStudentUpcomingBookings = async (req, res) => {
+  try {
+    // Assuming mentorId is provided as a route parameter
+    const { userId } = req.params;
+    const currentTime = new Date();
+
+    // Find bookings for the given mentor with start time >= current time
+    // and sort them by start time in ascending order (earliest first)
+    const upcomingBookings = await mentorBookingCollection
+      .find({
+        userId,
+        start: { $gte: currentTime },
+      })
+      .sort({ start: 1 })
+      .toArray();
+
+    const count = upcomingBookings.length;
+    res.status(200).json({ count, bookings: upcomingBookings });
+  } catch (error) {
+    console.error("Error fetching upcoming bookings:", error);
+    res.status(500).json({ error: "Failed to fetch upcoming bookings" });
+  }
+};
+
+
+const getStudentBookings = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const bookings = await mentorBookingCollection
+      .find({ userId: userId })
+      .toArray();
+    res.json(bookings);
+  } catch (error) {
+    console.error("Error fetching mentor bookings:", error);
+    res.status(500).json({ error: "Failed to fetch mentor bookings" });
+  }
+};
 module.exports = {
   init,
   postMentorBooking,
   getMentorBookings,
   getUpcomingBookings,
   patchBookingUrl,
+  getStudentBookings,
+  getStudentUpcomingBookings,
 };

@@ -24,8 +24,15 @@ const MentorBookingTable = ({ bookings, role, refetch, refetch2 }) => {
             <TableHead>Start Time</TableHead>
             <TableHead>End Time</TableHead>
             <TableHead>Duration</TableHead>
-            <TableHead>Meeting Link</TableHead>
-            <TableHead className="text-right">View Student</TableHead>
+            {role === "student" && (
+              <TableHead className="text-right">Meeting Link</TableHead>
+            )}
+            {role === "mentor" && (
+              <>
+                <TableHead>Meeting Link</TableHead>
+                <TableHead className="text-right">View Student</TableHead>
+              </>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -45,20 +52,49 @@ const MentorBookingTable = ({ bookings, role, refetch, refetch2 }) => {
                 )}{" "}
                 minutes
               </TableCell>
-              <TableCell>
-                {booking.meetingURL ? (
-                  <Link to={booking.meetingURL} target="_blank"><Button className="bg-green-500">Join</Button></Link>
-                ) : role === "mentor" ? (
-                  <CreateMeetingLinkDialog onSubmit={handleMeetingLinkSubmit} refetch={refetch} refetch2={refetch2}  id={booking._id}/>
-                ) : (
-                  "Meeting Link Not Provided"
-                )}
-              </TableCell>
-              <TableCell className="text-right">
-                <Link>
-                  <Button>View</Button>
-                </Link>
-              </TableCell>
+              {role === "student" && (
+                <TableCell className="text-right">
+                  {booking.meetingURL ? (
+                    <Link to={booking.meetingURL} target="_blank">
+                      <Button className="bg-green-500">Join</Button>
+                    </Link>
+                  ) : role === "mentor" ? (
+                    <CreateMeetingLinkDialog
+                      onSubmit={handleMeetingLinkSubmit}
+                      refetch={refetch}
+                      refetch2={refetch2}
+                      id={booking._id}
+                    />
+                  ) : (
+                    "Meeting Link Not Provided"
+                  )}
+                </TableCell>
+              )}
+              {role === "mentor" && (
+                <>
+                  <TableCell>
+                    {booking.meetingURL ? (
+                      <Link to={booking.meetingURL} target="_blank">
+                        <Button className="bg-green-500">Join</Button>
+                      </Link>
+                    ) : role === "mentor" ? (
+                      <CreateMeetingLinkDialog
+                        onSubmit={handleMeetingLinkSubmit}
+                        refetch={refetch}
+                        refetch2={refetch2}
+                        id={booking._id}
+                      />
+                    ) : (
+                      "Meeting Link Not Provided"
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Link>
+                      <Button>View</Button>
+                    </Link>
+                  </TableCell>
+                </>
+              )}
             </TableRow>
           ))}
         </TableBody>
