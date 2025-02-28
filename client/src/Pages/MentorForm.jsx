@@ -26,14 +26,17 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ImageUp, PlusCircle, X } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import JoditEditor from "jodit-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { formSchemaMentor } from "@/utils/FormError";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaFemale, FaMale } from "react-icons/fa";
+import useUserInfo from "@/hooks/useUserInfo";
 const MentorForm = () => {
+  const { userInfo } = useUserInfo();
+  const [currentUser, setCurrentUser] = useState(userInfo || {});
   const [content, setContent] = useState("");
   const [bannerPreview, setBannerPreview] = useState(null);
   const [banner, setBanner] = useState(null);
@@ -43,10 +46,24 @@ const MentorForm = () => {
   const location = useLocation();
   const { title } = location.state || {};
   console.log(title);
+  console.log("userInfo = ", userInfo);
   const form = useForm({
     resolver: zodResolver(formSchemaMentor),
     defaultValues: {
       gender: "male",
+      firstName: currentUser.firstName,
+      lastName:  currentUser.lastName,
+      mobileNo: currentUser.mobileNo,
+      organisation: currentUser.institution,
+      domain: "",
+      workExperience: currentUser.workExperience,
+      bio: "",
+      languages: [],
+      linkedinUrl: "https://",
+      facebookUrl: "https://",
+      youtubeUrl: "https://",
+      protfolioUrl: "https://",
+      topics: [],
     },
     gender: "onBlur",
   });
@@ -112,6 +129,7 @@ const MentorForm = () => {
     control: form.control,
     name: "languages",
   });
+
 
   return (
     <div className="min-h-screen md:p-8">

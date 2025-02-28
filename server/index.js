@@ -1,10 +1,25 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const { connectDB } = require("./config/database");
-const { init: initUserController } = require("./controllers/userController");
-const { init: initOpportunityController } = require("./controllers/opportunityController");
-const router = require("./routes/routes");
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { connectDB } = require('./config/database');
+const {
+  init: initUserController,
+  init,
+} = require('./controllers/userController');
+const {
+  init: initOpportunityController,
+} = require('./controllers/opportunityController');
+const {
+  init: initMentorController,
+} = require('./controllers/mentorController');
+const {
+  init: initMentorBookingController,
+} = require('./controllers/MentorBookingController');
+const {
+  init: initRewardsController,
+} = require('./controllers/rewardsController');
+const { init: initOrderController } = require('./controllers/orderController');
+const router = require('./routes/routes');
 
 dotenv.config();
 
@@ -16,17 +31,21 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-connectDB().then((db) => {
-  // Initialize with database 
+connectDB().then(db => {
+  // Initialize with database
   initUserController(db);
   initOpportunityController(db);
+  initMentorController(db);
+  initMentorBookingController(db);
+  initRewardsController(db);
+  initOrderController(db);
 
   // Routes
-  app.use("/", router);
+  app.use('/', router);
 
   // Base route
-  app.get("/", (req, res) => {
-    res.send("PS Server is running!!");
+  app.get('/', (req, res) => {
+    res.send('PS Server is running!!');
   });
 
   app.listen(port, () => {

@@ -1,16 +1,16 @@
 [
-    {
-        "name": "Muntasir Akib",
-        "photo": "https://avatars.githubusercontent.com/u/77449506?v=4",
-        "email": "B8a6a@example.com",
-        "phone": "+880 123 456 789",
-        "password": "123456",
-        "role": "admin",
-        "status": "active",
-        "created_at": "2021-07-01T00:00:00.000Z",
-        "mentorID": ""
-    },
-    {
+  {
+    "name": "Muntasir Akib",
+    "photo": "https://avatars.githubusercontent.com/u/77449506?v=4",
+    "email": "B8a6a@example.com",
+    "phone": "+880 123 456 789",
+    "password": "123456",
+    "role": "admin",
+    "status": "active",
+    "created_at": "2021-07-01T00:00:00.000Z",
+    "mentorID": ""
+  },
+  {
     "banner": "http://res.cloudinary.com/ds0io6msx/image/upload/v1733078216/dutvowvey…",
     "title": "Idea Innovation 5.0",
     "visibility": "public",
@@ -19,28 +19,118 @@
     "organization": "Interactive Cares ",
     "websiteUrl": "https://innovation.interactivecares.com",
     "city": "City",
-    "location":"Location",
+    "location": "Location",
     "subtitle": "Rebuild bangladesh through innovation",
-    "description":"<p>Interactive Cares proudly presents the 5th edition of&nbsp;Idea Inn…",
+    "description": "<p>Interactive Cares proudly presents the 5th edition of&nbsp;Idea Inn…",
     "registrationFee": "1000",
-    "competitionStartDate":"2024-12-31T18:00:00.000Z",
-    "competitionStartTime":"2024-12-01T19:00:00.006Z",
-    "registrationStartDate":"2024-11-30T18:00:00.000Z",
-    "registrationStartTime":"2024-12-01T19:00:00.006Z",
-    "registrationEndDate":"2024-12-22T18:00:00.000Z",
-    "registrationEndTime":"2024-12-01T19:00:00.006Z",
-    "eligibility":"Everyone can apply",
-    "prizes":[{ "position": 1, "prize": 10000 },{ "position": 2, "prize": 5000 }],    
-    "categories":["Innovation","Idea Generation"],
-    "festival":"winter",
-    "participationType":"team",
-    "teamSize":{ "minSize": 1, "maxSize": 4 }, 
+    "competitionStartDate": "2024-12-31T18:00:00.000Z",
+    "competitionStartTime": "2024-12-01T19:00:00.006Z",
+    "registrationStartDate": "2024-11-30T18:00:00.000Z",
+    "registrationStartTime": "2024-12-01T19:00:00.006Z",
+    "registrationEndDate": "2024-12-22T18:00:00.000Z",
+    "registrationEndTime": "2024-12-01T19:00:00.006Z",
+    "eligibility": "Everyone can apply",
+    "prizes": [
+      { "position": 1, "prize": 10000 },
+      { "position": 2, "prize": 5000 }
+    ],
+    "categories": ["Innovation", "Idea Generation"],
+    "festival": "winter",
+    "participationType": "team",
+    "teamSize": { "minSize": 1, "maxSize": 4 },
     "hideHost": false,
-    "contacts":[{ "name": "Sophia Green", "email": "sophi@gmail.com", "phone": "+1 800 555 6789" }],
+    "contacts": [
+      {
+        "name": "Sophia Green",
+        "email": "sophi@gmail.com",
+        "phone": "+1 800 555 6789"
+      }
+    ],
     "certificate": "true",
     "numOfParticipantsAllowed": 200,
     "participants": [],
     "status": "Live"
-
-    }
+  }
 ]
+// [
+//     {
+//       "name": "Feluda by Satyajit Ray",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740492789/traaohj45wimpwo8mmln.webp",
+//       "category": "Books",
+//       "price": 450.00,
+//       "points": 500,
+//       "available": 10
+//     },
+//     {
+//       "name": "Basketball",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740492912/lp34kedfpdddmhifmqxx.jpg",
+//       "category": "Sports",
+//       "price": 250.00,
+//       "points": 300,
+//       "available": 15
+//     },
+//     {
+//       "name": "Microscope Set",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740492991/fijnmxsxzmkbdmf3plio.jpg",
+//       "category": "Science",
+//       "price": 750.00,
+//       "points": 900,
+//       "available": 5
+//     },
+//     {
+//       "name": "Guitar",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493060/gjqhhuoz0svf2huvvqov.jpg",
+//         "category": "Music",
+//       "price": 1500.00,
+//       "points": 2500,
+//       "available": 7
+//     },
+//     {
+//       "name": "Chess Set",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493155/yml3paub3j5qd8f3mgc8.webp",
+//         "category": "Games",
+//       "price": 300.00,
+//       "points": 400,
+//       "available": 20
+//     },
+//     {
+//       "name": "Scientific Calculator",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493204/ugkadiisw3tdum508llr.jpg",
+//         "category": "Stationery",
+//       "price": 250.00,
+//       "points": 200,
+//       "available": 30
+//     },
+//     {
+//       "name": "Football",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493250/xfxbe3gfq0zteph0fme0.jpg",
+//         "category": "Sports",
+//       "price": 550.00,
+//       "points": 450,
+//       "available": 18
+//     },
+//     {
+//       "name": "Physics Experiment Kit",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493294/v2bmbnmza85mrmmtfy6d.jpg",
+//         "category": "Science",
+//       "price": 500.00,
+//       "points": 600,
+//       "available": 8
+//     },
+//     {
+//       "name": "Digital Drawing Tablet",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493335/l2qxlzmzutraayvc6wkn.jpg",
+//         "category": "Art",
+//       "price": 250.00,
+//       "points": 300,
+//       "available": 6
+//     },
+//     {
+//       "name": "Perahin by Antik Mahmud",
+//       "photo": "https://res.cloudinary.com/ds0io6msx/image/upload/v1740493388/pg9rkqrbccifwbkpakg6.jpg",
+//         "category": "Books",
+//       "price": 150.00,
+//       "points": 200,
+//       "available": 12
+//     }
+//   ]
