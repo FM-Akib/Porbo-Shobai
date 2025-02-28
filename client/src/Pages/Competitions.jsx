@@ -1,3 +1,4 @@
+import StudentOpportunities from '@/components/AllOpportunities/StudentOpportunityFeature';
 import CompetitionsFeature from '@/components/Competitions/CompetitionsFeature';
 import CompetitionsHero from '@/components/Competitions/CompetitionsHero';
 
@@ -6,6 +7,7 @@ const Competitions = () => {
     <>
       <CompetitionsHero />
       <CompetitionsFeature />
+      <StudentOpportunities />
     </>
   );
 };

@@ -23,7 +23,7 @@ const CompetitionsFeature = () => {
 
   const opportunities = data?.opportunities;
 
-  if (isLoading) return <Loader/>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error loading opportunities</div>;
 
   return (
@@ -67,8 +67,13 @@ const CompetitionsFeature = () => {
                 </CardTitle>
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <CalendarDays className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-300" />
-                  {new Date(opportunity.startDate).toLocaleDateString()} -{' '}
-                  {new Date(opportunity.endDate).toLocaleDateString()}
+                  {new Date(
+                    opportunity.registrationStartDate,
+                  ).toLocaleDateString()}{' '}
+                  -{' '}
+                  {new Date(
+                    opportunity.registrationEndDate,
+                  ).toLocaleDateString()}
                 </div>
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
                   <MapPin className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-300" />
