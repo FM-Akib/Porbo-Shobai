@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import SparklesText from "@/components/ui/sparkles-text";
+import Loader from "@/components/shared/Loader";
 
 const FindMentors = () => {
   const axiosSecure = useAxiosSecure();
@@ -92,11 +93,11 @@ const FindMentors = () => {
       </div>
 
       {
-        isLoading && <p className="text-center">Loading mentors...</p>
+        isLoading && <Loader/>
       }
 
       {/* Mentor Cards */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {mentors.map((mentor) => (
           <MentorRequestCard key={mentor._id} mentor={mentor} path={"/view-mentor-profile"} />
         ))}
