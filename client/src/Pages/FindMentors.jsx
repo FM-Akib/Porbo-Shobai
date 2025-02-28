@@ -1,62 +1,67 @@
-import MentorRequestCard from "@/components/DashboardAdmin/MentorRequestCard";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import MentorRequestCard from '@/components/DashboardAdmin/MentorRequestCard';
+import Loader from '@/components/shared/Loader';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import SparklesText from "@/components/ui/sparkles-text";
-import Loader from "@/components/shared/Loader";
+} from '@/components/ui/select';
+import SparklesText from '@/components/ui/sparkles-text';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const FindMentors = () => {
   const axiosSecure = useAxiosSecure();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [domainFilter, setDomainFilter] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [domainFilter, setDomainFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   // Fetch mentors with filters applied
-  const { data: mentors = [], isLoading, refetch } = useQuery({
-    queryKey: ["mentors", searchTerm, domainFilter, sortOrder], // Key updates when filters change
+  const {
+    data: mentors = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['mentors', searchTerm, domainFilter, sortOrder], // Key updates when filters change
     queryFn: async () => {
       const params = new URLSearchParams();
-      if (searchTerm) params.append("search", searchTerm);
-      if (domainFilter) params.append("domain", domainFilter);
-      if (sortOrder) params.append("sort", sortOrder);
+      if (searchTerm) params.append('search', searchTerm);
+      if (domainFilter) params.append('domain', domainFilter);
+      if (sortOrder) params.append('sort', sortOrder);
 
-      const { data } = await axiosSecure.get(`/verified-mentors?${params.toString()}`);
+      const { data } = await axiosSecure.get(
+        `/verified-mentors?${params.toString()}`,
+      );
       return data;
     },
   });
 
   // Reset filters
   const resetFilters = () => {
-    setSearchTerm("");
-    setDomainFilter("");
-    setSortOrder("");
+    setSearchTerm('');
+    setDomainFilter('');
+    setSortOrder('');
     refetch(); // Re-fetch data without filters
   };
 
-  
-
   return (
     <div className="p-4 space-y-4 min-h-screen">
-        <div className="my-5 md:my-10 flex items-center justify-center">
-        <SparklesText text={"Mentors"} 
-        className={`text-5xl font-semibold text-gray-700 dark:text-white`}
+      <div className="my-5 md:my-10 flex items-center justify-center">
+        <SparklesText
+          text={'Mentors'}
+          className={`text-5xl font-semibold text-gray-700 dark:text-white`}
         />
-        </div>
+      </div>
       {/* Search, Filter, Sort, Reset UI */}
       <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
         {/* Search Input */}
         <Input
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           placeholder="Search mentors..."
           className="w-full md:w-1/3"
         />
@@ -87,19 +92,25 @@ const FindMentors = () => {
         </Select>
 
         {/* Reset Button */}
-        <Button onClick={resetFilters} variant="outline" className="w-full md:w-auto">
+        <Button
+          onClick={resetFilters}
+          variant="outline"
+          className="w-full md:w-auto"
+        >
           Reset
         </Button>
       </div>
 
-      {
-        isLoading && <Loader/>
-      }
+      {isLoading && <Loader />}
 
       {/* Mentor Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {mentors.map((mentor) => (
-          <MentorRequestCard key={mentor._id} mentor={mentor} path={"/view-mentor-profile"} />
+        {mentors.map(mentor => (
+          <MentorRequestCard
+            key={mentor._id}
+            mentor={mentor}
+            path={'/view-mentor-profile'}
+          />
         ))}
       </div>
     </div>
