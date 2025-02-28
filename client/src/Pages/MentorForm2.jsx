@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/Hooks/use-toast';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useUserInfo from '@/hooks/useUserInfo';
 import { formSchemaMentor2 } from '@/utils/FormError';
@@ -30,6 +32,7 @@ const MentorForm = () => {
   const [newSkill, setNewSkill] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const location = useLocation();
+  const { toast } = useToast();
   const { formData } = location.state || {};
 
   const navigate = useNavigate();
@@ -87,7 +90,14 @@ const MentorForm = () => {
       console.log('✅ Data Successfully Posted to Database:', data);
 
       if (data.insertedId) {
-        alert('Mentor added successfully!');
+        toast({
+          variant: 'default',
+          title: 'Request Sent',
+          description: 'Your request has been sent successfully',
+          action: <ToastAction altText="ok">OK!</ToastAction>,
+          className: 'bg-green-500 text-white',
+        });
+        navigate('/mentors');
       } else {
         alert('Failed to add mentor.');
       }
