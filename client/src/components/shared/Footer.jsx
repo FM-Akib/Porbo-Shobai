@@ -6,7 +6,7 @@ import logo from '../../assets/psLogo.png';
 
 const Footer = () => {
   return (
-    <footer className="mt-16 fixed bottom-0 w-full  dark:border-gray-100 bg-gray-100 dark:bg-black text-black dark:text-white py-6 px-4 md:px-12">
+    <footer className=" w-full  dark:border-gray-100 bg-gray-100 dark:bg-black text-black dark:text-white py-6 px-4 md:px-12">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Brand Section */}
         <div className="text-center md:text-left mb-4 md:mb-0">

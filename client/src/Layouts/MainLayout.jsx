@@ -10,7 +10,7 @@ const MainLayout = () => {
       <Navbar />
       <Toaster position="top-right" />
       <main className="">
-        <div className="pb-40">
+        <div className="">
           <Outlet />
         </div>
         <Footer />
