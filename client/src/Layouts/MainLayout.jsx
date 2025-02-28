@@ -10,8 +10,10 @@ const MainLayout = () => {
       <Navbar />
       <Toaster position="top-right" />
       <main className="">
-        <Outlet />
-        <Footer/>
+        <div className="pb-40">
+          <Outlet />
+        </div>
+        <Footer />
         <ChatAssistant />
       </main>
     </>
