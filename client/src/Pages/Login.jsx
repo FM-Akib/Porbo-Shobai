@@ -29,6 +29,12 @@ const Login = () => {
       })
       .catch(error => {
         console.log(error);
+        toast({
+          variant: 'destructive',
+          title: 'Login failed',
+          description: 'Something went wrong',
+          action: <ToastAction altText="Try again">OK!</ToastAction>,
+        });
       });
   };
 

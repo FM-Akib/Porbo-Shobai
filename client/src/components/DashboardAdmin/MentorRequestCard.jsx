@@ -3,6 +3,7 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FaFacebook, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { Link2Icon } from "lucide-react";
 
 const MentorRequestCard = ({ mentor, path }) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const MentorRequestCard = ({ mentor, path }) => {
     linkedinUrl,
     facebookUrl,
     youtubeUrl,
+    protfolioUrl,
     image,
   } = mentor;
 
@@ -27,12 +29,12 @@ const MentorRequestCard = ({ mentor, path }) => {
           <AvatarImage
             src={image}
             alt={`${firstName} ${lastName}`}
-            className="rounded-lg" // Slightly rounded image
+            className="rounded-lg h-60 w-full md:h-16 md:w-16" // Slightly rounded image
           />
         </Avatar>
 
         {/* Mentor Details */}
-        <div className="space-y-1 flex-1">
+        <div className="space-y-1 flex-1 md:text-left text-center">
           <h3 className="text-lg font-semibold">
             {firstName} {lastName}
           </h3>
@@ -45,6 +47,11 @@ const MentorRequestCard = ({ mentor, path }) => {
         <div className="flex flex-col md:flex-row items-center gap-4">
           {/* Social Links */}
           <div className="flex gap-2">
+            {protfolioUrl && (
+              <Link to={protfolioUrl} target="_blank" rel="noopener noreferrer">
+                <Link2Icon className="text-blue-700 text-xl hover:scale-110 transition-all" />
+              </Link>
+            )}
             {linkedinUrl && (
               <Link to={linkedinUrl} target="_blank" rel="noopener noreferrer">
                 <FaLinkedin className="text-blue-700 text-xl hover:scale-110 transition-all" />

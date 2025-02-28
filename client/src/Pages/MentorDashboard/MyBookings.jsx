@@ -7,6 +7,7 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useUserInfo from "@/hooks/useUserInfo";
 import { useQuery } from "@tanstack/react-query";
 import MentorBookingTable from "@/components/DashboardMentor/MentorBookingTable";
+import Loader from "@/components/shared/Loader";
 const MyBookings = () => {
 
   const axiosSecure = useAxiosSecure();
@@ -27,7 +28,7 @@ const MyBookings = () => {
     },
   });
 
-  if (isLoading || isLoadingUpcoming) return <p className="text-center">Loading mentors...</p>; 
+  if (isLoading || isLoadingUpcoming) return <Loader />; 
   console.log(userInfo);
 
   return (
